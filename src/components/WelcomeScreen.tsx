@@ -14,12 +14,11 @@ const WelcomeScreen = ({
             <Heart className="w-10 h-10 text-white" fill="currentColor" />
           </div>
           <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">Non-monogamy game</h1>
-          <p className="text-gray-600 text-lg">The intimate game for two</p>
+          <p className="text-gray-600 text-lg">A practical guidance to non-monogamy lifestyle</p>
         </div>
 
         {/* Features */}
-        <div className="space-y-4 mb-8">
-          <div className="flex items-center justify-center text-gray-700">
+        <div className="space-y-4 mb-8">Your exploration<div className="flex items-center justify-center text-gray-700">
             <Sparkles className="w-5 h-5 text-rose-500 mr-3" />
             <span>Deepen your emotional connection</span>
           </div>
