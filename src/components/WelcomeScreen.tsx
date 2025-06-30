@@ -1,23 +1,19 @@
-
 import { Heart, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
 interface WelcomeScreenProps {
   onStart: () => void;
 }
-
-const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-100 via-purple-100 to-pink-100 flex items-center justify-center p-4">
+const WelcomeScreen = ({
+  onStart
+}: WelcomeScreenProps) => {
+  return <div className="min-h-screen bg-gradient-to-br from-rose-100 via-purple-100 to-pink-100 flex items-center justify-center p-4">
       <div className="text-center max-w-md animate-scale-in">
         {/* Logo */}
         <div className="mb-8">
           <div className="w-20 h-20 mx-auto bg-gradient-to-br from-rose-400 to-purple-500 rounded-full flex items-center justify-center mb-4 animate-float">
             <Heart className="w-10 h-10 text-white" fill="currentColor" />
           </div>
-          <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            Couples Connect
-          </h1>
+          <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">Non-monogamy game</h1>
           <p className="text-gray-600 text-lg">The intimate game for two</p>
         </div>
 
@@ -47,10 +43,7 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
         </div>
 
         {/* Start Button */}
-        <Button 
-          onClick={onStart}
-          className="btn-romantic text-lg px-8 py-4 h-auto"
-        >
+        <Button onClick={onStart} className="btn-romantic text-lg px-8 py-4 h-auto">
           Start Playing Together ❤️
         </Button>
 
@@ -58,8 +51,6 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           Perfect for date nights, anniversaries, or anytime you want to connect
         </p>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default WelcomeScreen;
