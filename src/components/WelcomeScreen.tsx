@@ -45,9 +45,7 @@ const WelcomeScreen = ({
         {/* Start Button */}
         <Button onClick={onStart} className="btn-romantic text-lg px-8 py-4 h-auto">Start Playing</Button>
 
-        <p className="text-xs text-gray-500 mt-4">
-          Perfect for date nights, anniversaries, or anytime you want to connect
-        </p>
+        <p className="text-xs text-gray-500 mt-4">Perfect for explorations, courious mids and everyone who knows there's more, once you enter the rabbit hole... we wait you there!</p>
       </div>
     </div>;
 };
