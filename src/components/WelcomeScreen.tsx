@@ -21,7 +21,7 @@ const WelcomeScreen = ({
         <div className="space-y-4 mb-8">
           <div className="flex items-center justify-center text-gray-700">
             <Sparkles className="w-5 h-5 text-rose-500 mr-3" />
-            <span>Deepen your emotional connection</span>
+            <span>Deepen your connection</span>
           </div>
           <div className="flex items-center justify-center text-gray-700">
             <Heart className="w-5 h-5 text-purple-500 mr-3" />
