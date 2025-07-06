@@ -13,7 +13,7 @@ const WelcomeScreen = ({
           <div className="w-20 h-20 mx-auto bg-gradient-to-br from-rose-400 to-purple-500 rounded-full flex items-center justify-center mb-4 animate-float">
             <Heart className="w-10 h-10 text-white" fill="currentColor" />
           </div>
-          <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">Non-monogamy game</h1>
+          <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">Flames</h1>
           <p className="text-gray-600 text-lg">A practical guidance for non-monogamy lifestyle</p>
         </div>
 
