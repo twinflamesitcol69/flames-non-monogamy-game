@@ -1,5 +1,6 @@
 
 import { Player, PlayerSelection, Activity } from '@/types/kingdom';
+import { getActivityText } from '@/data/kingdomActivities';
 
 export function selectPlayersForActivity(
   players: Player[], 
@@ -84,8 +85,8 @@ function randomSelection(players: Player[], activity: Activity): PlayerSelection
   return selection;
 }
 
-export function formatActivityText(activityText: string, selection: PlayerSelection): string {
-  let formatted = activityText;
+export function formatActivityText(activityId: string, selection: PlayerSelection, language: 'es' | 'pt'): string {
+  let formatted = getActivityText(activityId, language);
   
   Object.entries(selection).forEach(([placeholder, player]) => {
     const regex = new RegExp(`\\[${placeholder}\\]`, 'g');

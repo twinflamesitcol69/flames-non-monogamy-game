@@ -67,12 +67,22 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
 
   const sections = [
     {
-      id: 'confidence',
+      id: 'kingdom',
+      title: t.kingdom.title,
+      description: t.kingdom.description,
+      icon: Crown,
+      gradient: 'from-purple-400 to-pink-500',
+      bgGradient: 'from-purple-50 to-pink-50',
+      featured: true // Mark as featured
+    },
+    {
+      id: 'confidence', 
       title: t.confidence.title,
       description: t.confidence.description,
       icon: Brain,
       gradient: 'from-blue-400 to-purple-500',
-      bgGradient: 'from-blue-50 to-purple-50'
+      bgGradient: 'from-blue-50 to-purple-50',
+      featured: false
     },
     {
       id: 'hookup',
@@ -80,15 +90,8 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
       description: t.hookup.description,
       icon: Target,
       gradient: 'from-red-400 to-rose-500',
-      bgGradient: 'from-red-50 to-rose-50'
-    },
-    {
-      id: 'kingdom',
-      title: t.kingdom.title,
-      description: t.kingdom.description,
-      icon: Crown,
-      gradient: 'from-purple-400 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50'
+      bgGradient: 'from-red-50 to-rose-50',
+      featured: false
     }
   ];
 
@@ -120,22 +123,34 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
         <div className="space-y-4">
           {sections.map((section, index) => {
             const Icon = section.icon;
+            const isFeatured = section.featured;
             return (
               <button
                 key={section.id}
                 onClick={() => setSelectedSection(section.id)}
-                className={`game-card p-6 text-left bg-gradient-to-br ${section.bgGradient} hover:shadow-xl transition-all duration-300 group animate-fade-in w-full`}
+                className={`game-card text-left transition-all duration-300 group animate-fade-in w-full ${
+                  isFeatured 
+                    ? 'p-8 bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100 hover:shadow-2xl border-2 border-purple-300 relative overflow-hidden' 
+                    : 'p-6 bg-gradient-to-br ' + section.bgGradient + ' hover:shadow-xl border border-gray-200'
+                }`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
+                {isFeatured && (
+                  <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-semibold animate-pulse">
+                    ⭐ FEATURED
+                  </div>
+                )}
                 <div className="flex items-start space-x-4">
-                  <div className={`p-3 rounded-full bg-gradient-to-r ${section.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className={`${isFeatured ? 'p-4' : 'p-3'} rounded-full bg-gradient-to-r ${section.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className={`${isFeatured ? 'w-8 h-8' : 'w-6 h-6'} text-white`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-gray-900 transition-colors">
+                    <h3 className={`font-semibold text-gray-800 mb-1 group-hover:text-gray-900 transition-colors ${
+                      isFeatured ? 'text-xl' : 'text-lg'
+                    }`}>
                       {section.title}
                     </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className={`text-gray-600 leading-relaxed ${isFeatured ? 'text-base' : 'text-sm'}`}>
                       {section.description}
                     </p>
                   </div>

@@ -7,7 +7,6 @@ export interface Player {
 
 export interface Activity {
   id: string;
-  text: string;
   level: 1 | 2 | 3;
   minPlayers: number;
   maxPlayers: number;
