@@ -14,7 +14,7 @@ const WelcomeScreen = ({
             <Heart className="w-10 h-10 text-white" fill="currentColor" />
           </div>
           <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">Flames</h1>
-          <p className="text-gray-600 text-lg">A practical guidance for non-monogamy lifestyle</p>
+          <p className="text-gray-600 text-lg">Enhance your non-monogamous life</p>
         </div>
 
         {/* Features */}
