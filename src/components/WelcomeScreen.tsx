@@ -1,8 +1,10 @@
-import { Heart, Sparkles } from 'lucide-react';
+import { Heart, Sparkles, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
 interface WelcomeScreenProps {
   onStart: () => void;
 }
+
 const WelcomeScreen = ({
   onStart
 }: WelcomeScreenProps) => {
@@ -10,8 +12,9 @@ const WelcomeScreen = ({
       <div className="text-center max-w-md animate-scale-in">
         {/* Logo */}
         <div className="mb-8">
-          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-rose-400 to-purple-500 rounded-full flex items-center justify-center mb-4 animate-float">
-            <Heart className="w-10 h-10 text-white" fill="currentColor" />
+          <div className="w-20 h-20 mx-auto bg-red-500 rounded-full flex items-center justify-center mb-4 animate-float relative">
+            <Flame className="w-12 h-12 text-red-600" fill="currentColor" />
+            <Heart className="w-6 h-6 text-white absolute" fill="currentColor" />
           </div>
           <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">Non-monogamy game</h1>
           <p className="text-gray-600 text-lg">A practical guidance for non-monogamy lifestyle</p>
@@ -49,4 +52,5 @@ const WelcomeScreen = ({
       </div>
     </div>;
 };
+
 export default WelcomeScreen;
