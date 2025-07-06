@@ -88,6 +88,7 @@ function randomSelection(players: Player[], activity: Activity): PlayerSelection
 export function formatActivityText(activityId: string, selection: PlayerSelection, language: 'es' | 'pt'): string {
   let formatted = getActivityText(activityId, language);
   
+  // Replace placeholders with actual player names
   Object.entries(selection).forEach(([placeholder, player]) => {
     const regex = new RegExp(`\\[${placeholder}\\]`, 'g');
     formatted = formatted.replace(regex, player.name);
