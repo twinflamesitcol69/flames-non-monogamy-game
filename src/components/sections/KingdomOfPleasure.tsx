@@ -1,42 +1,57 @@
 
-import { useState } from 'react';
-import { ArrowLeft, Users, Play, MessageCircle, Trophy, Star, Sparkles, Gift } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, Users, Play, Crown, AlertTriangle, Trophy, Star, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Player, GameLevel, GameStep, PlayerSelection } from '@/types/kingdom';
+import { activities } from '@/data/kingdomActivities';
+import { badges } from '@/data/kingdomBadges';
+import { selectPlayersForActivity, formatActivityText } from '@/utils/playerSelection';
 
 interface KingdomOfPleasureProps {
   language: 'pt' | 'es';
   onBack: () => void;
 }
 
-interface Player {
-  name: string;
-  gender: string;
-  orientation: string;
-}
-
-interface Badge {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ComponentType<any>;
-}
-
 const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
-  const [step, setStep] = useState<'welcome' | 'setup' | 'playing' | 'celebration' | 'award' | 'feedback' | 'complete'>('welcome');
+  const [step, setStep] = useState<GameStep>('welcome');
   const [numPlayers, setNumPlayers] = useState<number>(2);
   const [players, setPlayers] = useState<Player[]>([]);
-  const [currentActivity, setCurrentActivity] = useState<number>(0);
-  const [completedActions, setCompletedActions] = useState<number>(0);
-  const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [currentLevel, setCurrentLevel] = useState<GameLevel>(1);
+  const [currentActivityIndex, setCurrentActivityIndex] = useState<number>(0);
+  const [completedActivities, setCompletedActivities] = useState<number>(0);
+  const [availableActivities, setAvailableActivities] = useState<typeof activities>([]);
+  const [currentPlayerSelection, setCurrentPlayerSelection] = useState<PlayerSelection>({});
+  const [selectedBadge, setSelectedBadge] = useState<typeof badges[0] | null>(null);
   const [feedback, setFeedback] = useState({
     rating: 0,
     favorite: '',
     suggestions: '',
     email: ''
   });
+
+  // Load activities for current level and player count
+  useEffect(() => {
+    const levelActivities = activities.filter(activity => 
+      activity.level === currentLevel && 
+      activity.minPlayers <= numPlayers && 
+      activity.maxPlayers >= numPlayers
+    );
+    setAvailableActivities(levelActivities);
+    setCurrentActivityIndex(0);
+    setCompletedActivities(0);
+  }, [currentLevel, numPlayers]);
+
+  // Select players for current activity
+  useEffect(() => {
+    if (availableActivities.length > 0 && players.length > 0) {
+      const currentActivity = availableActivities[currentActivityIndex];
+      const selection = selectPlayersForActivity(players, currentActivity);
+      setCurrentPlayerSelection(selection);
+    }
+  }, [availableActivities, currentActivityIndex, players]);
 
   const translations = {
     pt: {
@@ -61,24 +76,39 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         },
         startGame: 'Começar o Jogo'
       },
+      levelSelect: {
+        title: 'Escolha Sua Intensidade',
+        level1: {
+          name: 'Aquecimento Sensual',
+          description: 'Toque suave, conversas íntimas e construção de intimidade'
+        },
+        level2: {
+          name: 'Desafios Brincalhões', 
+          description: 'Jogos mais físicos explorando fantasias não-monogâmicas'
+        },
+        level3: {
+          name: 'Exploração de Limites',
+          description: 'Intensidade máxima: explorando corajosamente seus limites'
+        },
+        warning: '⚠️ Lembrete de Segurança e Consentimento',
+        warningText: 'O Nível 3 envolve atividades sexuais explícitas. Certifique-se de que todos os jogadores consentiram claramente e estabeleceram limites. Sempre respeitem o "não" e comuniquem-se abertamente.',
+        continue: 'Continuar'
+      },
       game: {
-        title: 'Reino do Prazer',
-        nextActivity: 'Próxima Atividade',
-        askAI: 'Pedir cenário personalizado ao AI',
-        enjoying: 'Vocês estão curtindo? Prontos para ir mais longe?',
-        endGame: 'Finalizar Jogo',
-        actionsCompleted: 'Ações completadas: {count}'
+        done: 'Feito ✅',
+        skip: 'Pular ↩️',
+        nextLevel: 'Quer jogar o próximo nível?',
+        yes: 'Sim',
+        no: 'Não',
+        endGame: 'Finalizar Jogo'
       },
       celebration: {
         title: '🎉 Parabéns! 🎉',
-        message: 'Vocês completaram uma jornada incrível de prazer e descoberta!',
-        subtitle: 'Que momento mágico vocês criaram juntos...',
+        message: 'Vocês completaram uma jornada incrível!',
         continue: 'Continuar'
       },
       award: {
         title: '🏆 Conquista Desbloqueada! 🏆',
-        subtitle: 'Vocês ganharam uma medalha especial:',
-        saveShare: 'Salvar & Compartilhar',
         continue: 'Continuar'
       },
       feedback: {
@@ -91,40 +121,9 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       },
       complete: {
         title: 'Obrigado pelo Feedback!',
-        message: 'Sua opinião nos ajuda a criar experiências ainda melhores.',
-        newGame: 'Novo Jogo',
+        playAgain: 'Jogar Novamente',
         exit: 'Sair'
-      },
-      badges: {
-        pioneer: {
-          name: 'Pioneiro do Prazer',
-          description: 'Explorou novos territórios com coragem e paixão'
-        },
-        boundless: {
-          name: 'Amante Sem Limites',
-          description: 'Transcendeu barreiras e abraçou a liberdade'
-        },
-        flame: {
-          name: 'Chama Ética',
-          description: 'Combinou prazer com respeito e consentimento'
-        },
-        explorer: {
-          name: 'Explorador Íntimo',
-          description: 'Descobriu novos caminhos de conexão'
-        },
-        harmony: {
-          name: 'Harmonia Sensual',
-          description: 'Criou perfeito equilíbrio entre desejo e cuidado'
-        }
-      },
-      activities: [
-        '{player1}, sussurre sua fantasia mais íntima sobre outra pessoa no ouvido de {player2}.',
-        '{player1}, remova lentamente uma peça de roupa de {player2} sem usar as mãos.',
-        '{player2}, vendar os olhos de {player1} e use algo comestível para provocá-lo gentilmente.',
-        'Representem um cenário onde {player1} descreve exatamente como adoraria assistir {player2} com outro parceiro.',
-        '{player2}, tome o controle e guie as mãos de {player1} exatamente onde você quer, descrevendo a sensação vividamente.',
-        'Descrevam abertamente um novo limite que gostariam de testar hoje. Discutam juntos se ambos se sentem confortáveis para explorar agora.'
-      ]
+      }
     },
     es: {
       title: 'Bienvenido a Tu Reino del Placer',
@@ -148,24 +147,39 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         },
         startGame: 'Comenzar el Juego'
       },
+      levelSelect: {
+        title: 'Elige Tu Intensidad',
+        level1: {
+          name: 'Calentamiento Sensual',
+          description: 'Toque suave, conversaciones íntimas y construcción de intimidad'
+        },
+        level2: {
+          name: 'Desafíos Juguetones',
+          description: 'Juegos más físicos explorando fantasías no-monógamas'
+        },
+        level3: {
+          name: 'Exploración de Límites',
+          description: 'Intensidad máxima: explorando valientemente tus límites'
+        },
+        warning: '⚠️ Recordatorio de Seguridad y Consentimiento',
+        warningText: 'El Nivel 3 involucra actividades sexuales explícitas. Asegúrense de que todos los jugadores hayan consentido claramente y establecido límites. Siempre respeten el "no" y comuníquense abiertamente.',
+        continue: 'Continuar'
+      },
       game: {
-        title: 'Reino del Placer',
-        nextActivity: 'Siguiente Actividad',
-        askAI: 'Pedir escenario personalizado al AI',
-        enjoying: '¿Lo están disfrutando? ¿Listos para ir más lejos?',
-        endGame: 'Finalizar Juego',
-        actionsCompleted: 'Acciones completadas: {count}'
+        done: 'Hecho ✅',
+        skip: 'Omitir ↩️',
+        nextLevel: '¿Quieren jugar el siguiente nivel?',
+        yes: 'Sí',
+        no: 'No',
+        endGame: 'Finalizar Juego'
       },
       celebration: {
         title: '🎉 ¡Felicidades! 🎉',
-        message: '¡Han completado un viaje increíble de placer y descubrimiento!',
-        subtitle: 'Qué momento mágico han creado juntos...',
+        message: '¡Han completado un viaje increíble!',
         continue: 'Continuar'
       },
       award: {
         title: '🏆 ¡Logro Desbloqueado! 🏆',
-        subtitle: 'Han ganado una medalla especial:',
-        saveShare: 'Guardar y Compartir',
         continue: 'Continuar'
       },
       feedback: {
@@ -178,58 +192,19 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       },
       complete: {
         title: '¡Gracias por tu Comentario!',
-        message: 'Tu opinión nos ayuda a crear experiencias aún mejores.',
-        newGame: 'Nuevo Juego',
+        playAgain: 'Jugar de Nuevo',
         exit: 'Salir'
-      },
-      badges: {
-        pioneer: {
-          name: 'Pionero del Placer',
-          description: 'Exploró nuevos territorios con valor y pasión'
-        },
-        boundless: {
-          name: 'Amante Sin Límites',
-          description: 'Trascendió barreras y abrazó la libertad'
-        },
-        flame: {
-          name: 'Llama Ética',
-          description: 'Combinó placer con respeto y consentimiento'
-        },
-        explorer: {
-          name: 'Explorador Íntimo',
-          description: 'Descubrió nuevos caminos de conexión'
-        },
-        harmony: {
-          name: 'Armonía Sensual',
-          description: 'Creó perfecto equilibrio entre deseo y cuidado'
-        }
-      },
-      activities: [
-        '{player1}, susurra tu fantasía más íntima sobre otra persona al oído de {player2}.',
-        '{player1}, quita lentamente una prenda de {player2} sin usar las manos.',
-        '{player2}, venda los ojos de {player1} y usa algo comestible para provocarlo suavemente.',
-        'Actúen un escenario donde {player1} describe exactamente cómo le encantaría ver a {player2} con otra pareja.',
-        '{player2}, toma el control y guía las manos de {player1} exactamente donde quieres, describiendo la sensación vívidamente.',
-        'Describan abiertamente un nuevo límite que les gustaría probar hoy. Discutan juntos si ambos se sienten cómodos explorándolo ahora.'
-      ]
+      }
     }
   };
 
   const t = translations[language];
 
-  const badges: Badge[] = [
-    { id: 'pioneer', name: t.badges.pioneer.name, description: t.badges.pioneer.description, icon: Sparkles },
-    { id: 'boundless', name: t.badges.boundless.name, description: t.badges.boundless.description, icon: Star },
-    { id: 'flame', name: t.badges.flame.name, description: t.badges.flame.description, icon: Trophy },
-    { id: 'explorer', name: t.badges.explorer.name, description: t.badges.explorer.description, icon: Play },
-    { id: 'harmony', name: t.badges.harmony.name, description: t.badges.harmony.description, icon: Gift }
-  ];
-
   const setupPlayers = () => {
     const newPlayers = Array.from({ length: numPlayers }, () => ({
       name: '',
-      gender: '',
-      orientation: ''
+      gender: 'male' as const,
+      orientation: 'heterosexual' as const
     }));
     setPlayers(newPlayers);
     setStep('setup');
@@ -241,42 +216,65 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     setPlayers(updatedPlayers);
   };
 
-  const startGame = () => {
+  const startLevelSelection = () => {
     if (players.every(p => p.name && p.gender && p.orientation)) {
-      setStep('playing');
+      setStep('level-select');
     }
   };
 
-  const getCurrentActivity = () => {
-    const activity = t.activities[currentActivity];
-    const playerNames = players.map(p => p.name);
+  const selectLevel = (level: GameLevel) => {
+    setCurrentLevel(level);
+    setStep('playing');
+  };
+
+  const handleActivityComplete = () => {
+    const newCompleted = completedActivities + 1;
+    setCompletedActivities(newCompleted);
     
-    return activity
-      .replace('{player1}', playerNames[0] || 'Jogador 1')
-      .replace('{player2}', playerNames[1] || 'Jogador 2');
+    // Move to next activity
+    const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
+    setCurrentActivityIndex(nextIndex);
+
+    // Check if level is complete
+    if (newCompleted >= 3) {
+      if (currentLevel === 3) {
+        // End game
+        const randomBadge = badges[Math.floor(Math.random() * badges.length)];
+        setSelectedBadge(randomBadge);
+        setStep('game-complete');
+      } else {
+        // Level complete
+        setStep('level-complete');
+      }
+    }
   };
 
-  const nextActivity = () => {
-    setCurrentActivity((prev) => (prev + 1) % t.activities.length);
-    setCompletedActions(prev => prev + 1);
+  const skipActivity = () => {
+    const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
+    setCurrentActivityIndex(nextIndex);
   };
 
-  const endGame = () => {
-    setStep('celebration');
-    // Select random badge
-    const randomBadge = badges[Math.floor(Math.random() * badges.length)];
-    setSelectedBadge(randomBadge);
+  const nextLevel = () => {
+    if (currentLevel < 3) {
+      setCurrentLevel((prev) => (prev + 1) as GameLevel);
+      setStep('level-select');
+    }
+  };
+
+  const continueCurrentLevel = () => {
+    setStep('playing');
   };
 
   const submitFeedback = () => {
     console.log('Feedback submitted:', feedback);
-    setStep('complete');
+    setStep('feedback');
   };
 
-  const startNewGame = () => {
+  const restartGame = () => {
     setStep('welcome');
-    setCurrentActivity(0);
-    setCompletedActions(0);
+    setCurrentLevel(1);
+    setCompletedActivities(0);
+    setCurrentActivityIndex(0);
     setSelectedBadge(null);
     setFeedback({ rating: 0, favorite: '', suggestions: '', email: '' });
   };
@@ -296,6 +294,9 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
           </div>
 
           <div className="text-center mb-8 animate-fade-in">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-6 animate-float">
+              <Crown className="w-10 h-10 text-white" />
+            </div>
             <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               {t.title}
             </h1>
@@ -309,11 +310,11 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                 <span className="font-medium text-gray-800">{t.setup.numPlayers}</span>
               </div>
               <div className="flex justify-center space-x-4 mb-6">
-                {[2, 3, 4].map(num => (
+                {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                   <button
                     key={num}
                     onClick={() => setNumPlayers(num)}
-                    className={`w-12 h-12 rounded-full border-2 transition-all duration-300 ${
+                    className={`w-10 h-10 rounded-full border-2 transition-all duration-300 text-sm ${
                       numPlayers === num
                         ? 'border-purple-500 bg-purple-50 text-purple-700'
                         : 'border-gray-300 text-gray-600 hover:border-purple-300'
@@ -351,7 +352,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             <div className="w-16"></div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {players.map((player, index) => (
               <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-purple-200">
                 <h3 className="font-semibold text-gray-800 mb-4">
@@ -388,7 +389,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             ))}
 
             <Button
-              onClick={startGame}
+              onClick={startLevelSelection}
               disabled={!players.every(p => p.name && p.gender && p.orientation)}
               className="w-full btn-romantic flex items-center justify-center space-x-2"
             >
@@ -401,7 +402,31 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     );
   }
 
-  if (step === 'playing') {
+  if (step === 'level-select') {
+    const levels = [
+      {
+        id: 1 as GameLevel,
+        name: t.levelSelect.level1.name,
+        description: t.levelSelect.level1.description,
+        gradient: 'from-green-400 to-blue-500',
+        bgGradient: 'from-green-50 to-blue-50'
+      },
+      {
+        id: 2 as GameLevel,
+        name: t.levelSelect.level2.name,
+        description: t.levelSelect.level2.description,
+        gradient: 'from-orange-400 to-red-500',
+        bgGradient: 'from-orange-50 to-red-50'
+      },
+      {
+        id: 3 as GameLevel,
+        name: t.levelSelect.level3.name,
+        description: t.levelSelect.level3.description,
+        gradient: 'from-red-400 to-purple-500',
+        bgGradient: 'from-red-50 to-purple-50'
+      }
+    ];
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
         <div className="container mx-auto px-4 py-8 max-w-md">
@@ -414,106 +439,151 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
               <ArrowLeft className="w-5 h-5 mr-2" />
             </Button>
             <h2 className="font-playfair font-semibold text-lg text-gray-800">
-              {t.game.title}
+              {t.levelSelect.title}
             </h2>
             <div className="w-16"></div>
           </div>
 
-          <div className="space-y-6">
-            {/* Progress indicator */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 border border-purple-200">
-              <p className="text-sm text-gray-600 text-center">
-                {t.game.actionsCompleted.replace('{count}', completedActions.toString())}
-              </p>
-            </div>
+          <div className="space-y-4 mb-8">
+            {levels.map((level, index) => (
+              <button
+                key={level.id}
+                onClick={() => selectLevel(level.id)}
+                className={`game-card p-6 text-left bg-gradient-to-br ${level.bgGradient} hover:shadow-xl transition-all duration-300 group animate-fade-in w-full`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="flex items-start space-x-4">
+                  <div className={`p-3 rounded-full bg-gradient-to-r ${level.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <span className="text-white text-xl font-bold">{level.id}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-gray-900 transition-colors">
+                      {level.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {level.description}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
 
-            {/* Current Activity */}
-            <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 animate-scale-in">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4">
-                  <Play className="w-8 h-8 text-white" />
+          {currentLevel === 3 && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8">
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-red-800 mb-2">{t.levelSelect.warning}</h4>
+                  <p className="text-red-700 text-sm leading-relaxed">
+                    {t.levelSelect.warningText}
+                  </p>
                 </div>
               </div>
-              <p className="text-lg leading-relaxed text-gray-800 text-center font-medium mb-6">
-                {getCurrentActivity()}
-              </p>
-              <div className="flex space-x-3 mb-4">
-                <Button onClick={nextActivity} className="flex-1 btn-romantic">
-                  {t.game.nextActivity}
-                </Button>
-                <Button variant="outline" className="flex items-center space-x-2">
-                  <MessageCircle className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t.game.askAI}</span>
-                </Button>
-              </div>
-              
-              {/* End Game Button - appears after 5 actions */}
-              {completedActions >= 5 && (
-                <Button 
-                  onClick={endGame}
-                  variant="outline"
-                  className="w-full mt-4 border-rose-300 hover:bg-rose-50 text-rose-700"
-                >
-                  {t.game.endGame}
-                </Button>
-              )}
             </div>
-
-            {/* Feedback */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-purple-200">
-              <p className="text-sm text-gray-600 text-center">
-                💫 {t.game.enjoying}
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );
   }
 
-  if (step === 'celebration') {
+  if (step === 'playing') {
+    const currentActivity = availableActivities[currentActivityIndex];
+    const formattedText = currentActivity ? formatActivityText(currentActivity.text, currentPlayerSelection) : '';
+
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+        <div className="container mx-auto px-4 py-8 max-w-md">
+          <div className="flex items-center justify-between mb-8">
+            <Button
+              variant="ghost"
+              onClick={() => setStep('level-select')}
+              className="flex items-center text-gray-600 hover:text-gray-800"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+            </Button>
+            <div className="text-center">
+              <h2 className="font-playfair font-semibold text-lg text-gray-800">
+                Nível {currentLevel}
+              </h2>
+              <p className="text-xs text-gray-500">
+                {completedActivities} completadas
+              </p>
+            </div>
+            <div className="w-16"></div>
+          </div>
+
+          {currentActivity && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 animate-scale-in">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4">
+                    <Play className="w-8 h-8 text-white" />
+                  </div>
+                </div>
+                <p className="text-lg leading-relaxed text-gray-800 text-center font-medium mb-6">
+                  {formattedText}
+                </p>
+                <div className="flex space-x-3">
+                  <Button onClick={handleActivityComplete} className="flex-1 btn-romantic">
+                    {t.game.done}
+                  </Button>
+                  <Button onClick={skipActivity} variant="outline" className="flex-1">
+                    {t.game.skip}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 'level-complete') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
         <div className="container mx-auto px-4 py-8 max-w-md text-center">
           <div className="animate-scale-in">
-            <div className="text-8xl mb-6 animate-float">🎆</div>
-            <h1 className="text-4xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <div className="text-6xl mb-6 animate-float">🎉</div>
+            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               {t.celebration.title}
             </h1>
-            <p className="text-xl text-gray-700 mb-4 font-medium">
+            <p className="text-xl text-gray-700 mb-8 font-medium">
               {t.celebration.message}
             </p>
-            <p className="text-gray-600 mb-8 italic">
-              {t.celebration.subtitle}
-            </p>
-            <Button 
-              onClick={() => setStep('award')} 
-              className="btn-romantic text-lg px-8 py-4 h-auto"
-            >
-              {t.celebration.continue}
-            </Button>
+            
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-purple-200 mb-8">
+              <p className="text-lg text-gray-800 mb-4">
+                {t.game.nextLevel}
+              </p>
+              <div className="flex space-x-4">
+                <Button onClick={nextLevel} className="flex-1 btn-romantic">
+                  {t.game.yes}
+                </Button>
+                <Button onClick={continueCurrentLevel} variant="outline" className="flex-1">
+                  {t.game.no}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  if (step === 'award' && selectedBadge) {
-    const BadgeIcon = selectedBadge.icon;
+  if (step === 'game-complete' && selectedBadge) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
         <div className="container mx-auto px-4 py-8 max-w-md text-center">
           <div className="animate-scale-in">
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8">
               {t.award.title}
             </h1>
-            <p className="text-gray-600 mb-8">
-              {t.award.subtitle}
-            </p>
             
             <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 mb-8">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4 animate-float">
-                <BadgeIcon className="w-12 h-12 text-white" />
+              <div className="text-6xl mb-4 animate-float">
+                {selectedBadge.icon}
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
                 {selectedBadge.name}
@@ -523,17 +593,12 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
               </p>
             </div>
 
-            <div className="flex space-x-4">
-              <Button variant="outline" className="flex-1">
-                {t.award.saveShare}
-              </Button>
-              <Button 
-                onClick={() => setStep('feedback')} 
-                className="flex-1 btn-romantic"
-              >
-                {t.award.continue}
-              </Button>
-            </div>
+            <Button 
+              onClick={() => setStep('feedback')} 
+              className="btn-romantic text-lg px-8 py-4 h-auto"
+            >
+              {t.award.continue}
+            </Button>
           </div>
         </div>
       </div>
@@ -551,7 +616,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
           </div>
 
           <div className="bg-white rounded-xl p-6 shadow-lg border border-purple-200 space-y-6">
-            {/* Rating */}
             <div>
               <label className="block text-gray-700 font-medium mb-3">
                 {t.feedback.rating}
@@ -573,7 +637,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
               </div>
             </div>
 
-            {/* Favorite part */}
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 {t.feedback.favorite}
@@ -586,7 +649,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
               />
             </div>
 
-            {/* Suggestions */}
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 {t.feedback.suggestions}
@@ -599,7 +661,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
               />
             </div>
 
-            {/* Email */}
             <div>
               <label className="block text-gray-700 font-medium mb-2">
                 {t.feedback.email}
@@ -625,42 +686,35 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     );
   }
 
-  if (step === 'complete') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
-        <div className="container mx-auto px-4 py-8 max-w-md text-center">
-          <div className="animate-scale-in">
-            <div className="text-6xl mb-6">💖</div>
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-              {t.complete.title}
-            </h1>
-            <p className="text-gray-600 mb-8">
-              {t.complete.message}
-            </p>
-            
-            <div className="flex space-x-4">
-              <Button 
-                onClick={startNewGame}
-                className="flex-1 btn-romantic"
-              >
-                {t.complete.newGame}
-              </Button>
-              <Button 
-                onClick={onBack}
-                variant="outline"
-                className="flex-1"
-              >
-                {t.complete.exit}
-              </Button>
-            </div>
+  // Complete screen
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8 max-w-md text-center">
+        <div className="animate-scale-in">
+          <div className="text-6xl mb-6">💖</div>
+          <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            {t.complete.title}
+          </h1>
+          
+          <div className="flex space-x-4">
+            <Button 
+              onClick={restartGame}
+              className="flex-1 btn-romantic"
+            >
+              {t.complete.playAgain}
+            </Button>
+            <Button 
+              onClick={onBack}
+              variant="outline"
+              className="flex-1"
+            >
+              {t.complete.exit}
+            </Button>
           </div>
         </div>
       </div>
-    );
-  }
-
-  // Fallback
-  return null;
+    </div>
+  );
 };
 
 export default KingdomOfPleasure;
