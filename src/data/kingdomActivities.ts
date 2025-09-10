@@ -47,6 +47,32 @@ const translations = {
     'l2_2p_8': '[Player Z], quita lentamente una prenda de ropa del otro jugador sin usar las manos.',
     'l2_2p_9': '[Player Z], toma las manos del otro jugador y guíalas exactamente donde quieres ser tocado ahora mismo.',
     'l2_2p_10': '[Player Z], estimula al otro jugador usando tu boca y dedos simultáneamente.',
+    'l2_2p_11': '[Player Z], usa solo tu lengua para explorar íntimamente al otro jugador durante 3 minutos.',
+    'l2_2p_12': 'Alternen entre dar y recibir placer oral. Cambien cada 90 segundos.',
+    'l2_2p_13': '[Player Z], ata las manos del otro jugador y controla completamente su placer por 5 minutos.',
+    'l2_2p_14': 'Tengan sexo en una posición que nunca han probado antes.',
+    'l2_2p_15': '[Player Z], usa juguetes o objetos del hogar para estimular al otro jugador.',
+
+    'l2_3p_1': '[Player Z], venda los ojos de [Player X] mientras [Player Y] los observa y describe todo lo que ve.',
+    'l2_3p_2': '[Player Z] y [Player U], mastúrbense mientras [Player W] les da instrucciones explícitas.',
+    'l2_3p_3': '[Player X], párate desnudo en el centro. [Player Y] y [Player Z] pueden tocarte pero tú no puedes tocarlos.',
+    'l2_3p_4': '[Player Z], estimula a [Player X] con tu boca mientras [Player Y] usa sus manos en ti.',
+    'l2_3p_5': 'Formen una cadena de placer: cada persona estimula a la siguiente en línea.',
+    'l2_3p_6': '[Player X], elige quién de los otros dos debe desnudarse primero y cómo deben hacerlo.',
+    'l2_3p_7': 'Túrnense siendo el observador: uno mira mientras los otros dos se complacen mutuamente.',
+    'l2_3p_8': '[Player Z], usa tus manos en [Player X] mientras [Player Y] usa su boca en [Player Z].',
+    'l2_3p_9': 'Todos deben mantener contacto físico íntimo simultáneamente por 3 minutos.',
+    'l2_3p_10': '[Player X], da órdenes específicas a [Player Y] sobre cómo complacer a [Player Z].',
+
+    'l2_4p_1': 'Formen dos parejas. Una pareja se complace mientras la otra observa, luego cambien.',
+    'l2_4p_2': '[Player Z], elige dos personas para que te estimulen simultáneamente mientras la cuarta observa.',
+    'l2_4p_3': 'Cadena de caricias: cada persona toca íntimamente a la siguiente formando un círculo.',
+    'l2_4p_4': 'Una persona en el centro recibe atención de las otras tres por 2 minutos, luego roten.',
+    'l2_4p_5': 'Divídanse en parejas y tengan contacto íntimo mientras mantienen contacto visual con la otra pareja.',
+
+    'l2_5p_1': 'Una persona en el centro, las otras cuatro se turnan para darle placer de diferentes maneras.',
+    'l2_5p_2': 'Formen una estrella: todos conectados físicamente íntimamente al mismo tiempo.',
+    'l2_5p_3': '[Player Z], elige dos personas para estimularte mientras diriges a las otras dos en cómo complacerse.',
 
     // Level 3 - Exploration of Limits
     'l3_2p_1': 'Salgan y disfruten de una experiencia íntima en un lugar semi-público. Podría ser el baño de un bar, su jardín, su balcón, o un lugar apartado en el parque... cualquier lugar que los excite.',
@@ -54,7 +80,33 @@ const translations = {
     'l3_2p_3': 'Solo [Player Z] puede recibir placer. El otro lo da todo, sin ser tocado o tocarse a sí mismo.',
     'l3_2p_4': '[Player Z], solo puedes usar tu boca para dar placer a tu pareja durante los próximos 3 minutos. Sin manos, sin juguetes.',
     'l3_2p_5': '[Player Z], escribe 3 actos sexuales que nunca has probado. [Player U] mézclalos y elige uno al azar. [Player Z], hazlo inmediatamente.',
-    'l3_2p_6': 'Mantengan contacto sexual durante 3 minutos sin hacer ningún sonido. Si alguien gime o habla, deben detenerse.'
+    'l3_2p_6': 'Mantengan contacto sexual durante 3 minutos sin hacer ningún sonido. Si alguien gime o habla, deben detenerse.',
+    'l3_2p_7': '[Player Z], realiza un show erótico completo para tu pareja. Incluye baile, desnudez y auto-placer.',
+    'l3_2p_8': 'Simulen compartir a [Player Z] con una tercera persona imaginaria. Describan detalladamente lo que haría esa persona.',
+    'l3_2p_9': '[Player Z], venda tus ojos y permite que tu pareja haga contigo lo que desee por 5 minutos.',
+    'l3_2p_10': 'Graben un video íntimo de ustedes mismos (solo para verlo juntos después).',
+    'l3_2p_11': '[Player Z], actúa como si fueras completamente sumiso. Tu pareja tiene control total.',
+    'l3_2p_12': 'Tengan una experiencia sexual completa en un lugar donde podrían ser descubiertos.',
+
+    'l3_3p_1': '[Player Z], realiza un show de desnudez y masturbación para los otros dos mientras ellos no pueden tocarte.',
+    'l3_3p_2': 'Simulen un encuentro con una pareja externa. [Player X] actúa como la pareja mientras [Player Y] y [Player Z] lo comparten.',
+    'l3_3p_3': '[Player Z], venda tus ojos y permite que los otros dos hagan contigo lo que deseen por 5 minutos.',
+    'l3_3p_4': 'Una persona debe complacer completamente a las otras dos simultáneamente usando solo su boca y manos.',
+    'l3_3p_5': 'Todos deben estar desnudos y tener contacto sexual simultáneo en diferentes combinaciones por 5 minutos.',
+    'l3_3p_6': '[Player X], eres el director. Ordena exactamente cómo [Player Y] y [Player Z] deben complacerse mutuamente.',
+    'l3_3p_7': 'Graben un video íntimo de los tres juntos (solo para verlo después entre ustedes).',
+    'l3_3p_8': 'Simulen ser observados por otros mientras tienen un encuentro íntimo triple.',
+
+    'l3_4p_1': 'Una persona realiza un show erótico completo para las otras tres, incluyendo masturbación.',
+    'l3_4p_2': 'Simulen un intercambio de parejas: dos personas actúan como observadores externos mientras las otras dos se complacen.',
+    'l3_4p_3': 'Todos deben estar conectados físicamente de manera íntima simultáneamente formando una cadena.',
+    'l3_4p_4': '[Player Z], tienes control total sobre las otras tres personas. Diriges exactamente qué hace cada una.',
+    'l3_4p_5': 'Una persona en el centro es complacida por las otras tres de diferentes maneras simultáneamente.',
+
+    'l3_5p_1': 'Una persona debe complacer a todas las demás en secuencia mientras las otras observan.',
+    'l3_5p_2': 'Simulen una orgía completa: todos conectados íntimamente de alguna manera simultáneamente.',
+    'l3_5p_3': '[Player Z] es el centro de atención: las otras cuatro personas deben satisfacer todos sus deseos.',
+    'l3_5p_4': 'Divídanse en grupos y simulen intercambio de parejas mientras se observan mutuamente.'
   },
   pt: {
     // Level 1 - Sensual Warm-up
@@ -101,6 +153,32 @@ const translations = {
     'l2_2p_8': '[Player Z], remova lentamente uma peça de roupa do outro jogador sem usar as mãos.',
     'l2_2p_9': '[Player Z], pegue as mãos do outro jogador e guie-as exatamente onde você quer ser tocado agora.',
     'l2_2p_10': '[Player Z], estimule o outro jogador usando sua boca e dedos simultaneamente.',
+    'l2_2p_11': '[Player Z], use apenas sua língua para explorar intimamente o outro jogador por 3 minutos.',
+    'l2_2p_12': 'Alternem entre dar e receber prazer oral. Mudem a cada 90 segundos.',
+    'l2_2p_13': '[Player Z], amarre as mãos do outro jogador e controle completamente seu prazer por 5 minutos.',
+    'l2_2p_14': 'Façam sexo em uma posição que nunca experimentaram antes.',
+    'l2_2p_15': '[Player Z], use brinquedos ou objetos da casa para estimular o outro jogador.',
+
+    'l2_3p_1': '[Player Z], vende os olhos de [Player X] enquanto [Player Y] observa e descreve tudo que vê.',
+    'l2_3p_2': '[Player Z] e [Player U], masturbem-se enquanto [Player W] dá instruções explícitas.',
+    'l2_3p_3': '[Player X], fique nu no centro. [Player Y] e [Player Z] podem te tocar mas você não pode tocá-los.',
+    'l2_3p_4': '[Player Z], estimule [Player X] com sua boca enquanto [Player Y] usa as mãos em você.',
+    'l2_3p_5': 'Formem uma corrente de prazer: cada pessoa estimula a próxima em linha.',
+    'l2_3p_6': '[Player X], escolha quem dos outros dois deve se despir primeiro e como devem fazê-lo.',
+    'l2_3p_7': 'Alternem sendo o observador: um assiste enquanto os outros dois se satisfazem mutuamente.',
+    'l2_3p_8': '[Player Z], use suas mãos em [Player X] enquanto [Player Y] usa a boca em [Player Z].',
+    'l2_3p_9': 'Todos devem manter contato físico íntimo simultaneamente por 3 minutos.',
+    'l2_3p_10': '[Player X], dê ordens específicas a [Player Y] sobre como satisfazer [Player Z].',
+
+    'l2_4p_1': 'Formem dois casais. Um casal se satisfaz enquanto o outro observa, depois troquem.',
+    'l2_4p_2': '[Player Z], escolha duas pessoas para te estimularem simultaneamente enquanto a quarta observa.',
+    'l2_4p_3': 'Corrente de carícias: cada pessoa toca intimamente a próxima formando um círculo.',
+    'l2_4p_4': 'Uma pessoa no centro recebe atenção das outras três por 2 minutos, depois rodem.',
+    'l2_4p_5': 'Dividam-se em casais e tenham contato íntimo mantendo contato visual com o outro casal.',
+
+    'l2_5p_1': 'Uma pessoa no centro, as outras quatro se alternam para dar prazer de diferentes formas.',
+    'l2_5p_2': 'Formem uma estrela: todos conectados fisicamente intimamente ao mesmo tempo.',
+    'l2_5p_3': '[Player Z], escolha duas pessoas para te estimular enquanto dirige as outras duas em como se satisfazer.',
 
     // Level 3 - Exploration of Limits
     'l3_2p_1': 'Saiam e desfrutem de uma experiência íntima em um local semi-público. Pode ser o banheiro de um bar, seu jardim, sua varanda, ou um local isolado no parque... qualquer lugar que os excite.',
@@ -108,7 +186,33 @@ const translations = {
     'l3_2p_3': 'Apenas [Player Z] pode receber prazer. O outro dá tudo, sem ser tocado ou se tocar.',
     'l3_2p_4': '[Player Z], você só pode usar sua boca para dar prazer ao seu parceiro pelos próximos 3 minutos. Sem mãos, sem brinquedos.',
     'l3_2p_5': '[Player Z], escreva 3 atos sexuais que nunca experimentou. [Player U] embaralhe-os e escolha um aleatoriamente. [Player Z], faça-o imediatamente.',
-    'l3_2p_6': 'Mantenham contato sexual por 3 minutos sem fazer nenhum som. Se alguém gemer ou falar, vocês devem parar.'
+    'l3_2p_6': 'Mantenham contato sexual por 3 minutos sem fazer nenhum som. Se alguém gemer ou falar, vocês devem parar.',
+    'l3_2p_7': '[Player Z], realize um show erótico completo para seu parceiro. Inclua dança, nudez e auto-prazer.',
+    'l3_2p_8': 'Simulem compartilhar [Player Z] com uma terceira pessoa imaginária. Descrevam detalhadamente o que essa pessoa faria.',
+    'l3_2p_9': '[Player Z], vende seus olhos e permita que seu parceiro faça com você o que desejar por 5 minutos.',
+    'l3_2p_10': 'Gravem um vídeo íntimo de vocês mesmos (apenas para assistirem juntos depois).',
+    'l3_2p_11': '[Player Z], aja como se fosse completamente submisso. Seu parceiro tem controle total.',
+    'l3_2p_12': 'Tenham uma experiência sexual completa em um lugar onde poderiam ser descobertos.',
+
+    'l3_3p_1': '[Player Z], realize um show de nudez e masturbação para os outros dois enquanto eles não podem te tocar.',
+    'l3_3p_2': 'Simulem um encontro com um casal externo. [Player X] atua como o casal enquanto [Player Y] e [Player Z] o compartilham.',
+    'l3_3p_3': '[Player Z], vende seus olhos e permita que os outros dois façam com você o que desejarem por 5 minutos.',
+    'l3_3p_4': 'Uma pessoa deve satisfazer completamente as outras duas simultaneamente usando apenas sua boca e mãos.',
+    'l3_3p_5': 'Todos devem estar nus e ter contato sexual simultâneo em diferentes combinações por 5 minutos.',
+    'l3_3p_6': '[Player X], você é o diretor. Ordene exatamente como [Player Y] e [Player Z] devem se satisfazer mutuamente.',
+    'l3_3p_7': 'Gravem um vídeo íntimo dos três juntos (apenas para assistir depois entre vocês).',
+    'l3_3p_8': 'Simulem ser observados por outros enquanto têm um encontro íntimo triplo.',
+
+    'l3_4p_1': 'Uma pessoa realiza um show erótico completo para as outras três, incluindo masturbação.',
+    'l3_4p_2': 'Simulem uma troca de casais: duas pessoas atuam como observadores externos enquanto as outras duas se satisfazem.',
+    'l3_4p_3': 'Todos devem estar conectados fisicamente de maneira íntima simultaneamente formando uma corrente.',
+    'l3_4p_4': '[Player Z], você tem controle total sobre as outras três pessoas. Dirige exatamente o que cada uma faz.',
+    'l3_4p_5': 'Uma pessoa no centro é satisfeita pelas outras três de diferentes maneiras simultaneamente.',
+
+    'l3_5p_1': 'Uma pessoa deve satisfazer todas as outras em sequência enquanto as outras assistem.',
+    'l3_5p_2': 'Simulem uma orgia completa: todos conectados intimamente de alguma forma simultaneamente.',
+    'l3_5p_3': '[Player Z] é o centro das atenções: as outras quatro pessoas devem satisfazer todos os seus desejos.',
+    'l3_5p_4': 'Dividam-se em grupos e simulem troca de casais enquanto se observam mutuamente.'
   }
 };
 
@@ -398,6 +502,173 @@ export const activities: Activity[] = [
     maxPlayers: 2,
     placeholders: ['Player Z']
   },
+  {
+    id: 'l2_2p_11',
+    level: 2,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l2_2p_12',
+    level: 2,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: []
+  },
+  {
+    id: 'l2_2p_13',
+    level: 2,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l2_2p_14',
+    level: 2,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: []
+  },
+  {
+    id: 'l2_2p_15',
+    level: 2,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+
+  // Level 2 - Playful Challenges (3 players)
+  {
+    id: 'l2_3p_1',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player Z', 'Player X', 'Player Y']
+  },
+  {
+    id: 'l2_3p_2',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player Z', 'Player U', 'Player W']
+  },
+  {
+    id: 'l2_3p_3',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player X', 'Player Y', 'Player Z']
+  },
+  {
+    id: 'l2_3p_4',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player Z', 'Player X', 'Player Y']
+  },
+  {
+    id: 'l2_3p_5',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+  {
+    id: 'l2_3p_6',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player X']
+  },
+  {
+    id: 'l2_3p_7',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+  {
+    id: 'l2_3p_8',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player Z', 'Player X', 'Player Y']
+  },
+  {
+    id: 'l2_3p_9',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+  {
+    id: 'l2_3p_10',
+    level: 2,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player X', 'Player Y', 'Player Z']
+  },
+
+  // Level 2 - Playful Challenges (4 players)
+  {
+    id: 'l2_4p_1',
+    level: 2,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l2_4p_2',
+    level: 2,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l2_4p_3',
+    level: 2,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l2_4p_4',
+    level: 2,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l2_4p_5',
+    level: 2,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+
+  // Level 2 - Playful Challenges (5+ players)
+  {
+    id: 'l2_5p_1',
+    level: 2,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: []
+  },
+  {
+    id: 'l2_5p_2',
+    level: 2,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: []
+  },
+  {
+    id: 'l2_5p_3',
+    level: 2,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z']
+  },
 
   // Level 3 - Exploration of Limits (2 players)
   {
@@ -440,6 +711,173 @@ export const activities: Activity[] = [
     level: 3,
     minPlayers: 2,
     maxPlayers: 2,
+    placeholders: []
+  },
+  {
+    id: 'l3_2p_7',
+    level: 3,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_2p_8',
+    level: 3,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_2p_9',
+    level: 3,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_2p_10',
+    level: 3,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: []
+  },
+  {
+    id: 'l3_2p_11',
+    level: 3,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_2p_12',
+    level: 3,
+    minPlayers: 2,
+    maxPlayers: 2,
+    placeholders: []
+  },
+
+  // Level 3 - Exploration of Limits (3 players)
+  {
+    id: 'l3_3p_1',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_3p_2',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player X', 'Player Y', 'Player Z']
+  },
+  {
+    id: 'l3_3p_3',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_3p_4',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+  {
+    id: 'l3_3p_5',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+  {
+    id: 'l3_3p_6',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: ['Player X', 'Player Y', 'Player Z']
+  },
+  {
+    id: 'l3_3p_7',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+  {
+    id: 'l3_3p_8',
+    level: 3,
+    minPlayers: 3,
+    maxPlayers: 3,
+    placeholders: []
+  },
+
+  // Level 3 - Exploration of Limits (4 players)
+  {
+    id: 'l3_4p_1',
+    level: 3,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l3_4p_2',
+    level: 3,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l3_4p_3',
+    level: 3,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l3_4p_4',
+    level: 3,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_4p_5',
+    level: 3,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+
+  // Level 3 - Exploration of Limits (5+ players)
+  {
+    id: 'l3_5p_1',
+    level: 3,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: []
+  },
+  {
+    id: 'l3_5p_2',
+    level: 3,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: []
+  },
+  {
+    id: 'l3_5p_3',
+    level: 3,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l3_5p_4',
+    level: 3,
+    minPlayers: 5,
+    maxPlayers: 10,
     placeholders: []
   }
 ];
