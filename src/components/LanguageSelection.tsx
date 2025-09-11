@@ -25,25 +25,34 @@ const LanguageSelection = ({
           </div>
           
           <div className="space-y-4">
-            <Button onClick={() => onSelectLanguage('en')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
-              <span className="text-2xl">🇺🇸</span>
-              <span>English</span>
-            </Button>
-            
-            <Button onClick={() => onSelectLanguage('es')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
-              <span className="text-2xl">🇪🇸</span>
-              <span>Español</span>
-            </Button>
-            
-            <Button onClick={() => onSelectLanguage('pt')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
-              <span className="text-2xl">🇧🇷</span>
-              <span>Português</span>
-            </Button>
+          <Button
+            onClick={() => onSelectLanguage('en')} 
+            className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3"
+          >
+            <span className="text-2xl">🇺🇸</span>
+            <span>English</span>
+          </Button>
+          
+          <Button 
+            onClick={() => onSelectLanguage('es')} 
+            className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3"
+          >
+            <span className="text-2xl">🇪🇸</span>
+            <span>Español</span>
+          </Button>
+          
+          <Button 
+            onClick={() => onSelectLanguage('pt')} 
+            className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3"
+          >
+            <span className="text-2xl">🇧🇷</span>
+            <span>Português</span>
+          </Button>
           </div>
         </div>
 
         <p className="text-xs text-gray-500">
-          For adults 18+ only / Solo para adultos mayores de 18 años
+          For adults 18+ only / Solo para adultos mayores de 18 años / Somente para adultos com mais de 18 anos
         </p>
       </div>
     </div>;

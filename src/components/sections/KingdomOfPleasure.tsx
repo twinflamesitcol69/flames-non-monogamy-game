@@ -7,7 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Player, GameLevel, GameStep, PlayerSelection } from '@/types/kingdom';
 import { activities } from '@/data/kingdomActivities';
 import { badges } from '@/data/kingdomBadges';
-import { selectPlayersForActivity, formatActivityText } from '@/utils/playerSelection';
+import { selectPlayersForActivity, formatActivityText, requiresConsent } from '@/utils/playerSelection';
+import ConsentModal from '@/components/ConsentModal';
 
 interface KingdomOfPleasureProps {
   language: 'pt' | 'es' | 'en';
@@ -24,6 +25,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   const [availableActivities, setAvailableActivities] = useState<typeof activities>([]);
   const [currentPlayerSelection, setCurrentPlayerSelection] = useState<PlayerSelection>({});
   const [selectedBadge, setSelectedBadge] = useState<typeof badges[0] | null>(null);
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [pendingPlayers, setPendingPlayers] = useState<[Player, Player] | null>(null);
   const [feedback, setFeedback] = useState({
     rating: 0,
     favorite: '',
@@ -210,10 +213,82 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     setStep('setup');
   };
 
+  const nextActivity = () => {
+    if (availableActivities.length === 0) return;
+    
+    const activity = availableActivities[currentActivityIndex];
+    
+    // Check if consent is needed for heteroflexible matches
+    if (players.length === 2) {
+      const [player1, player2] = players;
+      if (requiresConsent(player1, player2)) {
+        setPendingPlayers([player1, player2]);
+        setShowConsentModal(true);
+        return;
+      }
+    }
+    
+    const selection = selectPlayersForActivity(players, activity);
+    setCurrentPlayerSelection(selection);
+    setCompletedActivities(prev => prev + 1);
+    
+    if (currentActivityIndex < availableActivities.length - 1) {
+      setCurrentActivityIndex(prev => prev + 1);
+    } else {
+      completeLevel();
+    }
+  };
+
+  const completeLevel = () => {
+    if (currentLevel === 3) {
+      const randomBadge = badges[Math.floor(Math.random() * badges.length)];
+      setSelectedBadge(randomBadge);
+      setStep('game-complete');
+    } else {
+      setStep('level-complete');
+    }
+  };
+
   const updatePlayer = (index: number, field: keyof Player, value: string) => {
     const updatedPlayers = [...players];
     updatedPlayers[index] = { ...updatedPlayers[index], [field]: value };
     setPlayers(updatedPlayers);
+  };
+
+  const handleConsentConfirm = () => {
+    setShowConsentModal(false);
+    if (availableActivities.length > 0) {
+      const activity = availableActivities[currentActivityIndex];
+      const selection = selectPlayersForActivity(players, activity);
+      setCurrentPlayerSelection(selection);
+      setCompletedActivities(prev => prev + 1);
+      
+      if (currentActivityIndex < availableActivities.length - 1) {
+        setCurrentActivityIndex(prev => prev + 1);
+      } else {
+        completeLevel();
+      }
+    }
+    setPendingPlayers(null);
+  };
+
+  const handleConsentReject = () => {
+    setShowConsentModal(false);
+    setTimeout(() => {
+      if (availableActivities.length > 0) {
+        const activity = availableActivities[currentActivityIndex];
+        const selection = selectPlayersForActivity(players, activity);
+        setCurrentPlayerSelection(selection);
+        setCompletedActivities(prev => prev + 1);
+        
+        if (currentActivityIndex < availableActivities.length - 1) {
+          setCurrentActivityIndex(prev => prev + 1);
+        } else {
+          completeLevel();
+        }
+      }
+    }, 100);
+    setPendingPlayers(null);
   };
 
   const startLevelSelection = () => {
@@ -713,6 +788,13 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
           </div>
         </div>
       </div>
+
+      <ConsentModal
+        isOpen={showConsentModal}
+        onConfirm={handleConsentConfirm}
+        onReject={handleConsentReject}
+        language={language}
+      />
     </div>
   );
 };
