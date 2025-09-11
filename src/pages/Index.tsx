@@ -6,13 +6,13 @@ import MainSections from '@/components/MainSections';
 
 const Index = () => {
   const [currentScreen, setCurrentScreen] = useState<'welcome' | 'language' | 'main'>('welcome');
-  const [selectedLanguage, setSelectedLanguage] = useState<'pt' | 'es' | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<'pt' | 'es' | 'en' | null>(null);
 
   const handleStartFromWelcome = () => {
     setCurrentScreen('language');
   };
 
-  const handleLanguageSelect = (language: 'pt' | 'es') => {
+  const handleLanguageSelect = (language: 'pt' | 'es' | 'en') => {
     setSelectedLanguage(language);
     setCurrentScreen('main');
   };

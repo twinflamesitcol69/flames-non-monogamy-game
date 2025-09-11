@@ -7,7 +7,7 @@ import HookUp from './sections/HookUp';
 import KingdomOfPleasure from './sections/KingdomOfPleasure';
 
 interface MainSectionsProps {
-  language: 'pt' | 'es';
+  language: 'pt' | 'es' | 'en';
   onBack: () => void;
 }
 
@@ -48,6 +48,23 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
         description: 'Juegos eróticos interactivos y personalizados'
       },
       back: 'Volver'
+    },
+    en: {
+      title: 'Explore Your Journey',
+      subtitle: 'Choose your area of interest',
+      confidence: {
+        title: 'Gaining Confidence',
+        description: 'Education and self-confidence about ethical non-monogamy'
+      },
+      hookup: {
+        title: 'Hook Up',
+        description: 'Practical techniques for real connections'
+      },
+      kingdom: {
+        title: 'Kingdom of Pleasure',
+        description: 'Interactive and personalized erotic games'
+      },
+      back: 'Back'
     }
   };
 
@@ -83,16 +100,8 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
       gradient: 'from-blue-400 to-purple-500',
       bgGradient: 'from-blue-50 to-purple-50',
       featured: false
-    },
-    {
-      id: 'hookup',
-      title: t.hookup.title,
-      description: t.hookup.description,
-      icon: Target,
-      gradient: 'from-red-400 to-rose-500',
-      bgGradient: 'from-red-50 to-rose-50',
-      featured: false
     }
+    // Hook Up section hidden from published build
   ];
 
   return (

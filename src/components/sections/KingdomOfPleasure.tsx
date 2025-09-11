@@ -10,7 +10,7 @@ import { badges } from '@/data/kingdomBadges';
 import { selectPlayersForActivity, formatActivityText } from '@/utils/playerSelection';
 
 interface KingdomOfPleasureProps {
-  language: 'pt' | 'es';
+  language: 'pt' | 'es' | 'en';
   onBack: () => void;
 }
 
@@ -140,9 +140,10 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         },
         orientations: {
           heterosexual: 'Heterosexual',
-          homosexual: 'Homosexual',
+          homosexual: 'Homosexual', 
           bisexual: 'Bisexual',
-          queer: 'Queer'
+          queer: 'Queer',
+          heteroflexible: 'Heteroflexível'
         },
         startGame: 'Comenzar el Juego'
       },
@@ -369,7 +370,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(t.setup.genders).map(([key, label]) => (
-                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                        <SelectItem key={key} value={key}>{label as string}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -379,7 +380,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(t.setup.orientations).map(([key, label]) => (
-                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                        <SelectItem key={key} value={key}>{label as string}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>

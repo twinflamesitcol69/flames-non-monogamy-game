@@ -2,7 +2,7 @@
 export interface Player {
   name: string;
   gender: 'male' | 'female' | 'nonbinary';
-  orientation: 'heterosexual' | 'homosexual' | 'bisexual' | 'queer';
+  orientation: 'heterosexual' | 'homosexual' | 'bisexual' | 'queer' | 'heteroflexible';
 }
 
 export interface Activity {

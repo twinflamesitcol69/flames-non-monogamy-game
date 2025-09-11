@@ -213,6 +213,90 @@ const translations = {
     'l3_5p_2': 'Simulem uma orgia completa: todos conectados intimamente de alguma forma simultaneamente.',
     'l3_5p_3': '[Player Z] é o centro das atenções: as outras quatro pessoas devem satisfazer todos os seus desejos.',
     'l3_5p_4': 'Dividam-se em grupos e simulem troca de casais enquanto se observam mutuamente.'
+  },
+  en: {
+    // Level 1 - Sensual Warm-up
+    'l1_2p_1': '[Player Z], openly describe a new boundary you would like to try tonight. Discuss together if you both feel comfortable exploring it right now.',
+    'l1_2p_2': '[Player Z], explicitly describe your deepest non-monogamous fantasy involving the other player.',
+    'l1_2p_3': '[Player Z], narrate an explicit scenario involving a taboo fantasy you have kept secret.',
+    'l1_2p_4': '[Player Z] choose a player, blindfold them and ask them to kneel. Then explore their body freely for 5 minutes. You can use any nearby object.',
+    'l1_2p_5': '[Player Z], open your mouth and close your eyes. The other player puts something inside (not necessarily edible) and makes you guess what it is while you suck.',
+    'l1_2p_6': '[Player Z], order another player to undress completely. Choose the most exposed position possible and make them hold it for 60 seconds.',
+    'l1_2p_7': '[Player X] use lipstick, hickeys or a cold object to leave a visible mark on the other player\'s body.',
+    'l1_2p_8': '[Player Z], approach and whisper your most secret fantasy involving another player directly in their ear.',
+    'l1_2p_9': '[Player Z], slowly trace a finger over every part of the body you want to explore.',
+    'l1_2p_10': 'Both players, breathe deeply together, synchronizing your breathing until you feel perfectly connected.',
+    'l1_2p_11': '[Player Z], blindfold your partner. Then describe three sexy things you noticed about them tonight.',
+    'l1_2p_12': '[Player Z], give soft kisses on your partner\'s neck, stopping just before it becomes too intense.',
+    'l1_2p_13': 'Look into each other\'s eyes in silence for 30 seconds, then say exactly what you want to do next.',
+    'l1_2p_14': '[Player X], perform a brief, slow and sensual dance, maintaining intense eye contact.',
+    'l1_2p_15': 'Take turns exploring sensitive spots on each other\'s bodies.',
+    'l1_2p_16': 'Cheers! Take a shot of rum or any liquor you like!',
+
+    'l1_3p_1': '[Player Z], explicitly describe your deepest non-monogamous fantasy involving the players.',
+    'l1_3p_2': '[Player Z], narrate an explicit scenario involving a taboo fantasy you have kept secret.',
+    'l1_3p_3': '[Player X], put on a blindfold and kneel. [Player Y], explore [Player X]\'s body freely for 5 minutes. You can use any nearby object.',
+    'l1_3p_4': '[Player Z], open your mouth and close your eyes. [Player U], put something inside (not necessarily edible) and make them guess what it is while they suck.',
+    'l1_3p_5': '[Player X], order [Player Z] and [Player U] to undress completely. Choose the most exposed position possible and make them hold it for 60 seconds.',
+    'l1_3p_6': '[Player X] use lipstick, hickeys or a cold object to leave a visible mark on [Player Y]\'s body.',
+    'l1_3p_7': '[Player X], approach and whisper your most secret fantasy involving [Player Z] directly in their ear.',
+    'l1_3p_8': '[Player Z], slowly trace a finger over every part of [Player U]\'s body you want to explore, with the other partner watching.',
+    'l1_3p_9': '[Player Z], blindfold them. [Player U], describe three sexy things you noticed about [Player Z] tonight.',
+    'l1_3p_10': '[Player Y], give [Player X] soft kisses on their neck, stopping just before it becomes too intense.',
+    'l1_3p_11': '[Player X] and [Player Y], look into each other\'s eyes in silence for 30 seconds, then say exactly what you want to do next.',
+    'l1_3p_12': '[Player X], perform a brief, slow and sensual dance, maintaining intense eye contact.',
+    'l1_3p_13': 'Take turns exploring sensitive spots on each other\'s bodies.',
+    'l1_3p_14': 'Cheers! Take a shot of rum or any liquor you like!',
+
+    // Level 2 - Playful Challenges  
+    'l2_2p_1': '[Player Z], blindfold the other player and use your body to excite them.',
+    'l2_2p_2': '[Player Z] and [Player U], masturbate openly while looking at each other.',
+    'l2_2p_3': '[Player Z], stand completely naked in front of your partner. Masturbate slowly while they watch without touching you.',
+    'l2_2p_4': '[Player Z], stay still. [Player U], use only your mouth to bring them as close to orgasm as possible, then stop just before climax.',
+    'l2_2p_5': 'Masturbate at the same time. Both must stop every time one of you gets close to orgasm.',
+    'l2_2p_6': '[Player Z], lick every inch of [Player U]\'s body from toes to forehead.',
+    'l2_2p_7': '[Player X], sit with legs wide open and hands behind your head. Let yourself be looked at and touched everywhere without moving.',
+    'l2_2p_8': '[Player Z], slowly remove a piece of clothing from the other player without using your hands.',
+    'l2_2p_9': '[Player Z], take the other player\'s hands and guide them exactly where you want to be touched right now.',
+    'l2_2p_10': '[Player Z], stimulate the other player using your mouth and fingers simultaneously.',
+    'l2_2p_11': '[Player Z], use only your tongue to intimately explore the other player for 3 minutes.',
+    'l2_2p_12': '[Player Z], you can only use your mouth to give pleasure to the other player.',
+
+    'l2_3p_1': '[Player Z], blindfold the other two players and use your body to excite them both simultaneously.',
+    'l2_3p_2': '[Player Z] and [Player U], masturbate openly while [Player W] watches and directs what they want to see.',
+    'l2_3p_3': '[Player Z], stand completely naked in the center. The other two players masturbate while watching you without touching you.',
+    'l2_3p_4': '[Player Z], stay still. [Player U] and [Player W], use only your mouths to bring them as close to orgasm as possible, then stop just before climax.',
+    'l2_3p_5': 'All masturbate at the same time. Everyone must stop every time someone gets close to orgasm.',
+    'l2_3p_6': '[Player Z], while [Player U] licks every inch of your body, [Player W] must watch and describe what they see.',
+    'l2_3p_7': '[Player X], sit with legs wide open and hands behind your head. Let the other two look at and touch you everywhere without moving.',
+    'l2_3p_8': '[Player Z], slowly remove clothing from [Player U] without using your hands while [Player W] watches.',
+
+    // Level 3 - Exploration of Limits
+    'l3_2p_1': '[Player Z], perform a complete nude show for the other player who can only watch.',
+    'l3_2p_2': 'Simulate sharing [Player Z] with an imaginary third person. Describe what each would do.',
+    'l3_2p_3': '[Player Z], you must submit completely to [Player U] for the next 10 minutes. They have total control.',
+    'l3_2p_4': 'Simulate a complete threesome scene with an imaginary person. Act out all the positions.',
+    'l3_2p_5': '[Player Z] and [Player U], simulate passionate sex in different positions for [imaginary audience].',
+    'l3_2p_6': 'Simulate a swinging scenario where you exchange partners with imaginary couples.',
+    'l3_2p_7': '[Player Z], you are the center of attention in an imaginary orgy. Describe what everyone would do to you.',
+    'l3_2p_8': '[Player Z], simulate being dominated by multiple imaginary partners while your partner watches.',
+
+    'l3_3p_1': '[Player Z], perform a complete nude show for the other two players who can only watch.',
+    'l3_3p_2': 'Simulate sharing one player with the group. Decide who and describe what each would do.',
+    'l3_3p_3': '[Player Z], you must submit completely to the other two for the next 10 minutes. They have total control.',
+    'l3_3p_4': 'Simulate a complete threesome scene with all three participating actively.',
+    'l3_3p_5': 'All three must be physically connected intimately simultaneously in some way.',
+
+    'l3_4p_1': 'One person must please all others in sequence while the others watch.',
+    'l3_4p_2': 'Simulate a complete orgy: everyone intimately connected in some way simultaneously.',
+    'l3_4p_3': 'Everyone must be physically connected intimately simultaneously forming a chain.',
+    'l3_4p_4': '[Player Z], you have total control over the other three people. You direct exactly what each one does.',
+    'l3_4p_5': 'One person in the center is pleased by the other three in different ways simultaneously.',
+
+    'l3_5p_1': 'One person must please everyone else in sequence while the others watch.',
+    'l3_5p_2': 'Simulate a complete orgy: everyone intimately connected in some way simultaneously.',
+    'l3_5p_3': '[Player Z] is the center of attention: the other four people must satisfy all your desires.',
+    'l3_5p_4': 'Split into groups and simulate partner swapping while watching each other.'
   }
 };
 
@@ -882,6 +966,6 @@ export const activities: Activity[] = [
   }
 ];
 
-export function getActivityText(activityId: string, language: 'es' | 'pt'): string {
+export function getActivityText(activityId: string, language: 'es' | 'pt' | 'en'): string {
   return translations[language][activityId] || activityId;
 }

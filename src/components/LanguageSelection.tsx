@@ -1,7 +1,7 @@
 import { Globe, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 interface LanguageSelectionProps {
-  onSelectLanguage: (language: 'pt' | 'es') => void;
+  onSelectLanguage: (language: 'pt' | 'es' | 'en') => void;
 }
 const LanguageSelection = ({
   onSelectLanguage
@@ -25,14 +25,19 @@ const LanguageSelection = ({
           </div>
           
           <div className="space-y-4">
-            <Button onClick={() => onSelectLanguage('pt')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
-              <span className="text-2xl">🇧🇷</span>
-              <span>Português</span>
+            <Button onClick={() => onSelectLanguage('en')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
+              <span className="text-2xl">🇺🇸</span>
+              <span>English</span>
             </Button>
             
             <Button onClick={() => onSelectLanguage('es')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
               <span className="text-2xl">🇪🇸</span>
               <span>Español</span>
+            </Button>
+            
+            <Button onClick={() => onSelectLanguage('pt')} className="w-full btn-romantic text-lg px-8 py-6 h-auto flex items-center justify-center space-x-3">
+              <span className="text-2xl">🇧🇷</span>
+              <span>Português</span>
             </Button>
           </div>
         </div>

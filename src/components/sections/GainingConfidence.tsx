@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 interface GainingConfidenceProps {
-  language: 'pt' | 'es';
+  language: 'pt' | 'es' | 'en';
   onBack: () => void;
 }
 
@@ -49,6 +49,24 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
         '¿Es normal sentir celos aun eligiendo la no-monogamia?',
         '¿Cuáles son los diferentes tipos de relaciones no-monógamas?',
         '¿Cómo establecer reglas y límites saludables?'
+      ]
+    },
+    en: {
+      title: 'Gaining Confidence',
+      subtitle: 'Education about ethical non-monogamy',
+      placeholder: 'Ask your question about ethical non-monogamy...',
+      askButton: 'Ask AI',
+      topics: {
+        basics: 'Non-Monogamy Basics',
+        jealousy: 'Managing Jealousy',
+        communication: 'Effective Communication',
+        boundaries: 'Setting Boundaries'
+      },
+      examples: [
+        'How to start a conversation about non-monogamy with my partner?',
+        'Is it normal to feel jealous even when choosing non-monogamy?',
+        'What are the different types of non-monogamous relationships?',
+        'How to establish healthy rules and boundaries?'
       ]
     }
   };
@@ -105,7 +123,7 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
               >
                 <div className="flex items-center space-x-2 mb-2">
                   <Book className="w-4 h-4 text-purple-500" />
-                  <span className="text-sm font-medium text-gray-800">{topic}</span>
+                  <span className="text-sm font-medium text-gray-800">{topic as string}</span>
                 </div>
               </button>
             ))}

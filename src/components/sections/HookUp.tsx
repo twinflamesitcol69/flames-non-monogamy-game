@@ -4,7 +4,7 @@ import { ArrowLeft, Users, Heart, Sparkles, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface HookUpProps {
-  language: 'pt' | 'es';
+  language: 'pt' | 'es' | 'en';
   onBack: () => void;
 }
 
@@ -154,7 +154,7 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
                     : 'border-gray-200 bg-white hover:border-red-300'
                 }`}
               >
-                <span className="font-medium text-gray-800">{label}</span>
+              <span className="font-medium text-gray-800">{label as string}</span>
               </button>
             ))}
           </div>
@@ -175,7 +175,7 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
                       : 'border-gray-200 bg-white hover:border-rose-300'
                   }`}
                 >
-                  <span className="font-medium text-gray-800">{label}</span>
+                  <span className="font-medium text-gray-800">{label as string}</span>
                 </button>
               ))}
             </div>
