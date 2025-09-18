@@ -198,6 +198,78 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         playAgain: 'Jugar de Nuevo',
         exit: 'Salir'
       }
+    },
+    en: {
+      title: 'Welcome to Your Kingdom of Pleasure',
+      subtitle: 'Prepare to surrender to a night of tailored erotic adventures. Let the pleasure begin!',
+      setup: {
+        title: 'Game Setup',
+        numPlayers: 'Number of Players:',
+        playerName: 'Player Name',
+        gender: 'Gender',
+        orientation: 'Sexual Orientation',
+        genders: {
+          male: 'Male',
+          female: 'Female',
+          nonbinary: 'Non-binary'
+        },
+        orientations: {
+          heterosexual: 'Heterosexual',
+          homosexual: 'Homosexual',
+          bisexual: 'Bisexual',
+          queer: 'Queer',
+          heteroflexible: 'Heteroflexible'
+        },
+        startGame: 'Start Game'
+      },
+      levelSelect: {
+        title: 'Choose Your Intensity',
+        level1: {
+          name: 'Sensual Warm-up',
+          description: 'Gentle touch, intimate conversations and building intimacy'
+        },
+        level2: {
+          name: 'Playful Challenges',
+          description: 'More physical games exploring non-monogamous fantasies'
+        },
+        level3: {
+          name: 'Limits Exploration',
+          description: 'Maximum intensity: courageously exploring your boundaries'
+        },
+        warning: '⚠️ Safety and Consent Reminder',
+        warningText: 'Level 3 involves explicit sexual activities. Make sure all players have clearly consented and established boundaries. Always respect "no" and communicate openly.',
+        continue: 'Continue'
+      },
+      game: {
+        done: 'Done ✅',
+        skip: 'Skip ↩️',
+        nextLevel: 'Want to play the next level?',
+        yes: 'Yes',
+        no: 'No',
+        endGame: 'End Game'
+      },
+      celebration: {
+        title: '🎉 Congratulations! 🎉',
+        message: 'You have completed an incredible journey!',
+        continue: 'Continue'
+      },
+      award: {
+        title: '🏆 Achievement Unlocked! 🏆',
+        continue: 'Continue'
+      },
+      feedback: {
+        title: 'How was the experience?',
+        rating: 'Rate the session (1-5 stars)',
+        favorite: 'What was your favorite part?',
+        suggestions: 'Suggestions for improvement',
+        email: 'Email for updates (optional)',
+        submit: 'Submit Feedback'
+      },
+      complete: {
+        title: 'Thank you for your feedback!',
+        playAgain: 'Play Again',
+        exit: 'Exit'
+      }
     }
   };
 

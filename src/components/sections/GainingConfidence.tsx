@@ -184,7 +184,7 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
           {/* Example Questions */}
           <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-purple-200">
             <p className="text-xs text-gray-600 mb-3 font-medium">
-              {language === 'pt' ? 'Perguntas exemplo:' : 'Preguntas ejemplo:'}
+              {language === 'pt' ? 'Perguntas exemplo:' : language === 'es' ? 'Preguntas ejemplo:' : 'Example questions:'}
             </p>
             <div className="space-y-2">
               {t.examples.map((example, index) => (
