@@ -68,7 +68,7 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
     }
   };
 
-  const t = translations[language];
+  const t = translations[language] || translations.en;
 
   if (selectedSection === 'confidence') {
     return <GainingConfidence language={language} onBack={() => setSelectedSection(null)} />;
