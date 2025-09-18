@@ -989,5 +989,11 @@ export const activities: Activity[] = [
 ];
 
 export function getActivityText(activityId: string, language: 'es' | 'pt' | 'en'): string {
-  return translations[language][activityId] || activityId;
+  const text = translations[language]?.[activityId];
+  if (!text) {
+    console.warn(`Missing translation for ${activityId} in ${language}`);
+    // Fallback to Spanish if English is missing
+    return translations['es'][activityId] || activityId;
+  }
+  return text;
 }

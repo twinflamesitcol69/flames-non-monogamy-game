@@ -74,7 +74,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
           heterosexual: 'Heterossexual',
           homosexual: 'Homossexual',
           bisexual: 'Bissexual',
-          queer: 'Queer'
+          queer: 'Queer',
+          heteroflexible: 'Heterofexível'
         },
         startGame: 'Começar o Jogo'
       },
@@ -651,10 +652,10 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             </Button>
             <div className="text-center">
               <h2 className="font-playfair font-semibold text-lg text-gray-800">
-                {language === 'es' ? 'Nivel' : 'Nível'} {currentLevel}
+                {language === 'es' ? 'Nivel' : language === 'en' ? 'Level' : 'Nível'} {currentLevel}
               </h2>
               <p className="text-xs text-gray-500">
-                {completedActivities} {language === 'es' ? 'completadas' : 'completadas'}
+                {completedActivities} {language === 'es' ? 'completadas' : language === 'en' ? 'completed' : 'completadas'}
               </p>
             </div>
             <div className="w-16"></div>
