@@ -36,6 +36,42 @@ const translations = {
     'l1_3p_13': 'Túrnense para explorar puntos sensibles en los cuerpos de los demás.',
     'l1_3p_14': '¡Salud! ¡Tomen un trago de ron o cualquier licor que les guste!',
 
+    // Level 1 - 4 Players  
+    'l1_4p_1': '[Player Z], describe explícitamente tu fantasía no-monógama más profunda que involucre a [Player U].',
+    'l1_4p_2': '[Player Z], narra un escenario explícito que involucre una fantasía tabú que has guardado en secreto.',
+    'l1_4p_3': '[Player Z] confiesa abiertamente una atracción sexual explícita hacia otro jugador.',
+    'l1_4p_4': '[Player X], ponte una venda en los ojos y arrodíllate. Los otros jugadores pueden explorar el cuerpo de [Player X] libremente durante 5 minutos. Pueden usar cualquier objeto cercano.',
+    'l1_4p_5': '[Player Z], abre tu boca y cierra los ojos. [Player U], pon algo dentro (no necesariamente comestible) y haz que adivinen qué es mientras chupan.',
+    'l1_4p_6': '[Player X], ordena a [Player Z] y [Player U] que se desnuden completamente. Elige la posición más expuesta posible y haz que la mantengan durante 60 segundos.',
+    'l1_4p_7': '[Player X] usa lápiz labial, chupetones o un objeto frío para dejar una marca visible en el cuerpo de [Player Z].',
+    'l1_4p_8': '[Player U], acércate y susurra tu fantasía más secreta que involucre a [Player Z] directamente en su oído.',
+    'l1_4p_9': '[Player Z], traza un dedo lentamente sobre cada parte del cuerpo de [Player U] que deseas explorar con otro compañero observando.',
+    'l1_4p_10': '[Player Z], véndalo los ojos. [Player U], describe tres cosas sexys que notaste sobre [Player Z] esta noche.',
+    'l1_4p_11': '[Player Y], da a [Player X] besos suaves en su cuello, deteniéndote justo antes de que se vuelva demasiado intenso.',
+    'l1_4p_12': '[Player Z] y [Player U], mírense a los ojos en silencio durante 30 segundos, luego digan exactamente lo que quieren hacer a continuación.',
+    'l1_4p_13': '[Player X] y [Player K], realicen un baile breve, lento y sensual, manteniendo contacto visual intenso.',
+    'l1_4p_14': 'Túrnense para explorar puntos sensibles en los cuerpos de los demás.',
+    'l1_4p_15': '¡Salud! ¡Tomen un trago de ron o cualquier licor que les guste!',
+    'l1_4p_16': '¡Salud! ¡Tomen un trago de ron o cualquier licor que les guste!',
+
+    // Level 1 - 5+ Players
+    'l1_5p_1': '[Player Z], describe explícitamente tu fantasía no-monógama más profunda que involucre a [Player U].',
+    'l1_5p_2': '[Player Z], narra un escenario explícito que involucre una fantasía tabú que has guardado en secreto.',
+    'l1_5p_3': '[Player Z] confiesa abiertamente una atracción sexual explícita hacia otro jugador.',
+    'l1_5p_4': '[Player X], ponte una venda en los ojos y arrodíllate. Los otros jugadores pueden explorar el cuerpo de [Player X] libremente durante 5 minutos. Pueden usar cualquier objeto cercano.',
+    'l1_5p_5': '[Player Z], abre tu boca y cierra los ojos. [Player U], pon algo dentro (no necesariamente comestible) y haz que adivinen qué es mientras chupan.',
+    'l1_5p_6': '[Player X], ordena a [Player Z], [Player U] y [Player W] que se desnuden completamente. Elige la posición más expuesta posible y haz que la mantengan durante 60 segundos.',
+    'l1_5p_7': '[Player X] usa lápiz labial, chupetones o un objeto frío para dejar una marca visible en el cuerpo de [Player Z].',
+    'l1_5p_8': '[Player U], acércate y susurra tu fantasía más secreta que involucre a [Player Z] directamente en su oído.',
+    'l1_5p_9': '[Player Z], traza un dedo lentamente sobre cada parte del cuerpo de [Player U] que deseas explorar con el resto del grupo observando.',
+    'l1_5p_10': '[Player Z], véndalo los ojos. El grupo describe tres cosas sexys que notaron sobre [Player Z] esta noche.',
+    'l1_5p_11': 'Todo el grupo, den a [Player X] besos suaves en su cuello, deteniéndose justo antes de que se vuelva demasiado intenso.',
+    'l1_5p_12': '[Player Z] y [Player U], mírense a los ojos en silencio durante 30 segundos, luego digan exactamente lo que quieren hacer a continuación.',
+    'l1_5p_13': '[Player X] y [Player K], realicen un baile breve, lento y sensual, manteniendo contacto visual intenso.',
+    'l1_5p_14': 'Túrnense para explorar puntos sensibles en los cuerpos de los demás.',
+    'l1_5p_15': '¡Salud! ¡Tomen un trago de ron o cualquier licor que les guste!',
+    'l1_5p_16': '¡Salud! ¡Tomen un trago de ron o cualquier licor que les guste!',
+
     // Level 2 - Playful Challenges
     'l2_2p_1': '[Player Z], venda los ojos del otro jugador y usa tu cuerpo para excitarlo.',
     'l2_2p_2': '[Player Z] y [Player U], mastúrbense abiertamente mirándose el uno al otro.',
@@ -142,6 +178,42 @@ const translations = {
     'l1_3p_13': 'Take turns exploring sensitive spots on each other\'s bodies.',
     'l1_3p_14': 'Cheers! Take a shot of rum or any liquor you like!',
 
+    // Level 1 - 4 Players
+    'l1_4p_1': '[Player Z], explicitly describe your deepest non-monogamous fantasy involving [Player U].',
+    'l1_4p_2': '[Player Z], narrate an explicit scenario involving a taboo fantasy you\'ve kept secret.',
+    'l1_4p_3': '[Player Z] openly confess an explicit sexual attraction to another player.',
+    'l1_4p_4': '[Player X], put on a blindfold and kneel. The other players can explore [Player X]\'s body freely for 5 minutes. They can use any nearby object.',
+    'l1_4p_5': '[Player Z], open your mouth and close your eyes. [Player U], put something inside (not necessarily edible) and make them guess what it is while sucking.',
+    'l1_4p_6': '[Player X], order [Player Z] and [Player U] to undress completely. Choose the most exposed position possible and make them hold it for 60 seconds.',
+    'l1_4p_7': '[Player X] use lipstick, hickeys or a cold object to leave a visible mark on [Player Z]\'s body.',
+    'l1_4p_8': '[Player U], approach and whisper your most secret fantasy involving [Player Z] directly in their ear.',
+    'l1_4p_9': '[Player Z], trace a finger slowly over every part of [Player U]\'s body you want to explore with another partner watching.',
+    'l1_4p_10': '[Player Z], blindfold yourself. [Player U], describe three sexy things you noticed about [Player Z] tonight.',
+    'l1_4p_11': '[Player Y], give [Player X] soft kisses on their neck, stopping just before it gets too intense.',
+    'l1_4p_12': '[Player Z] and [Player U], look into each other\'s eyes silently for 30 seconds, then say exactly what you want to do next.',
+    'l1_4p_13': '[Player X] and [Player K], perform a brief, slow and sensual dance, maintaining intense eye contact.',
+    'l1_4p_14': 'Take turns exploring sensitive spots on each other\'s bodies.',
+    'l1_4p_15': 'Cheers! Take a shot of rum or any liquor you like!',
+    'l1_4p_16': 'Cheers! Take a shot of rum or any liquor you like!',
+
+    // Level 1 - 5+ Players
+    'l1_5p_1': '[Player Z], explicitly describe your deepest non-monogamous fantasy involving [Player U].',
+    'l1_5p_2': '[Player Z], narrate an explicit scenario involving a taboo fantasy you\'ve kept secret.',
+    'l1_5p_3': '[Player Z] openly confess an explicit sexual attraction to another player.',
+    'l1_5p_4': '[Player X], put on a blindfold and kneel. The other players can explore [Player X]\'s body freely for 5 minutes. They can use any nearby object.',
+    'l1_5p_5': '[Player Z], open your mouth and close your eyes. [Player U], put something inside (not necessarily edible) and make them guess what it is while sucking.',
+    'l1_5p_6': '[Player X], order [Player Z], [Player U] and [Player W] to undress completely. Choose the most exposed position possible and make them hold it for 60 seconds.',
+    'l1_5p_7': '[Player X] use lipstick, hickeys or a cold object to leave a visible mark on [Player Z]\'s body.',
+    'l1_5p_8': '[Player U], approach and whisper your most secret fantasy involving [Player Z] directly in their ear.',
+    'l1_5p_9': '[Player Z], trace a finger slowly over every part of [Player U]\'s body you want to explore with the rest of the party watching.',
+    'l1_5p_10': '[Player Z], blindfold yourself. The party describe three sexy things they noticed about [Player Z] tonight.',
+    'l1_5p_11': 'All the party, give [Player X] soft kisses on their neck, stopping just before it gets too intense.',
+    'l1_5p_12': '[Player Z] and [Player U], look into each other\'s eyes silently for 30 seconds, then say exactly what you want to do next.',
+    'l1_5p_13': '[Player X] and [Player K], perform a brief, slow and sensual dance, maintaining intense eye contact.',
+    'l1_5p_14': 'Take turns exploring sensitive spots on each other\'s bodies.',
+    'l1_5p_15': 'Cheers! Take a shot of rum or any liquor you like!',
+    'l1_5p_16': 'Cheers! Take a shot of rum or any liquor you like!',
+
     // Level 2 - Playful Challenges
     'l2_2p_1': '[Player Z], blindfold the other player and use your body to arouse them.',
     'l2_2p_2': '[Player Z] and [Player U], masturbate openly facing each other.',
@@ -247,6 +319,42 @@ const translations = {
     'l1_3p_12': '[Player X], execute uma dança breve, lenta e sensual, mantendo contato visual intenso.',
     'l1_3p_13': 'Alternem-se explorando pontos sensíveis nos corpos uns dos outros.',
     'l1_3p_14': 'Saúde! Tomem um shot de rum ou qualquer bebida que gostem!',
+
+    // Level 1 - 4 Players
+    'l1_4p_1': '[Player Z], descreva explicitamente sua fantasia não-monogâmica mais profunda envolvendo [Player U].',
+    'l1_4p_2': '[Player Z], narre um cenário explícito envolvendo uma fantasia tabu que guardou em segredo.',
+    'l1_4p_3': '[Player Z] confesse abertamente uma atração sexual explícita por outro jogador.',
+    'l1_4p_4': '[Player X], coloque uma venda nos olhos e se ajoelhe. Os outros jogadores podem explorar o corpo de [Player X] livremente por 5 minutos. Podem usar qualquer objeto próximo.',
+    'l1_4p_5': '[Player Z], abra sua boca e feche os olhos. [Player U], coloque algo dentro (não necessariamente comestível) e faça-o adivinhar o que é enquanto chupa.',
+    'l1_4p_6': '[Player X], ordene a [Player Z] e [Player U] que se despam completamente. Escolha a posição mais exposta possível e faça-os mantê-la por 60 segundos.',
+    'l1_4p_7': '[Player X] use batom, chupões ou um objeto frio para deixar uma marca visível no corpo de [Player Z].',
+    'l1_4p_8': '[Player U], aproxime-se e sussurre sua fantasia mais secreta envolvendo [Player Z] diretamente no ouvido dele.',
+    'l1_4p_9': '[Player Z], trace um dedo lentamente sobre cada parte do corpo de [Player U] que deseja explorar com outro parceiro observando.',
+    'l1_4p_10': '[Player Z], vende seus olhos. [Player U], descreva três coisas sexy que notou sobre [Player Z] hoje à noite.',
+    'l1_4p_11': '[Player Y], dê a [Player X] beijos suaves no pescoço, parando pouco antes de ficar muito intenso.',
+    'l1_4p_12': '[Player Z] e [Player U], olhem nos olhos um do outro em silêncio por 30 segundos, então digam exatamente o que querem fazer em seguida.',
+    'l1_4p_13': '[Player X] e [Player K], executem uma dança breve, lenta e sensual, mantendo contato visual intenso.',
+    'l1_4p_14': 'Alternem-se explorando pontos sensíveis nos corpos uns dos outros.',
+    'l1_4p_15': 'Saúde! Tomem um shot de rum ou qualquer bebida que gostem!',
+    'l1_4p_16': 'Saúde! Tomem um shot de rum ou qualquer bebida que gostem!',
+
+    // Level 1 - 5+ Players
+    'l1_5p_1': '[Player Z], descreva explicitamente sua fantasia não-monogâmica mais profunda envolvendo [Player U].',
+    'l1_5p_2': '[Player Z], narre um cenário explícito envolvendo uma fantasia tabu que guardou em segredo.',
+    'l1_5p_3': '[Player Z] confesse abertamente uma atração sexual explícita por outro jogador.',
+    'l1_5p_4': '[Player X], coloque uma venda nos olhos e se ajoelhe. Os outros jogadores podem explorar o corpo de [Player X] livremente por 5 minutos. Podem usar qualquer objeto próximo.',
+    'l1_5p_5': '[Player Z], abra sua boca e feche os olhos. [Player U], coloque algo dentro (não necessariamente comestível) e faça-o adivinhar o que é enquanto chupa.',
+    'l1_5p_6': '[Player X], ordene a [Player Z], [Player U] e [Player W] que se despam completamente. Escolha a posição mais exposta possível e faça-os mantê-la por 60 segundos.',
+    'l1_5p_7': '[Player X] use batom, chupões ou um objeto frio para deixar uma marca visível no corpo de [Player Z].',
+    'l1_5p_8': '[Player U], aproxime-se e sussurre sua fantasia mais secreta envolvendo [Player Z] diretamente no ouvido dele.',
+    'l1_5p_9': '[Player Z], trace um dedo lentamente sobre cada parte do corpo de [Player U] que deseja explorar com o resto do grupo observando.',
+    'l1_5p_10': '[Player Z], vende seus olhos. O grupo descreva três coisas sexy que notaram sobre [Player Z] hoje à noite.',
+    'l1_5p_11': 'Todo o grupo, deem a [Player X] beijos suaves no pescoço, parando pouco antes de ficar muito intenso.',
+    'l1_5p_12': '[Player Z] e [Player U], olhem nos olhos um do outro em silêncio por 30 segundos, então digam exatamente o que querem fazer em seguida.',
+    'l1_5p_13': '[Player X] e [Player K], executem uma dança breve, lenta e sensual, mantendo contato visual intenso.',
+    'l1_5p_14': 'Alternem-se explorando pontos sensíveis nos corpos uns dos outros.',
+    'l1_5p_15': 'Saúde! Tomem um shot de rum ou qualquer bebida que gostem!',
+    'l1_5p_16': 'Saúde! Tomem um shot de rum ou qualquer bebida que gostem!',
 
     // Level 2 - Playful Challenges
     'l2_2p_1': '[Player Z], vende os olhos do outro jogador e use seu corpo para excitá-lo.',
@@ -534,6 +642,234 @@ export const activities: Activity[] = [
     level: 1,
     minPlayers: 3,
     maxPlayers: 3,
+    placeholders: []
+  },
+
+  // Level 1 - Sensual Warm-up (4 players)
+  {
+    id: 'l1_4p_1',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_4p_2',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l1_4p_3',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l1_4p_4',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player X']
+  },
+  {
+    id: 'l1_4p_5',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_4p_6',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player X', 'Player Z', 'Player U']
+  },
+  {
+    id: 'l1_4p_7',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player X', 'Player Z']
+  },
+  {
+    id: 'l1_4p_8',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player U', 'Player Z']
+  },
+  {
+    id: 'l1_4p_9',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_4p_10',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_4p_11',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Y', 'Player X']
+  },
+  {
+    id: 'l1_4p_12',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_4p_13',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: ['Player X', 'Player K']
+  },
+  {
+    id: 'l1_4p_14',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l1_4p_15',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+  {
+    id: 'l1_4p_16',
+    level: 1,
+    minPlayers: 4,
+    maxPlayers: 4,
+    placeholders: []
+  },
+
+  // Level 1 - Sensual Warm-up (5+ players)
+  {
+    id: 'l1_5p_1',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_5p_2',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l1_5p_3',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l1_5p_4',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player X']
+  },
+  {
+    id: 'l1_5p_5',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_5p_6',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player X', 'Player Z', 'Player U', 'Player W']
+  },
+  {
+    id: 'l1_5p_7',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player X', 'Player Z']
+  },
+  {
+    id: 'l1_5p_8',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player U', 'Player Z']
+  },
+  {
+    id: 'l1_5p_9',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_5p_10',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z']
+  },
+  {
+    id: 'l1_5p_11',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player X']
+  },
+  {
+    id: 'l1_5p_12',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player Z', 'Player U']
+  },
+  {
+    id: 'l1_5p_13',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: ['Player X', 'Player K']
+  },
+  {
+    id: 'l1_5p_14',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: []
+  },
+  {
+    id: 'l1_5p_15',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
+    placeholders: []
+  },
+  {
+    id: 'l1_5p_16',
+    level: 1,
+    minPlayers: 5,
+    maxPlayers: 10,
     placeholders: []
   },
 
