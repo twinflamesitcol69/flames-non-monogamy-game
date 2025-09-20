@@ -8,6 +8,10 @@ import { Player, GameLevel, GameStep, PlayerSelection } from '@/types/kingdom';
 import { activities } from '@/data/kingdomActivities';
 import { badges } from '@/data/kingdomBadges';
 import { selectPlayersForActivity, formatActivityText, requiresConsent } from '@/utils/playerSelection';
+import { useAds } from '@/contexts/AdContext';
+import { BannerAd } from '@/components/ads/BannerAd';
+import { RewardedAdModal } from '@/components/ads/RewardedAdModal';
+import { InterstitialAd } from '@/components/ads/InterstitialAd';
 import ConsentModal from '@/components/ConsentModal';
 
 interface KingdomOfPleasureProps {
@@ -27,12 +31,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   const [selectedBadge, setSelectedBadge] = useState<typeof badges[0] | null>(null);
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [pendingPlayers, setPendingPlayers] = useState<[Player, Player] | null>(null);
+  const [showRewardedModal, setShowRewardedModal] = useState(false);
+  const [targetLevel, setTargetLevel] = useState<2 | 3>(2);
+  const [showInterstitial, setShowInterstitial] = useState(false);
   const [feedback, setFeedback] = useState({
     rating: 0,
     favorite: '',
     suggestions: '',
     email: ''
   });
+
+  const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent } = useAds();
 
   // Load activities for current level and player count
   useEffect(() => {
@@ -371,6 +380,21 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const selectLevel = (level: GameLevel) => {
+    // Check if level requires rewarded ad unlock
+    if (level === 2 && !adState.unlockedL2) {
+      setTargetLevel(2);
+      setShowRewardedModal(true);
+      logEvent('attempt_enter_L2');
+      return;
+    }
+    
+    if (level === 3 && !adState.unlockedL3) {
+      setTargetLevel(3);
+      setShowRewardedModal(true);
+      logEvent('attempt_enter_L3');
+      return;
+    }
+    
     setCurrentLevel(level);
     setStep('playing');
   };
@@ -378,6 +402,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   const handleActivityComplete = () => {
     const newCompleted = completedActivities + 1;
     setCompletedActivities(newCompleted);
+    
+    // Increment completed dares for interstitial tracking (Level 3 only)
+    if (currentLevel === 3) {
+      incrementCompletedDares();
+      
+      // Check if should show interstitial ad
+      if (shouldShowInterstitial()) {
+        setShowInterstitial(true);
+        return; // Don't proceed until interstitial is closed
+      }
+    }
     
     // Move to next activity
     const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
@@ -395,6 +430,30 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         setStep('level-complete');
       }
     }
+  };
+
+  const handleInterstitialClose = () => {
+    setShowInterstitial(false);
+    
+    // Continue with normal flow after interstitial
+    const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
+    setCurrentActivityIndex(nextIndex);
+
+    const newCompleted = completedActivities + 1;
+    if (newCompleted >= 3) {
+      if (currentLevel === 3) {
+        const randomBadge = badges[Math.floor(Math.random() * badges.length)];
+        setSelectedBadge(randomBadge);
+        setStep('game-complete');
+      } else {
+        setStep('level-complete');
+      }
+    }
+  };
+
+  const handleRewardedSuccess = () => {
+    setCurrentLevel(targetLevel);
+    setStep('playing');
   };
 
   const skipActivity = () => {
@@ -430,7 +489,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   if (step === 'welcome') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -485,7 +544,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   if (step === 'setup') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -577,7 +636,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -641,7 +700,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -756,7 +815,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   if (step === 'feedback') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               {t.feedback.title}
@@ -868,6 +927,22 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         onReject={handleConsentReject}
         language={language}
       />
+      
+      <RewardedAdModal
+        isOpen={showRewardedModal}
+        onClose={() => setShowRewardedModal(false)}
+        onSuccess={handleRewardedSuccess}
+        language={language}
+        targetLevel={targetLevel}
+      />
+      
+      <InterstitialAd
+        isOpen={showInterstitial}
+        onClose={handleInterstitialClose}
+        language={language}
+      />
+      
+      <BannerAd language={language} />
     </div>
   );
 };

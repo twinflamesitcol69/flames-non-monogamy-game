@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Brain, Target, Crown, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BannerAd } from '@/components/ads/BannerAd';
 import GainingConfidence from './sections/GainingConfidence';
 import HookUp from './sections/HookUp';
 import KingdomOfPleasure from './sections/KingdomOfPleasure';
@@ -106,7 +107,7 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50">
-      <div className="container mx-auto px-4 py-8 max-w-md">
+      <div className="container mx-auto px-4 py-8 max-w-md pb-20">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button
@@ -174,6 +175,7 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
           })}
         </div>
       </div>
+      <BannerAd language={language} />
     </div>
   );
 };
