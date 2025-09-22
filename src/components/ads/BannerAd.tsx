@@ -1,10 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAds } from '@/contexts/AdContext';
 
 interface BannerAdProps {
   language: 'pt' | 'es' | 'en';
+}
+
+// Declare adsbygoogle for TypeScript
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
 }
 
 const translations = {
@@ -25,8 +32,14 @@ const translations = {
 export const BannerAd = ({ language }: BannerAdProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [autoCollapseTimer, setAutoCollapseTimer] = useState<NodeJS.Timeout | null>(null);
-  const { logEvent } = useAds();
+  const [adLoaded, setAdLoaded] = useState(false);
+  const [adError, setAdError] = useState(false);
+  const adRef = useRef<HTMLDivElement>(null);
+  const { logEvent, adState } = useAds();
   const t = translations[language];
+
+  // Check for test mode
+  const isTestMode = new URLSearchParams(window.location.search).get('adtest') === '1';
 
   useEffect(() => {
     // Auto-collapse after 10 seconds on small screens
@@ -44,6 +57,23 @@ export const BannerAd = ({ language }: BannerAdProps) => {
     };
   }, [logEvent]);
 
+  useEffect(() => {
+    // Load AdSense ad only if consent is given
+    if (adState.hasConsent && adRef.current && !adLoaded && !adError) {
+      try {
+        // Initialize adsbygoogle if not available
+        window.adsbygoogle = window.adsbygoogle || [];
+        
+        // Push the ad configuration
+        window.adsbygoogle.push({});
+        setAdLoaded(true);
+      } catch (error) {
+        console.error('AdSense banner failed to load:', error);
+        setAdError(true);
+      }
+    }
+  }, [adState.hasConsent, adLoaded, adError]);
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
     if (autoCollapseTimer) {
@@ -51,6 +81,9 @@ export const BannerAd = ({ language }: BannerAdProps) => {
       setAutoCollapseTimer(null);
     }
   };
+
+  // Fixed height to prevent CLS - mobile: 56px, desktop: 90px
+  const bannerHeight = 'h-14 md:h-[90px]';
 
   return (
     <div className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border transition-transform duration-300 ${
@@ -79,12 +112,28 @@ export const BannerAd = ({ language }: BannerAdProps) => {
             <ChevronDown className="w-3 h-3" />
           </Button>
           
-          <div className="h-16 md:h-20 flex items-center justify-center bg-gradient-to-r from-purple-50 to-pink-50 text-muted-foreground">
-            {/* Placeholder for actual ad content */}
-            <div className="text-center">
-              <div className="text-sm font-medium">Advertisement</div>
-              <div className="text-xs opacity-60">320x50 Banner Ad Space</div>
-            </div>
+          <div className={`${bannerHeight} flex items-center justify-center overflow-hidden`}>
+            {adState.hasConsent ? (
+              <div ref={adRef} className="w-full h-full flex items-center justify-center">
+                <ins 
+                  className="adsbygoogle"
+                  style={{ display: 'block', width: '100%', height: '100%' }}
+                  data-ad-client="ca-pub-7997489223643022"
+                  data-ad-slot="1030982111"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                  {...(isTestMode && { 'data-adtest': 'on' })}
+                />
+              </div>
+            ) : (
+              // Placeholder when consent not given - same height to prevent CLS
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-purple-50 to-pink-50 text-muted-foreground">
+                <div className="text-center">
+                  <div className="text-sm font-medium">Advertisement</div>
+                  <div className="text-xs opacity-60">Consent required</div>
+                </div>
+              </div>
+            )}
           </div>
         </>
       )}

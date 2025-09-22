@@ -107,7 +107,7 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50">
-      <div className="container mx-auto px-4 py-8 max-w-md pb-20">
+      <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Increased padding to account for banner */}
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button

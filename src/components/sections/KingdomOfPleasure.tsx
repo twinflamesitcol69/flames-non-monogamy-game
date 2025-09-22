@@ -489,7 +489,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   if (step === 'welcome') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -544,7 +544,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   if (step === 'setup') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -636,7 +636,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -700,7 +700,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
@@ -815,7 +815,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   if (step === 'feedback') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20">
+        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               {t.feedback.title}
