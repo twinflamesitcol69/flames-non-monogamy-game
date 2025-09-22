@@ -35,8 +35,13 @@ export const BannerAd = ({ language }: BannerAdProps) => {
   const [adLoaded, setAdLoaded] = useState(false);
   const [adError, setAdError] = useState(false);
   const adRef = useRef<HTMLDivElement>(null);
-  const { logEvent, adState } = useAds();
+  const { logEvent, adState, isAdsEnabled } = useAds();
   const t = translations[language];
+  
+  // Don't render if ads are disabled
+  if (!isAdsEnabled()) {
+    return null;
+  }
 
   // Check for test mode
   const isTestMode = new URLSearchParams(window.location.search).get('adtest') === '1';

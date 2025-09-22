@@ -38,8 +38,13 @@ export const InterstitialAd = ({ isOpen, onClose, language }: InterstitialAdProp
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [countdown, setCountdown] = useState(5);
-  const { incrementInterstitialCount, resetInterstitialCounter, logEvent } = useAds();
+  const { incrementInterstitialCount, resetInterstitialCounter, logEvent, isAdsEnabled } = useAds();
   const t = translations[language];
+  
+  // Don't render if ads are disabled
+  if (!isAdsEnabled()) {
+    return null;
+  }
 
   useEffect(() => {
     if (isOpen) {

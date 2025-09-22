@@ -21,8 +21,18 @@
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/WaGTSZyLj9S0PtCZWUxXfI4eSQG2/social-images/social-1758371835309-ChatGPT Image Sep 20, 2025, 02_36_45 PM.png">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7997489223643022"
-     crossorigin="anonymous"></script>
+<script>
+    // Only load AdSense if ads are enabled
+    const adsEnabled = !window.location.hostname.includes('localhost') && 
+                      new URLSearchParams(window.location.search).get('ads') !== 'false';
+    if (adsEnabled) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7997489223643022';
+      script.crossOrigin = 'anonymous';
+      document.head.appendChild(script);
+    }
+  </script>
   </head>
 
   <body>

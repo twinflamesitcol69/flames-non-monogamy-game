@@ -15,6 +15,9 @@ interface AdState {
   // Configuration
   L3_INTERSTITIAL_EVERY: number;
   L3_INTERSTITIAL_MAX: number;
+  
+  // Feature flags
+  adsEnabled: boolean;
 }
 
 interface AdContextType {
@@ -26,6 +29,7 @@ interface AdContextType {
   setConsent: (consent: boolean) => void;
   shouldShowInterstitial: () => boolean;
   logEvent: (event: string, data?: Record<string, any>) => void;
+  isAdsEnabled: () => boolean;
 }
 
 const AdContext = createContext<AdContextType | undefined>(undefined);
@@ -39,18 +43,28 @@ export const useAds = () => {
 };
 
 export const AdProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Check if ads are enabled via environment variable or URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const adsEnabled = urlParams.get('ads') !== 'false' && 
+                    import.meta.env.VITE_ADS_ENABLED !== 'false' &&
+                    !window.location.hostname.includes('localhost');
+  
   const [adState, setAdState] = useState<AdState>({
-    unlockedL2: false,
-    unlockedL3: false,
+    unlockedL2: !adsEnabled, // Auto-unlock if ads disabled
+    unlockedL3: !adsEnabled, // Auto-unlock if ads disabled
     completedDaresSinceInterstitial: 0,
     interstitialsShownThisSession: 0,
-    hasConsent: false,
+    hasConsent: !adsEnabled, // Auto-consent if ads disabled
     L3_INTERSTITIAL_EVERY: 2,
-    L3_INTERSTITIAL_MAX: 3
+    L3_INTERSTITIAL_MAX: 3,
+    adsEnabled
   });
 
   // Check for EU users and show consent (simplified GDPR check)
   useEffect(() => {
+    // Skip consent if ads are disabled
+    if (!adsEnabled) return;
+    
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const euTimezones = ['Europe/', 'Atlantic/Azores', 'Atlantic/Madeira'];
     const isEU = euTimezones.some(tz => timezone.startsWith(tz));
@@ -63,7 +77,7 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     } else {
       setAdState(prev => ({ ...prev, hasConsent: true }));
     }
-  }, []);
+  }, [adsEnabled]);
 
   const unlockLevel = (level: 2 | 3) => {
     console.log('unlockLevel called', { level, currentState: adState });
@@ -106,11 +120,15 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   const shouldShowInterstitial = () => {
+    if (!adsEnabled) return false;
     return adState.completedDaresSinceInterstitial >= adState.L3_INTERSTITIAL_EVERY &&
            adState.interstitialsShownThisSession < adState.L3_INTERSTITIAL_MAX;
   };
 
+  const isAdsEnabled = () => adsEnabled;
+
   const logEvent = (event: string, data?: Record<string, any>) => {
+    if (!adsEnabled) return; // Skip logging if ads disabled
     console.log(`[Ad Analytics] ${event}`, data);
     // In production, send to /api/telemetry or analytics service
   };
@@ -124,7 +142,8 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       incrementInterstitialCount,
       setConsent,
       shouldShowInterstitial,
-      logEvent
+      logEvent,
+      isAdsEnabled
     }}>
       {children}
     </AdContext.Provider>

@@ -51,8 +51,13 @@ const translations = {
 export const RewardedAdModal = ({ isOpen, onClose, onSuccess, language, targetLevel }: RewardedAdModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const { unlockLevel, logEvent } = useAds();
+  const { unlockLevel, logEvent, isAdsEnabled } = useAds();
   const t = translations[language];
+  
+  // Don't render if ads are disabled
+  if (!isAdsEnabled()) {
+    return null;
+  }
 
   const handleWatchAd = async () => {
     console.log('handleWatchAd called', { targetLevel });

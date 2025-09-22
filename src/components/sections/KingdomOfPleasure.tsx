@@ -12,6 +12,7 @@ import { useAds } from '@/contexts/AdContext';
 import { BannerAd } from '@/components/ads/BannerAd';
 import { RewardedAdModal } from '@/components/ads/RewardedAdModal';
 import { InterstitialAd } from '@/components/ads/InterstitialAd';
+import { SafeModeBadge } from '@/components/SafeModeBadge';
 import ConsentModal from '@/components/ConsentModal';
 
 interface KingdomOfPleasureProps {
@@ -41,7 +42,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     email: ''
   });
 
-  const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent } = useAds();
+  const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent, isAdsEnabled } = useAds();
 
   // Load activities for current level and player count
   useEffect(() => {
@@ -380,7 +381,15 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const selectLevel = (level: GameLevel) => {
-    console.log('selectLevel called', { level, unlockedL2: adState.unlockedL2, unlockedL3: adState.unlockedL3 });
+    console.log('selectLevel called', { level, unlockedL2: adState.unlockedL2, unlockedL3: adState.unlockedL3, adsEnabled: isAdsEnabled() });
+    
+    // If ads are disabled, allow free access to all levels
+    if (!isAdsEnabled()) {
+      console.log('Ads disabled, allowing free access to level', level);
+      setCurrentLevel(level);
+      setStep('playing');
+      return;
+    }
     
     // Check if level requires rewarded ad unlock
     if (level === 2 && !adState.unlockedL2) {
@@ -504,6 +513,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
             </Button>
+            <SafeModeBadge />
           </div>
 
           <div className="text-center mb-8 animate-fade-in">
@@ -654,7 +664,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             <h2 className="font-playfair font-semibold text-lg text-gray-800">
               {t.levelSelect.title}
             </h2>
-            <div className="w-16"></div>
+            <SafeModeBadge />
           </div>
 
           <div className="space-y-4 mb-8">

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Brain, Target, Crown, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BannerAd } from '@/components/ads/BannerAd';
+import { SafeModeBadge } from '@/components/SafeModeBadge';
 import GainingConfidence from './sections/GainingConfidence';
 import HookUp from './sections/HookUp';
 import KingdomOfPleasure from './sections/KingdomOfPleasure';
@@ -118,6 +119,7 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
             <ArrowLeft className="w-5 h-5 mr-2" />
             {t.back}
           </Button>
+          <SafeModeBadge />
         </div>
 
         <div className="text-center mb-8 animate-fade-in">
