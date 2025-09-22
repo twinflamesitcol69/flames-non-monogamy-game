@@ -66,10 +66,15 @@ export const AdProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   }, []);
 
   const unlockLevel = (level: 2 | 3) => {
-    setAdState(prev => ({
-      ...prev,
-      [level === 2 ? 'unlockedL2' : 'unlockedL3']: true
-    }));
+    console.log('unlockLevel called', { level, currentState: adState });
+    setAdState(prev => {
+      const newState = {
+        ...prev,
+        [level === 2 ? 'unlockedL2' : 'unlockedL3']: true
+      };
+      console.log('AdState updated', newState);
+      return newState;
+    });
     logEvent(`unlock_L${level}_rewarded`);
   };
 

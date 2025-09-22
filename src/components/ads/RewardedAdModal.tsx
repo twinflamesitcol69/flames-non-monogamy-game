@@ -55,6 +55,7 @@ export const RewardedAdModal = ({ isOpen, onClose, onSuccess, language, targetLe
   const t = translations[language];
 
   const handleWatchAd = async () => {
+    console.log('handleWatchAd called', { targetLevel });
     setIsLoading(true);
     logEvent('ad_rewarded_started', { targetLevel });
 
@@ -64,6 +65,7 @@ export const RewardedAdModal = ({ isOpen, onClose, onSuccess, language, targetLe
       
       // Simulate success/failure (90% success rate for demo)
       if (Math.random() > 0.1) {
+        console.log('Ad completed successfully, unlocking level', targetLevel);
         unlockLevel(targetLevel);
         logEvent('ad_rewarded_complete', { targetLevel });
         onSuccess();
@@ -72,6 +74,7 @@ export const RewardedAdModal = ({ isOpen, onClose, onSuccess, language, targetLe
         throw new Error('Ad failed to complete');
       }
     } catch (error) {
+      console.log('Ad failed:', error);
       logEvent('ad_rewarded_error', { targetLevel, error: error.message });
       setShowError(true);
     } finally {

@@ -380,8 +380,11 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const selectLevel = (level: GameLevel) => {
+    console.log('selectLevel called', { level, unlockedL2: adState.unlockedL2, unlockedL3: adState.unlockedL3 });
+    
     // Check if level requires rewarded ad unlock
     if (level === 2 && !adState.unlockedL2) {
+      console.log('Showing rewarded modal for L2');
       setTargetLevel(2);
       setShowRewardedModal(true);
       logEvent('attempt_enter_L2');
@@ -389,12 +392,14 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     }
     
     if (level === 3 && !adState.unlockedL3) {
+      console.log('Showing rewarded modal for L3');
       setTargetLevel(3);
       setShowRewardedModal(true);
       logEvent('attempt_enter_L3');
       return;
     }
     
+    console.log('Level already unlocked, proceeding to game');
     setCurrentLevel(level);
     setStep('playing');
   };
@@ -452,6 +457,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const handleRewardedSuccess = () => {
+    console.log('handleRewardedSuccess called', { targetLevel });
     setCurrentLevel(targetLevel);
     setStep('playing');
   };
