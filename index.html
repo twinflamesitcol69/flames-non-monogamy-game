@@ -22,9 +22,10 @@
     <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/WaGTSZyLj9S0PtCZWUxXfI4eSQG2/social-images/social-1758371835309-ChatGPT Image Sep 20, 2025, 02_36_45 PM.png">
 
 <script>
-    // Only load AdSense if ads are enabled
-    const adsEnabled = !window.location.hostname.includes('localhost') && 
-                      new URLSearchParams(window.location.search).get('ads') !== 'false';
+    // Only load AdSense if ads are enabled (default: false for safe mode)
+    const urlParams = new URLSearchParams(window.location.search);
+    const adsEnabled = urlParams.get('ads') === 'true' && 
+                       !window.location.hostname.includes('localhost');
     if (adsEnabled) {
       const script = document.createElement('script');
       script.async = true;

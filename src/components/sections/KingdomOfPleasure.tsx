@@ -12,6 +12,7 @@ import { useAds } from '@/contexts/AdContext';
 import { BannerAd } from '@/components/ads/BannerAd';
 import { RewardedAdModal } from '@/components/ads/RewardedAdModal';
 import { InterstitialAd } from '@/components/ads/InterstitialAd';
+import { DebugPanel } from '@/components/DebugPanel';
 import { SafeModeBadge } from '@/components/SafeModeBadge';
 import ConsentModal from '@/components/ConsentModal';
 
@@ -955,6 +956,14 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       <InterstitialAd
         isOpen={showInterstitial}
         onClose={handleInterstitialClose}
+        language={language}
+      />
+      
+      <DebugPanel
+        currentStep={step}
+        currentLevel={currentLevel}
+        selectedPlayers={players}
+        placeholderResolution={currentPlayerSelection}
         language={language}
       />
       

@@ -43,11 +43,12 @@ export const useAds = () => {
 };
 
 export const AdProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Check if ads are enabled via environment variable or URL parameter
+// Check if ads are enabled via environment variable or URL parameter  
   const urlParams = new URLSearchParams(window.location.search);
-  const adsEnabled = urlParams.get('ads') !== 'false' && 
-                    import.meta.env.VITE_ADS_ENABLED !== 'false' &&
-                    !window.location.hostname.includes('localhost');
+  const envAdsEnabled = import.meta.env.VITE_ADS_ENABLED;
+  
+  // Default to disabled for safe mode, enable only if explicitly set to true
+  const adsEnabled = envAdsEnabled === 'true' || urlParams.get('ads') === 'true';
   
   const [adState, setAdState] = useState<AdState>({
     unlockedL2: !adsEnabled, // Auto-unlock if ads disabled
