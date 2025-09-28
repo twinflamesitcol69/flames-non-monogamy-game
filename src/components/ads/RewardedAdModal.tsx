@@ -9,7 +9,7 @@ type Props = {
   onReward: () => void; // chiamato quando l'utente guadagna l'accesso a L2/L3
 };
 
-export default function RewardedAdModal({ open, onClose, onReward }: Props) {
+export function RewardedAdModal({ open, onClose, onReward }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const adContainerRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -17,14 +17,13 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
 
   useEffect(() => {
     if (!open) return;
-    if (!ENABLED) { onReward(); return; } // se ads off, sblocca subito
+    if (!ENABLED) { onReward(); return; } // se ads OFF, sblocca subito
     if (!VAST_URL) {
-      // Fallback: “simula” rewarded per 5s (solo per flusso)
+      // Fallback: simula rewarded per 5s
       setLoading(true);
       const t = setTimeout(() => { setLoading(false); onReward(); }, 5000);
       return () => clearTimeout(t);
     }
-    // IMA SDK
     try {
       setLoading(true);
       const win = window as any;
@@ -34,13 +33,10 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
       adDisplayContainer.initialize();
 
       const adsLoader = new win.google.ima.AdsLoader(adDisplayContainer);
-      adsLoader.getSettings().setVpaidMode && adsLoader.getSettings().setVpaidMode(2); // optional
+      adsLoader.getSettings?.().setVpaidMode?.(2);
 
       const onAdsManagerLoaded = (e: any) => {
         const adsManager = e.getAdsManager(contentVideo);
-        adsManager.addEventListener(win.google.ima.AdEvent.Type.LOADED, () => {
-          // Se l’ad è “rewarded”, IMA segnalerà completamento
-        });
         adsManager.addEventListener(win.google.ima.AdEvent.Type.COMPLETE, () => {
           setLoading(false);
           onReward();
@@ -50,7 +46,6 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
           console.warn("[Rewarded] IMA error", err?.getError?.());
           setError("Ad error");
           setLoading(false);
-          // in caso di errore, per UX sblocchiamo comunque
           onReward();
           onClose();
         });
@@ -66,14 +61,22 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
         }
       };
 
-      adsLoader.addEventListener((win.google.ima.AdsManagerLoadedEvent as any).Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
-      adsLoader.addEventListener(win.google.ima.AdErrorEvent.Type.AD_ERROR, (err: any) => {
-        console.warn("[Rewarded] loader error", err?.getError?.());
-        setError("Loader error");
-        setLoading(false);
-        onReward();
-        onClose();
-      }, false);
+      adsLoader.addEventListener(
+        (win.google.ima.AdsManagerLoadedEvent as any).Type.ADS_MANAGER_LOADED,
+        onAdsManagerLoaded,
+        false
+      );
+      adsLoader.addEventListener(
+        win.google.ima.AdErrorEvent.Type.AD_ERROR,
+        (err: any) => {
+          console.warn("[Rewarded] loader error", err?.getError?.());
+          setError("Loader error");
+          setLoading(false);
+          onReward();
+          onClose();
+        },
+        false
+      );
 
       const adsRequest = new win.google.ima.AdsRequest();
       adsRequest.adTagUrl = VAST_URL;
@@ -98,9 +101,11 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
     }}>
       <div style={{ width: 680, maxWidth: "95%", background: "#111", color: "#fff", borderRadius: 12, padding: 12 }}>
         <h3 style={{ margin: 0, fontSize: 18 }}>Watch ad to unlock</h3>
-        <div ref={adContainerRef}
-             style={{ width: "100%", aspectRatio: "16/9", background: "#000", marginTop: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {/* container per IMA */}
+        <div
+          ref={adContainerRef}
+          style={{ width: "100%", aspectRatio: "16/9", background: "#000", marginTop: 8,
+                   display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
           <video ref={videoRef} style={{ display: "none" }} />
           {!VAST_URL && loading && <p style={{ color: "#bbb" }}>Simulating rewarded… 5s</p>}
           {error && <p style={{ color: "#f66" }}>Ad error: {error}</p>}
@@ -112,3 +117,6 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
     </div>
   );
 }
+
+// esporta anche come default per compatibilità
+export default RewardedAdModal;
