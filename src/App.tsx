@@ -16,7 +16,7 @@ function GameRoute() {
   const navigate = useNavigate();
   const [sp] = useSearchParams();
   const langParam = sp.get("lang");
-  const lang = (langParam === "en" || langParam === "es" || langParam === "pt") ? (langParam as "en" | "es" | "pt") : "en";
+  const lang = (langParam === "en" || langParam === "es" || langParam === "pt") ? (langParam as "en"|"es"|"pt") : "en";
   return <KingdomOfPleasure language={lang} onBack={() => navigate(-1)} />;
 }
 
