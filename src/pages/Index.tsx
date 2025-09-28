@@ -1,25 +1,19 @@
-
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WelcomeScreen from '@/components/WelcomeScreen';
 import LanguageSelection from '@/components/LanguageSelection';
-import MainSections from '@/components/MainSections';
 
 const Index = () => {
-  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'language' | 'main'>('welcome');
-  const [selectedLanguage, setSelectedLanguage] = useState<'pt' | 'es' | 'en' | null>(null);
+  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'language'>('welcome');
+  const navigate = useNavigate();
 
   const handleStartFromWelcome = () => {
     setCurrentScreen('language');
   };
 
+  // Quando l’utente sceglie la lingua → vai alla rotta /play con il parametro ?lang=
   const handleLanguageSelect = (language: 'pt' | 'es' | 'en') => {
-    setSelectedLanguage(language);
-    setCurrentScreen('main');
-  };
-
-  const handleBackToLanguage = () => {
-    setCurrentScreen('language');
-    setSelectedLanguage(null);
+    navigate(`/play?lang=${language}`);
   };
 
   if (currentScreen === 'welcome') {
@@ -28,10 +22,6 @@ const Index = () => {
 
   if (currentScreen === 'language') {
     return <LanguageSelection onSelectLanguage={handleLanguageSelect} />;
-  }
-
-  if (currentScreen === 'main' && selectedLanguage) {
-    return <MainSections language={selectedLanguage} onBack={handleBackToLanguage} />;
   }
 
   // Fallback
