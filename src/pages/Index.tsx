@@ -11,7 +11,6 @@ const Index = () => {
     setCurrentScreen('language');
   };
 
-  // Quando l’utente sceglie la lingua → vai alla rotta /play con il parametro ?lang=
   const handleLanguageSelect = (language: 'pt' | 'es' | 'en') => {
     navigate(`/play?lang=${language}`);
   };
@@ -24,7 +23,6 @@ const Index = () => {
     return <LanguageSelection onSelectLanguage={handleLanguageSelect} />;
   }
 
-  // Fallback
   return <WelcomeScreen onStart={handleStartFromWelcome} />;
 };
 
