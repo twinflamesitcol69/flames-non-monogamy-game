@@ -5,7 +5,7 @@ const AD_SLOT   = import.meta.env.VITE_ADSENSE_SLOT   || "1030982111";
 // Abilita banner solo se il valore è ESATTAMENTE "true"
 const ADS_ENABLED = String(import.meta.env.VITE_ADS_ENABLED) === "true";
 
-export default function BannerAd() {
+export function BannerAd() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isTest = new URLSearchParams(window.location.search).has("adtest");
 
@@ -50,3 +50,4 @@ export default function BannerAd() {
     </div>
   );
 }
+export default BannerAd;
