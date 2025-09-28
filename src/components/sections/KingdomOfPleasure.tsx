@@ -54,7 +54,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     localStorage.setItem("l2_unlocked", "1");
   };
 
-  const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent, isAdsEnabled } = useAds();
+  const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent, isAdsEnabled, unlockLevel } = useAds();
 
   // Load activities for current level and player count
   useEffect(() => {
@@ -478,10 +478,15 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const handleRewardedSuccess = () => {
-    console.log('handleRewardedSuccess called', { targetLevel });
-    setCurrentLevel(targetLevel);
-    setStep('playing');
-  };
+  console.log('handleRewardedSuccess called', { targetLevel });
+  // segna sblocco nel contesto (così al prossimo accesso non richiede di nuovo il rewarded)
+  unlockLevel(targetLevel);
+  // chiudi il modal (se ancora aperto)
+  setShowRewardedModal(false);
+  // entra nel livello sbloccato
+  setCurrentLevel(targetLevel);
+  setStep('playing');
+};
 
   const skipActivity = () => {
     const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
