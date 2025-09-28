@@ -16,15 +16,20 @@ const App = () => (
     <ErrorBoundary>
       <AdProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
+          {/* TUTTO il contenuto dell'app sta dentro questo wrapper con padding basso */}
+          <div className="min-h-screen pb-16">
+            <Toaster />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+
+          {/* Banner fisso in basso, montato DOPO il contenuto */}
+          <BannerAd />
         </TooltipProvider>
       </AdProvider>
     </ErrorBoundary>
@@ -32,7 +37,4 @@ const App = () => (
 );
 
 export default App;
-
-<div className="min-h-screen pb-16">{/* contenuto */}</div>
-<BannerAd />
 
