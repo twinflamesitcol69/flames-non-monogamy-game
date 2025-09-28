@@ -1,155 +1,114 @@
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Play, AlertTriangle } from 'lucide-react';
-import { useAds } from '@/contexts/AdContext';
+import React, { useEffect, useRef, useState } from "react";
 
-interface RewardedAdModalProps {
-  isOpen: boolean;
+const ENABLED = String(import.meta.env.VITE_ADS_ENABLED) === "true";
+const VAST_URL = import.meta.env.VITE_ADS_REWARDED_VAST_URL || "";
+
+type Props = {
+  open: boolean;
   onClose: () => void;
-  onSuccess: () => void;
-  language: 'pt' | 'es' | 'en';
-  targetLevel: 2 | 3;
-}
-
-const translations = {
-  en: {
-    title: "Ready for the next level?",
-    description: "Watch a short ad to unlock it now.",
-    watchAd: "Watch Ad",
-    cancel: "Cancel",
-    errorTitle: "Ad Error",
-    errorMessage: "The ad didn't load. Try again?",
-    retry: "Retry",
-    maybeLater: "Maybe later",
-    loading: "Loading ad..."
-  },
-  es: {
-    title: "¿Listo para el siguiente nivel?",
-    description: "Mira un anuncio corto para desbloquearlo ahora.",
-    watchAd: "Ver Anuncio",
-    cancel: "Cancelar",
-    errorTitle: "Error de Anuncio",
-    errorMessage: "El anuncio no se cargó. ¿Intentar de nuevo?",
-    retry: "Reintentar",
-    maybeLater: "Tal vez más tarde",
-    loading: "Cargando anuncio..."
-  },
-  pt: {
-    title: "Pronto para o próximo nível?",
-    description: "Assista a um anúncio curto para desbloqueá-lo agora.",
-    watchAd: "Assistir Anúncio",
-    cancel: "Cancelar",
-    errorTitle: "Erro do Anúncio",
-    errorMessage: "O anúncio não carregou. Tentar novamente?",
-    retry: "Tentar Novamente",
-    maybeLater: "Talvez mais tarde",
-    loading: "Carregando anúncio..."
-  }
+  onReward: () => void; // chiamato quando l'utente guadagna l'accesso a L2/L3
 };
 
-export const RewardedAdModal = ({ isOpen, onClose, onSuccess, language, targetLevel }: RewardedAdModalProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const { unlockLevel, logEvent, isAdsEnabled } = useAds();
-  const t = translations[language];
-  
-  // Don't render if ads are disabled
-  if (!isAdsEnabled()) {
-    return null;
-  }
+export default function RewardedAdModal({ open, onClose, onReward }: Props) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const adContainerRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleWatchAd = async () => {
-    console.log('handleWatchAd called', { targetLevel });
-    setIsLoading(true);
-    logEvent('ad_rewarded_started', { targetLevel });
-
-    try {
-      // Simulate ad loading and completion
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulate success/failure (90% success rate for demo)
-      if (Math.random() > 0.1) {
-        console.log('Ad completed successfully, unlocking level', targetLevel);
-        unlockLevel(targetLevel);
-        logEvent('ad_rewarded_complete', { targetLevel });
-        onSuccess();
-        onClose();
-      } else {
-        throw new Error('Ad failed to complete');
-      }
-    } catch (error) {
-      console.log('Ad failed:', error);
-      logEvent('ad_rewarded_error', { targetLevel, error: error.message });
-      setShowError(true);
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (!open) return;
+    if (!ENABLED) { onReward(); return; } // se ads off, sblocca subito
+    if (!VAST_URL) {
+      // Fallback: “simula” rewarded per 5s (solo per flusso)
+      setLoading(true);
+      const t = setTimeout(() => { setLoading(false); onReward(); }, 5000);
+      return () => clearTimeout(t);
     }
-  };
+    // IMA SDK
+    try {
+      setLoading(true);
+      const win = window as any;
+      const adContainer = adContainerRef.current!;
+      const contentVideo = videoRef.current!;
+      const adDisplayContainer = new win.google.ima.AdDisplayContainer(adContainer, contentVideo);
+      adDisplayContainer.initialize();
 
-  const handleRetry = () => {
-    setShowError(false);
-    handleWatchAd();
-  };
+      const adsLoader = new win.google.ima.AdsLoader(adDisplayContainer);
+      adsLoader.getSettings().setVpaidMode && adsLoader.getSettings().setVpaidMode(2); // optional
 
-  if (showError) {
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-center justify-center">
-              <AlertTriangle className="w-5 h-5 text-orange-500" />
-              {t.errorTitle}
-            </DialogTitle>
-            <DialogDescription className="text-center">
-              {t.errorMessage}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex justify-center space-x-4">
-            <Button onClick={handleRetry} className="bg-primary">
-              {t.retry}
-            </Button>
-            <Button onClick={onClose} variant="outline">
-              {t.maybeLater}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+      const onAdsManagerLoaded = (e: any) => {
+        const adsManager = e.getAdsManager(contentVideo);
+        adsManager.addEventListener(win.google.ima.AdEvent.Type.LOADED, () => {
+          // Se l’ad è “rewarded”, IMA segnalerà completamento
+        });
+        adsManager.addEventListener(win.google.ima.AdEvent.Type.COMPLETE, () => {
+          setLoading(false);
+          onReward();
+          onClose();
+        });
+        adsManager.addEventListener(win.google.ima.AdErrorEvent.Type.AD_ERROR, (err: any) => {
+          console.warn("[Rewarded] IMA error", err?.getError?.());
+          setError("Ad error");
+          setLoading(false);
+          // in caso di errore, per UX sblocchiamo comunque
+          onReward();
+          onClose();
+        });
+        try {
+          adsManager.init(640, 360, win.google.ima.ViewMode.NORMAL);
+          adsManager.start();
+        } catch (err) {
+          console.warn("[Rewarded] start error", err);
+          setError("Start error");
+          setLoading(false);
+          onReward();
+          onClose();
+        }
+      };
+
+      adsLoader.addEventListener((win.google.ima.AdsManagerLoadedEvent as any).Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
+      adsLoader.addEventListener(win.google.ima.AdErrorEvent.Type.AD_ERROR, (err: any) => {
+        console.warn("[Rewarded] loader error", err?.getError?.());
+        setError("Loader error");
+        setLoading(false);
+        onReward();
+        onClose();
+      }, false);
+
+      const adsRequest = new win.google.ima.AdsRequest();
+      adsRequest.adTagUrl = VAST_URL;
+      adsRequest.linearAdSlotWidth = 640;
+      adsRequest.linearAdSlotHeight = 360;
+      adsLoader.requestAds(adsRequest);
+    } catch (e) {
+      console.warn("[Rewarded] IMA init error", e);
+      setError("Init error");
+      setLoading(false);
+      onReward();
+      onClose();
+    }
+  }, [open, onClose, onReward]);
+
+  if (!open) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-center">{t.title}</DialogTitle>
-          <DialogDescription className="text-center">
-            {t.description}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="flex justify-center space-x-4">
-          <Button 
-            onClick={handleWatchAd} 
-            disabled={isLoading}
-            className="bg-primary"
-          >
-            {isLoading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                {t.loading}
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                {t.watchAd}
-              </>
-            )}
-          </Button>
-          <Button onClick={onClose} variant="outline" disabled={isLoading}>
-            {t.cancel}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <div style={{
+      position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)",
+      display: "flex", alignItems: "center", justifyContent: "center", zIndex: 60
+    }}>
+      <div style={{ width: 680, maxWidth: "95%", background: "#111", color: "#fff", borderRadius: 12, padding: 12 }}>
+        <h3 style={{ margin: 0, fontSize: 18 }}>Watch ad to unlock</h3>
+        <div ref={adContainerRef}
+             style={{ width: "100%", aspectRatio: "16/9", background: "#000", marginTop: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {/* container per IMA */}
+          <video ref={videoRef} style={{ display: "none" }} />
+          {!VAST_URL && loading && <p style={{ color: "#bbb" }}>Simulating rewarded… 5s</p>}
+          {error && <p style={{ color: "#f66" }}>Ad error: {error}</p>}
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 8 }}>
+          <button onClick={onClose} style={{ padding: "6px 12px" }}>Close</button>
+        </div>
+      </div>
+    </div>
   );
-};
+}
