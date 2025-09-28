@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useSearchParams } from "react-router-dom";
 import { AdProvider } from "@/contexts/AdContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
@@ -14,8 +14,9 @@ const queryClient = new QueryClient();
 
 function GameRoute() {
   const navigate = useNavigate();
-  // TODO: se vuoi leggere ?lang=es/pt/en dalla URL, fai qui il parsing
-  const lang: "en" | "es" | "pt" = "en";
+  const [sp] = useSearchParams();
+  const langParam = sp.get("lang");
+  const lang = (langParam === "en" || langParam === "es" || langParam === "pt") ? (langParam as "en" | "es" | "pt") : "en";
   return <KingdomOfPleasure language={lang} onBack={() => navigate(-1)} />;
 }
 
