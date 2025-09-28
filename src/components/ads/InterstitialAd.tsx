@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { X, AlertTriangle } from 'lucide-react';
 import { useAds } from '@/contexts/AdContext';
-
+ 
 interface InterstitialAdProps {
   isOpen: boolean;
   onClose: () => void;
