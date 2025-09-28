@@ -1,147 +1,52 @@
-import { useState, useEffect, useRef } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useAds } from '@/contexts/AdContext';
+import React, { useEffect, useRef } from "react";
 
-interface BannerAdProps {
-  language: 'pt' | 'es' | 'en';
-}
+const AD_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || "ca-pub-7997489223643022";
+const AD_SLOT   = import.meta.env.VITE_ADSENSE_SLOT   || "1030982111";
+// Abilita banner solo se il valore è ESATTAMENTE "true"
+const ADS_ENABLED = String(import.meta.env.VITE_ADS_ENABLED) === "true";
 
-// Declare adsbygoogle for TypeScript
-declare global {
-  interface Window {
-    adsbygoogle: any[];
-  }
-}
-
-const translations = {
-  en: {
-    expand: "Show Ad",
-    collapse: "Hide Ad"
-  },
-  es: {
-    expand: "Mostrar Anuncio",
-    collapse: "Ocultar Anuncio"
-  },
-  pt: {
-    expand: "Mostrar Anúncio", 
-    collapse: "Ocultar Anúncio"
-  }
-};
-
-export const BannerAd = ({ language }: BannerAdProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [autoCollapseTimer, setAutoCollapseTimer] = useState<NodeJS.Timeout | null>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
-  const [adError, setAdError] = useState(false);
-  const adRef = useRef<HTMLDivElement>(null);
-  const { logEvent, adState, isAdsEnabled } = useAds();
-  const t = translations[language];
-  
-  // Don't render if ads are disabled
-  if (!isAdsEnabled()) {
-    return null;
-  }
-
-  // Check for test mode
-  const isTestMode = new URLSearchParams(window.location.search).get('adtest') === '1';
+export default function BannerAd() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isTest = new URLSearchParams(window.location.search).has("adtest");
 
   useEffect(() => {
-    // Auto-collapse after 10 seconds on small screens
-    const timer = setTimeout(() => {
-      if (window.innerWidth < 768) {
-        setIsCollapsed(true);
-      }
-    }, 10000);
-    
-    setAutoCollapseTimer(timer);
-    logEvent('ad_banner_impression');
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [logEvent]);
-
-  useEffect(() => {
-    // Load AdSense ad only if consent is given
-    if (adState.hasConsent && adRef.current && !adLoaded && !adError) {
-      try {
-        // Initialize adsbygoogle if not available
-        window.adsbygoogle = window.adsbygoogle || [];
-        
-        // Push the ad configuration
-        window.adsbygoogle.push({});
-        setAdLoaded(true);
-      } catch (error) {
-        console.error('AdSense banner failed to load:', error);
-        setAdError(true);
-      }
+    if (!ADS_ENABLED) return;
+    try {
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+      (window as any).adsbygoogle.push({});
+    } catch (e) {
+      console.warn("adsbygoogle push error:", e);
     }
-  }, [adState.hasConsent, adLoaded, adError]);
+  }, []);
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-    if (autoCollapseTimer) {
-      clearTimeout(autoCollapseTimer);
-      setAutoCollapseTimer(null);
-    }
-  };
-
-  // Fixed height to prevent CLS - mobile: 56px, desktop: 90px
-  const bannerHeight = 'h-14 md:h-[90px]';
+  if (!ADS_ENABLED) return null;
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border transition-transform duration-300 ${
-      isCollapsed ? 'transform translate-y-full' : ''
-    }`}>
-      {isCollapsed && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={toggleCollapse}
-          className="absolute -top-8 right-4 bg-white border border-b-0 rounded-t-md h-8 px-2 text-xs"
-        >
-          <ChevronUp className="w-3 h-3 mr-1" />
-          {t.expand}
-        </Button>
-      )}
-      
-      {!isCollapsed && (
-        <>
-          <Button
-            variant="ghost" 
-            size="sm"
-            onClick={toggleCollapse}
-            className="absolute top-1 right-1 h-6 w-6 p-0 text-muted-foreground hover:text-foreground md:hidden"
-          >
-            <ChevronDown className="w-3 h-3" />
-          </Button>
-          
-          <div className={`${bannerHeight} flex items-center justify-center overflow-hidden`}>
-            {adState.hasConsent ? (
-              <div ref={adRef} className="w-full h-full flex items-center justify-center">
-                <ins 
-                  className="adsbygoogle"
-                  style={{ display: 'block', width: '100%', height: '100%' }}
-                  data-ad-client="ca-pub-7997489223643022"
-                  data-ad-slot="1030982111"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                  {...(isTestMode && { 'data-adtest': 'on' })}
-                />
-              </div>
-            ) : (
-              // Placeholder when consent not given - same height to prevent CLS
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-purple-50 to-pink-50 text-muted-foreground">
-                <div className="text-center">
-                  <div className="text-sm font-medium">Advertisement</div>
-                  <div className="text-xs opacity-60">Consent required</div>
-                </div>
-              </div>
-            )}
-          </div>
-        </>
-      )}
+    <div
+      ref={containerRef}
+      style={{
+        position: "fixed",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: 56, // se alzi questa misura, poi aumentiamo il padding in App.tsx
+        background: "#fff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 50,
+        borderTop: "1px solid rgba(0,0,0,0.06)",
+      }}
+    >
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block", width: "100%", height: "100%" }}
+        data-ad-client={AD_CLIENT}
+        data-ad-slot={AD_SLOT}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+        {...(isTest ? { "data-adtest": "on" } : {})}
+      />
     </div>
   );
-};
+}
