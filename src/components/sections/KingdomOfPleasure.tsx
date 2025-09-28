@@ -479,11 +479,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   const handleRewardedSuccess = () => {
   console.log('handleRewardedSuccess called', { targetLevel });
-  // segna sblocco nel contesto (così al prossimo accesso non richiede di nuovo il rewarded)
-  unlockLevel(targetLevel);
-  // chiudi il modal (se ancora aperto)
-  setShowRewardedModal(false);
-  // entra nel livello sbloccato
+  unlockLevel(targetLevel);                 // ⬅️ aggiorna il contesto (L2/L3 sbloccati)
+  setShowRewardedModal(false);              // ⬅️ chiudi overlay per evitare “doppi click”
   setCurrentLevel(targetLevel);
   setStep('playing');
 };
