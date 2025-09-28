@@ -7,6 +7,7 @@ import { AdProvider } from "@/contexts/AdContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import BannerAd from "./components/ads/BannerAd"
 
 const queryClient = new QueryClient();
 
@@ -31,3 +32,7 @@ const App = () => (
 );
 
 export default App;
+
+<div className="min-h-screen pb-16">{/* contenuto */}</div>
+<BannerAd />
+
