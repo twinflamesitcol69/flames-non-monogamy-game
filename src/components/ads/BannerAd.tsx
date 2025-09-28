@@ -2,16 +2,22 @@ import React, { useEffect, useRef } from "react";
 
 const AD_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || "ca-pub-7997489223643022";
 const AD_SLOT   = import.meta.env.VITE_ADSENSE_SLOT   || "1030982111";
-const url = new URLSearchParams(window.location.search);
-const forceByTest = url.has("adtest"); // forza ON se usi ?adtest=1
+
+// Flag da URL per test: ?adtest=1
+const forceByTest = new URLSearchParams(window.location.search).has("adtest");
+
+// ON solo se l'env è esattamente "true", ma in test lo forziamo
 const ADS_FLAG = String(import.meta.env.VITE_ADS_ENABLED) === "true";
-const ENABLED = ADS_FLAG || forceByTest; // <— chiave: attiva anche in test
+const ENABLED = ADS_FLAG || forceByTest;
 
 export function BannerAd() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!ENABLED) return;
+    if (!ENABLED) {
+      console.log("[BannerAd] disabled (VITE_ADS_ENABLED != 'true')");
+      return;
+    }
     try {
       (window as any).adsbygoogle = (window as any).adsbygoogle || [];
       (window as any).adsbygoogle.push({});
@@ -21,10 +27,7 @@ export function BannerAd() {
     }
   }, []);
 
-  if (!ENABLED) {
-    if (forceByTest) console.log("[BannerAd] DISABLED by env, but test flag present (should not happen)");
-    return null;
-  }
+  if (!ENABLED) return null;
 
   return (
     <div
@@ -34,7 +37,7 @@ export function BannerAd() {
         left: 0,
         right: 0,
         bottom: 0,
-        height: 56,
+        height: 56,              // se alzi questa misura, aumenta il pb in App.tsx
         background: "#fff",
         display: "flex",
         alignItems: "center",
@@ -50,7 +53,8 @@ export function BannerAd() {
         data-ad-slot={AD_SLOT}
         data-ad-format="auto"
         data-full-width-responsive="true"
-        data-adtest="on"  // in presenza di ?adtest=1 va bene tenerlo sempre ON
+        // in sessioni di test va bene forzare il creative di test
+        {...(forceByTest ? { "data-adtest": "on" } as any : {})}
       />
     </div>
   );
