@@ -9,8 +9,8 @@ import { activities } from '@/data/kingdomActivities';
 import { badges } from '@/data/kingdomBadges';
 import { selectPlayersForActivity, formatActivityText, requiresConsent } from '@/utils/playerSelection';
 import { useAds } from '@/contexts/AdContext';
-import { BannerAd } from '@/components/ads/BannerAd';
-import { RewardedAdModal } from '@/components/ads/RewardedAdModal';
+import BannerAd from '@/components/ads/BannerAd';
+import RewardedAdModal from '@/components/ads/RewardedAdModal';
 import { InterstitialAd } from '@/components/ads/InterstitialAd';
 import { DebugPanel } from '@/components/DebugPanel';
 import { SafeModeBadge } from '@/components/SafeModeBadge';
@@ -42,6 +42,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     suggestions: '',
     email: ''
   });
+  const [rewardOpen, setRewardOpen] = useState(false);
+  const [unlocked, setUnlocked] = useState<boolean>(() => localStorage.getItem("l2_unlocked") === "1");
+
+  const requestUnlock = () => {
+    if (!unlocked) setRewardOpen(true);
+  };
+
+  const handleReward = () => {
+    setUnlocked(true);
+    localStorage.setItem("l2_unlocked", "1");
+  };
 
   const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent, isAdsEnabled } = useAds();
 
@@ -946,11 +957,9 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       />
       
       <RewardedAdModal
-        isOpen={showRewardedModal}
+        open={showRewardedModal}
         onClose={() => setShowRewardedModal(false)}
-        onSuccess={handleRewardedSuccess}
-        language={language}
-        targetLevel={targetLevel}
+        onReward={handleRewardedSuccess}
       />
       
       <InterstitialAd
@@ -967,7 +976,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         language={language}
       />
       
-      <BannerAd language={language} />
+      <BannerAd />
     </div>
   );
 };
