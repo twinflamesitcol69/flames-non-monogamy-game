@@ -1,122 +1,126 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const ENABLED = String(import.meta.env.VITE_ADS_ENABLED) === "true";
-const VAST_URL = import.meta.env.VITE_ADS_REWARDED_VAST_URL || "";
-
 type Props = {
   open: boolean;
   onClose: () => void;
-  onReward: () => void; // chiamato quando l'utente guadagna l'accesso a L2/L3
+  onReward: () => void; // chiamata quando l'annuncio termina (sblocca L2/L3)
 };
 
-export function RewardedAdModal({ open, onClose, onReward }: Props) {
+declare global {
+  interface Window { google?: any; }
+}
+
+const VAST = import.meta.env.VITE_ADS_REWARDED_VAST_URL || "";
+const isTest = new URLSearchParams(window.location.search).has("adtest");
+
+export default function RewardedAdModal({ open, onClose, onReward }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const adContainerRef = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [started, setStarted] = useState(false);
+
+  const adsManagerRef = useRef<any>(null);
+  const adsLoaderRef  = useRef<any>(null);
+  const displayRef    = useRef<any>(null);
 
   useEffect(() => {
-    if (!open) return;
-    if (!ENABLED) { onReward(); return; } // se ads OFF, sblocca subito
-    if (!VAST_URL) {
-      // Fallback: simula rewarded per 5s
-      setLoading(true);
-      const t = setTimeout(() => { setLoading(false); onReward(); }, 5000);
-      return () => clearTimeout(t);
+    if (!open) {
+      try { adsManagerRef.current?.destroy?.(); } catch {}
+      adsManagerRef.current = null;
+      setLoading(false);
+      setStarted(false);
     }
-    try {
-      setLoading(true);
-      const win = window as any;
-      const adContainer = adContainerRef.current!;
-      const contentVideo = videoRef.current!;
-      const adDisplayContainer = new win.google.ima.AdDisplayContainer(adContainer, contentVideo);
-      adDisplayContainer.initialize();
+  }, [open]);
 
-      const adsLoader = new win.google.ima.AdsLoader(adDisplayContainer);
-      adsLoader.getSettings?.().setVpaidMode?.(2);
+  const start = () => {
+    if (!open || started) return;
+    setStarted(true);
+    setLoading(true);
 
-      const onAdsManagerLoaded = (e: any) => {
-        const adsManager = e.getAdsManager(contentVideo);
-        adsManager.addEventListener(win.google.ima.AdEvent.Type.COMPLETE, () => {
-          setLoading(false);
-          onReward();
-          onClose();
-        });
-        adsManager.addEventListener(win.google.ima.AdErrorEvent.Type.AD_ERROR, (err: any) => {
-          console.warn("[Rewarded] IMA error", err?.getError?.());
-          setError("Ad error");
-          setLoading(false);
-          onReward();
-          onClose();
-        });
-        try {
-          adsManager.init(640, 360, win.google.ima.ViewMode.NORMAL);
-          adsManager.start();
-        } catch (err) {
-          console.warn("[Rewarded] start error", err);
-          setError("Start error");
-          setLoading(false);
-          onReward();
-          onClose();
-        }
-      };
-
-      adsLoader.addEventListener(
-        (win.google.ima.AdsManagerLoadedEvent as any).Type.ADS_MANAGER_LOADED,
-        onAdsManagerLoaded,
-        false
-      );
-      adsLoader.addEventListener(
-        win.google.ima.AdErrorEvent.Type.AD_ERROR,
-        (err: any) => {
-          console.warn("[Rewarded] loader error", err?.getError?.());
-          setError("Loader error");
-          setLoading(false);
-          onReward();
-          onClose();
-        },
-        false
-      );
-
-      const adsRequest = new win.google.ima.AdsRequest();
-      adsRequest.adTagUrl = VAST_URL;
-      adsRequest.linearAdSlotWidth = 640;
-      adsRequest.linearAdSlotHeight = 360;
-      adsLoader.requestAds(adsRequest);
-    } catch (e) {
-      console.warn("[Rewarded] IMA init error", e);
-      setError("Init error");
+    const g = window.google?.ima;
+    if (!g) {
+      // IMA non è caricato? fallback: sblocca comunque per UX
       setLoading(false);
       onReward();
-      onClose();
+      return;
     }
-  }, [open, onClose, onReward]);
+
+    try {
+      displayRef.current = new g.AdDisplayContainer(containerRef.current, videoRef.current);
+      displayRef.current.initialize?.();
+      adsLoaderRef.current = new g.AdsLoader(displayRef.current);
+
+      adsLoaderRef.current.addEventListener(
+        g.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+        (ev: any) => {
+          try {
+            const m = ev.getAdsManager(videoRef.current);
+            adsManagerRef.current = m;
+
+            m.addEventListener(g.AdEvent.Type.COMPLETE, () => {
+              try { m.destroy(); } catch {}
+              setLoading(false);
+              onReward(); // ✅ sblocca
+            });
+
+            m.addEventListener(g.AdErrorEvent.Type.AD_ERROR, () => {
+              try { m.destroy(); } catch {}
+              setLoading(false);
+              onReward(); // fallback: sblocca
+            });
+
+            const w = containerRef.current?.clientWidth || 360;
+            const h = Math.round(w * 9 / 16);
+            m.init(w, h, g.ViewMode.NORMAL);
+            m.start();
+          } catch {
+            setLoading(false);
+            onReward();
+          }
+        }
+      );
+
+      adsLoaderRef.current.addEventListener(g.AdErrorEvent.Type.AD_ERROR, () => {
+        setLoading(false);
+        onReward(); // fallback: sblocca
+      });
+
+      const req = new g.AdsRequest();
+      let tag = VAST;
+      if (isTest && tag) tag += (tag.includes("?") ? "&" : "?") + "adtest=on";
+      req.adTagUrl = tag || "about:blank"; // se vuoto, evitiamo errori
+      const w = containerRef.current?.clientWidth || 360;
+      req.linearAdSlotWidth = w;
+      req.linearAdSlotHeight = Math.round(w * 9 / 16);
+      req.nonLinearAdSlotWidth = w;
+      req.nonLinearAdSlotHeight = 60;
+
+      adsLoaderRef.current.requestAds(req);
+    } catch {
+      setLoading(false);
+      onReward();
+    }
+  };
 
   if (!open) return null;
 
   return (
-    <div style={{
-      position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)",
-      display: "flex", alignItems: "center", justifyContent: "center", zIndex: 60
-    }}>
-      <div style={{ width: 680, maxWidth: "95%", background: "#111", color: "#fff", borderRadius: 12, padding: 12 }}>
-        <h3 style={{ margin: 0, fontSize: 18 }}>Watch ad to unlock</h3>
-        <div
-          ref={adContainerRef}
-          style={{ width: "100%", aspectRatio: "16/9", background: "#000", marginTop: 8,
-                   display: "flex", alignItems: "center", justifyContent: "center" }}
-        >
-          <video ref={videoRef} style={{ display: "none" }} />
-          {!VAST_URL && loading && <p style={{ color: "#bbb" }}>Simulating rewarded… 5s</p>}
-          {error && <p style={{ color: "#f66" }}>Ad error: {error}</p>}
+    <div className="fixed inset-0 z-[60] bg-black/60 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-4 relative" onClick={(e)=>e.stopPropagation()}>
+        <button aria-label="Close" onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">✕</button>
+        <h3 className="text-lg font-semibold mb-3 text-center">Watch Ad to unlock</h3>
+        <div ref={containerRef} className="w-full rounded overflow-hidden bg-black relative">
+          <video ref={videoRef} className="w-full h-auto" playsInline webkit-playsinline="true" />
+          {!started && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button onClick={start} className="px-4 py-2 rounded bg-purple-600 text-white font-medium">Watch Ad</button>
+            </div>
+          )}
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 8 }}>
-          <button onClick={onClose} style={{ padding: "6px 12px" }}>Close</button>
+        <div className="mt-3 text-center text-sm text-gray-500">
+          {loading ? "Loading..." : "Your level will unlock after the ad."}
         </div>
       </div>
     </div>
   );
 }
-
-// esporta anche come default per compatibilità
-export default RewardedAdModal;
