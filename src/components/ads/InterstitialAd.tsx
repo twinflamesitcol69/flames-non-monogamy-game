@@ -141,3 +141,4 @@ export const InterstitialAd = ({ isOpen, onClose, language }: InterstitialAdProp
     </Dialog>
   );
 };
+export default InterstitialAd;
