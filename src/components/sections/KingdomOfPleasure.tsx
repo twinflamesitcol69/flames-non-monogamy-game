@@ -640,142 +640,163 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   }
 
   if (step === 'level-select') {
-    const levels = [
-      {
-        id: 1 as GameLevel,
-        name: t.levelSelect.level1.name,
-        description: t.levelSelect.level1.description,
-        gradient: 'from-green-400 to-blue-500',
-        bgGradient: 'from-green-50 to-blue-50'
-      },
-      {
-        id: 2 as GameLevel,
-        name: t.levelSelect.level2.name,
-        description: t.levelSelect.level2.description,
-        gradient: 'from-orange-400 to-red-500',
-        bgGradient: 'from-orange-50 to-red-50'
-      },
-      {
-        id: 3 as GameLevel,
-        name: t.levelSelect.level3.name,
-        description: t.levelSelect.level3.description,
-        gradient: 'from-red-400 to-purple-500',
-        bgGradient: 'from-red-50 to-purple-50'
-      }
-    ];
+  const levels = [
+    {
+      id: 1 as GameLevel,
+      name: t.levelSelect.level1.name,
+      description: t.levelSelect.level1.description,
+      gradient: 'from-green-400 to-blue-500',
+      bgGradient: 'from-green-50 to-blue-50'
+    },
+    {
+      id: 2 as GameLevel,
+      name: t.levelSelect.level2.name,
+      description: t.levelSelect.level2.description,
+      gradient: 'from-orange-400 to-red-500',
+      bgGradient: 'from-orange-50 to-red-50'
+    },
+    {
+      id: 3 as GameLevel,
+      name: t.levelSelect.level3.name,
+      description: t.levelSelect.level3.description,
+      gradient: 'from-red-400 to-purple-500',
+      bgGradient: 'from-red-50 to-purple-50'
+    }
+  ];
 
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
-          <div className="flex items-center justify-between mb-8">
-            <Button
-              variant="ghost"
-              onClick={() => setStep('setup')}
-              className="flex items-center text-gray-600 hover:text-gray-800"
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+      <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => setStep('setup')}
+            className="flex items-center text-gray-600 hover:text-gray-800"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+          </Button>
+          <h2 className="font-playfair font-semibold text-lg text-gray-800">
+            {t.levelSelect.title}
+          </h2>
+          <SafeModeBadge />
+        </div>
+
+        <div className="space-y-4 mb-8">
+          {levels.map((level, index) => (
+            <button
+              key={level.id}
+              onClick={() => selectLevel(level.id)}
+              className={`game-card p-6 text-left bg-gradient-to-br ${level.bgGradient} hover:shadow-xl transition-all duration-300 group animate-fade-in w-full`}
+              style={{ animationDelay: `${index * 100}ms` }}
             >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-            </Button>
-            <h2 className="font-playfair font-semibold text-lg text-gray-800">
-              {t.levelSelect.title}
-            </h2>
-            <SafeModeBadge />
-          </div>
-
-          <div className="space-y-4 mb-8">
-            {levels.map((level, index) => (
-              <button
-                key={level.id}
-                onClick={() => selectLevel(level.id)}
-                className={`game-card p-6 text-left bg-gradient-to-br ${level.bgGradient} hover:shadow-xl transition-all duration-300 group animate-fade-in w-full`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="flex items-start space-x-4">
-                  <div className={`p-3 rounded-full bg-gradient-to-r ${level.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <span className="text-white text-xl font-bold">{level.id}</span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-gray-900 transition-colors">
-                      {level.name}
-                    </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {level.description}
-                    </p>
-                  </div>
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-full bg-gradient-to-r ${level.gradient} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <span className="text-white text-xl font-bold">{level.id}</span>
                 </div>
-              </button>
-            ))}
-          </div>
-
-          {currentLevel === 3 && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8">
-              <div className="flex items-start space-x-3">
-                <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-red-800 mb-2">{t.levelSelect.warning}</h4>
-                  <p className="text-red-700 text-sm leading-relaxed">
-                    {t.levelSelect.warningText}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-gray-900 transition-colors">
+                    {level.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {level.description}
                   </p>
                 </div>
               </div>
-            </div>
-          )}
+            </button>
+          ))}
         </div>
-      </div>
-    );
-  }
 
-  if (step === 'playing') {
-    const currentActivity = availableActivities[currentActivityIndex];
-    const formattedText = currentActivity ? formatActivityText(currentActivity.id, currentPlayerSelection, language) : '';
-
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
-        <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
-          <div className="flex items-center justify-between mb-8">
-            <Button
-              variant="ghost"
-              onClick={() => setStep('level-select')}
-              className="flex items-center text-gray-600 hover:text-gray-800"
-            >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-            </Button>
-            <div className="text-center">
-              <h2 className="font-playfair font-semibold text-lg text-gray-800">
-                {language === 'es' ? 'Nivel' : language === 'en' ? 'Level' : 'Nível'} {currentLevel}
-              </h2>
-              <p className="text-xs text-gray-500">
-                {completedActivities} {language === 'es' ? 'completadas' : language === 'en' ? 'completed' : 'completadas'}
-              </p>
-            </div>
-            <div className="w-16"></div>
-          </div>
-
-          {currentActivity && (
-            <div className="space-y-6">
-              <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 animate-scale-in">
-                <div className="text-center mb-6">
-                  <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4">
-                    <Play className="w-8 h-8 text-white" />
-                  </div>
-                </div>
-                <p className="text-lg leading-relaxed text-gray-800 text-center font-medium mb-6">
-                  {formattedText}
+        {currentLevel === 3 && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-8">
+            <div className="flex items-start space-x-3">
+              <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-red-800 mb-2">{t.levelSelect.warning}</h4>
+                <p className="text-red-700 text-sm leading-relaxed">
+                  {t.levelSelect.warningText}
                 </p>
-                <div className="flex space-x-3">
-                  <Button onClick={handleActivityComplete} className="flex-1 btn-romantic">
-                    {t.game.done}
-                  </Button>
-                  <Button onClick={skipActivity} variant="outline" className="flex-1">
-                    {t.game.skip}
-                  </Button>
-                </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    );
-  }
+
+      {/* ✅ Montiamo il Rewarded QUI, perché lo apri da level-select */}
+      <RewardedAdModal
+        open={showRewardedModal}
+        onClose={() => setShowRewardedModal(false)}
+        onReward={handleRewardedSuccess}
+      />
+    </div>
+  );
+}
+
+ if (step === 'playing') {
+  const currentActivity = availableActivities[currentActivityIndex];
+  const formattedText = currentActivity ? formatActivityText(currentActivity.id, currentPlayerSelection, language) : '';
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+      <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => setStep('level-select')}
+            className="flex items-center text-gray-600 hover:text-gray-800"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+          </Button>
+          <div className="text-center">
+            <h2 className="font-playfair font-semibold text-lg text-gray-800">
+              {language === 'es' ? 'Nivel' : language === 'en' ? 'Level' : 'Nível'} {currentLevel}
+            </h2>
+            <p className="text-xs text-gray-500">
+              {completedActivities} {language === 'es' ? 'completadas' : language === 'en' ? 'completed' : 'completadas'}
+            </p>
+          </div>
+          <div className="w-16"></div>
+        </div>
+
+        {currentActivity && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 animate-scale-in">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4">
+                  <Play className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <p className="text-lg leading-relaxed text-gray-800 text-center font-medium mb-6">
+                {formattedText}
+              </p>
+              <div className="flex space-x-3">
+                <Button onClick={handleActivityComplete} className="flex-1 btn-romantic">
+                  {t.game.done}
+                </Button>
+                <Button onClick={skipActivity} variant="outline" className="flex-1">
+                  {t.game.skip}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ✅ In playing montiamo i modali che servono durante il gioco */}
+      <ConsentModal
+        isOpen={showConsentModal}
+        onConfirm={handleConsentConfirm}
+        onReject={handleConsentReject}
+        language={language}
+      />
+
+      <InterstitialAd
+        isOpen={showInterstitial}
+        onClose={handleInterstitialClose}
+        language={language}
+      />
+    </div>
+  );
+}
 
   if (step === 'level-complete') {
     return (
@@ -949,27 +970,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             </Button>
           </div>
         </div>
-      </div>
-
-      <ConsentModal
-        isOpen={showConsentModal}
-        onConfirm={handleConsentConfirm}
-        onReject={handleConsentReject}
-        language={language}
-      />
-      
-      <RewardedAdModal
-        open={showRewardedModal}
-        onClose={() => setShowRewardedModal(false)}
-        onReward={handleRewardedSuccess}
-      />
-      
-      <InterstitialAd
-        isOpen={showInterstitial}
-        onClose={handleInterstitialClose}
-        language={language}
-      />
-      
+      </div>     
+       
       <DebugPanel
         currentStep={step}
         currentLevel={currentLevel}
@@ -978,7 +980,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         language={language}
       />
       
-      <BannerAd />
     </div>
   );
 };
