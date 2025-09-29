@@ -1,29 +1,41 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import WelcomeScreen from '@/components/WelcomeScreen';
-import LanguageSelection from '@/components/LanguageSelection';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import WelcomeScreen from "@/components/WelcomeScreen";
+import LanguageSelection from "@/components/LanguageSelection";
+import BannerAd from "@/components/ads/BannerAd";
 
 const Index = () => {
-  const [currentScreen, setCurrentScreen] = useState<'welcome' | 'language'>('welcome');
+  const [currentScreen, setCurrentScreen] = useState<"welcome" | "language">("welcome");
   const navigate = useNavigate();
 
   const handleStartFromWelcome = () => {
-    setCurrentScreen('language');
+    setCurrentScreen("language");
   };
 
-  const handleLanguageSelect = (language: 'pt' | 'es' | 'en') => {
+  const handleLanguageSelect = (language: "pt" | "es" | "en") => {
     navigate(`/play?lang=${language}`);
   };
 
-  if (currentScreen === 'welcome') {
-    return <WelcomeScreen onStart={handleStartFromWelcome} />;
-  }
+  // Scegli il contenuto principale della pagina
+  const mainContent =
+    currentScreen === "welcome" ? (
+      <WelcomeScreen onStart={handleStartFromWelcome} />
+    ) : currentScreen === "language" ? (
+      <LanguageSelection onSelectLanguage={handleLanguageSelect} />
+    ) : (
+      <WelcomeScreen onStart={handleStartFromWelcome} />
+    );
 
-  if (currentScreen === 'language') {
-    return <LanguageSelection onSelectLanguage={handleLanguageSelect} />;
-  }
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-6">
+      {mainContent}
 
-  return <WelcomeScreen onStart={handleStartFromWelcome} />;
+      {/* Banner AdSense inline, policy-safe */}
+      <div className="mt-6">
+        <BannerAd />
+      </div>
+    </div>
+  );
 };
 
 export default Index;
