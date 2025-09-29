@@ -7,7 +7,7 @@ import { AdProvider } from "@/contexts/AdContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import BannerAd from "./components/ads/BannerAd";
+//import BannerAd from "./components/ads/BannerAd";
 import KingdomOfPleasure from "./components/sections/KingdomOfPleasure";
 
 const queryClient = new QueryClient();
@@ -36,7 +36,7 @@ const App = () => (
               </Routes>
             </BrowserRouter>
           </div>
-          <BannerAd />
+         // <BannerAd />
         </TooltipProvider>
       </AdProvider>
     </ErrorBoundary>
