@@ -36,7 +36,6 @@ const App = () => (
               </Routes>
             </BrowserRouter>
           </div>
-         // <BannerAd />
         </TooltipProvider>
       </AdProvider>
     </ErrorBoundary>
