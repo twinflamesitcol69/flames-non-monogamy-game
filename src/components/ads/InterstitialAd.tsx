@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAds } from "@/contexts/AdContext";
 
 export type InterstitialAdProps = {
   isOpen: boolean;
-  onClose: () => void;         // chiamata al termine o in errore
+  onClose: () => void;
   language: "pt" | "es" | "en";
 };
 
@@ -25,6 +25,13 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
   const adsLoaderRef  = useRef<any>(null);
   const displayRef    = useRef<any>(null);
 
+  const t = {
+    en: { title: "Advertisement", loading: "Loading ad...", start: "▶ Play Ad" },
+    es: { title: "Publicidad",    loading: "Cargando...",   start: "▶ Reproducir" },
+    pt: { title: "Publicidade",   loading: "Carregando...", start: "▶ Reproduzir" },
+  }[language];
+
+  // Reset state when modal closes
   useEffect(() => {
     if (!isOpen) {
       try { adsManagerRef.current?.destroy?.(); } catch {}
@@ -34,11 +41,12 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
     }
   }, [isOpen]);
 
-  const t = {
-    en: { title: "Advertisement", start: "Play Ad" },
-    es: { title: "Publicidad",    start: "Reproducir anuncio" },
-    pt: { title: "Publicidade",    start: "Reproduzir anúncio" },
-  }[language];
+  // Auto-start the ad as soon as the modal opens
+  useEffect(() => {
+    if (!isOpen || started) return;
+    const timer = setTimeout(start, 400); // small delay for DOM to render
+    return () => clearTimeout(timer);
+  }, [isOpen]);
 
   const start = () => {
     if (!isOpen || started) return;
@@ -46,7 +54,12 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
     setLoading(true);
 
     const g = window.google?.ima;
-    if (!g) { setLoading(false); onClose(); return; }
+    if (!g || !VAST) {
+      // No IMA SDK or no VAST URL configured — close immediately
+      setLoading(false);
+      onClose();
+      return;
+    }
 
     try {
       displayRef.current = new g.AdDisplayContainer(containerRef.current, videoRef.current);
@@ -66,8 +79,7 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
               onClose();
             });
 
-            m.addEventListener(g.AdErrorEvent.Type.AD_ERROR, (e:any) => {
-              console.warn("Interstitial error", e);
+            m.addEventListener(g.AdErrorEvent.Type.AD_ERROR, () => {
               try { m.destroy(); } catch {}
               setLoading(false);
               onClose();
@@ -77,24 +89,23 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
             const h = Math.round(w * 9 / 16);
             m.init(w, h, g.ViewMode.NORMAL);
             m.start();
-          } catch (err) {
-            console.warn("Interstitial start error", err);
+            setLoading(false);
+          } catch {
             setLoading(false);
             onClose();
           }
         }
       );
 
-      adsLoaderRef.current.addEventListener(g.AdErrorEvent.Type.AD_ERROR, (e:any) => {
-        console.warn("Interstitial loader error", e);
+      adsLoaderRef.current.addEventListener(g.AdErrorEvent.Type.AD_ERROR, () => {
         setLoading(false);
         onClose();
       });
 
       const req = new g.AdsRequest();
       let tag = VAST;
-      if (isTest && tag) tag += (tag.includes("?") ? "&" : "?") + "adtest=on";
-      req.adTagUrl = tag || "about:blank";
+      if (isTest) tag += (tag.includes("?") ? "&" : "?") + "adtest=on";
+      req.adTagUrl = tag;
       const w = containerRef.current?.clientWidth || 360;
       req.linearAdSlotWidth = w;
       req.linearAdSlotHeight = Math.round(w * 9 / 16);
@@ -103,8 +114,7 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
 
       adsLoaderRef.current.requestAds(req);
       logEvent("interstitial_requested");
-    } catch (e) {
-      console.warn("Interstitial request error", e);
+    } catch {
       setLoading(false);
       onClose();
     }
@@ -113,24 +123,45 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[55] bg-black/60 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-4 relative" onClick={(e)=>e.stopPropagation()}>
-        <h3 className="text-lg font-semibold mb-3 text-center">{t.title}</h3>
-        <div ref={containerRef} className="w-full rounded overflow-hidden bg-black relative">
-          <video ref={videoRef} className="w-full h-auto" playsInline webkit-playsinline="true" />
-          {!started && (
+    <div className="fixed inset-0 z-[55] bg-black/80 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-4 relative">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-medium text-gray-500">{t.title}</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div ref={containerRef} className="w-full rounded overflow-hidden bg-gray-900 relative" style={{ minHeight: 200 }}>
+          <video ref={videoRef} className="w-full h-auto" playsInline />
+
+          {/* Loading spinner */}
+          {loading && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+              <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span className="text-white text-sm">{t.loading}</span>
+            </div>
+          )}
+
+          {/* Fallback manual start button (shown if auto-start failed) */}
+          {!started && !loading && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <button onClick={start} className="px-4 py-2 rounded bg-gray-900 text-white font-medium">
+              <button
+                onClick={start}
+                className="px-6 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg"
+              >
                 {t.start}
               </button>
             </div>
           )}
         </div>
-        <div className="mt-3 text-center text-sm text-gray-500">{loading ? "Loading..." : ""}</div>
       </div>
     </div>
   );
 }
 
-// esportiamo sia named che default per compatibilità con gli import esistenti
 export default InterstitialAd;

@@ -7,7 +7,7 @@ import { AdProvider } from "@/contexts/AdContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-//import BannerAd from "./components/ads/BannerAd";
+import BannerAd from "./components/ads/BannerAd";
 import KingdomOfPleasure from "./components/sections/KingdomOfPleasure";
 
 const queryClient = new QueryClient();
@@ -35,6 +35,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
+            <BannerAd />
           </div>
         </TooltipProvider>
       </AdProvider>
