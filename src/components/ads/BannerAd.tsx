@@ -9,21 +9,25 @@ export default function BannerAd() {
   useEffect(() => {
     if (!ADS_ENABLED || !ZONE_ID || !ref.current) return;
 
-    // ExoClick display banner: inserisce l'elemento <ins> che il loro script trasforma in annuncio
+    // ExoClick display banner (new ad-provider format)
     const ins = document.createElement("ins");
-    ins.className = "eas6a97888e2";
+    ins.className = "eas6a97888e10";
     ins.setAttribute("data-zoneid", ZONE_ID);
     ref.current.appendChild(ins);
 
-    // Carica lo script ExoClick una sola volta nella pagina
-    const SCRIPT_ID = "exoclick-adserver";
+    const SCRIPT_ID = "exoclick-ad-provider";
     if (!document.getElementById(SCRIPT_ID)) {
       const script = document.createElement("script");
       script.id = SCRIPT_ID;
       script.async = true;
-      script.src = "//a.magsrv.com/adserver.js";
+      script.type = "application/javascript";
+      script.src = "https://a.magsrv.com/ad-provider.js";
       document.head.appendChild(script);
     }
+
+    // Trigger ad serving after ins element is in DOM
+    (window as any).AdProvider = (window as any).AdProvider || [];
+    (window as any).AdProvider.push({ serve: {} });
   }, []);
 
   if (!ADS_ENABLED || !ZONE_ID) return null;
