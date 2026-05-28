@@ -21,7 +21,7 @@ export interface Badge {
 }
 
 export type GameLevel = 1 | 2 | 3;
-export type GameStep = 'welcome' | 'setup' | 'level-select' | 'playing' | 'level-complete' | 'game-complete' | 'feedback';
+export type GameStep = 'welcome' | 'setup' | 'level-select' | 'playing' | 'level-complete' | 'game-complete' | 'feedback' | 'complete';
 
 export interface PlayerSelection {
   [placeholder: string]: Player;
