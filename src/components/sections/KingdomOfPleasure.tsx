@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Users, Play, Crown, AlertTriangle, Trophy, Star, Sparkles } from 'lucide-react';
+import { ArrowLeft, Users, Play, Crown, AlertTriangle, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -7,14 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Player, GameLevel, GameStep, PlayerSelection } from '@/types/kingdom';
 import { activities } from '@/data/kingdomActivities';
 import { badges } from '@/data/kingdomBadges';
-import { selectPlayersForActivity, formatActivityText, requiresConsent } from '@/utils/playerSelection';
+import { selectPlayersForActivity, formatActivityText } from '@/utils/playerSelection';
 import { useAds } from '@/contexts/AdContext';
-import BannerAd from '@/components/ads/BannerAd';
 import RewardedAdModal from '@/components/ads/RewardedAdModal';
 import { InterstitialAd } from '@/components/ads/InterstitialAd';
 import { DebugPanel } from '@/components/DebugPanel';
 import { SafeModeBadge } from '@/components/SafeModeBadge';
-import ConsentModal from '@/components/ConsentModal';
+
 
 interface KingdomOfPleasureProps {
   language: 'pt' | 'es' | 'en';
@@ -31,8 +30,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   const [availableActivities, setAvailableActivities] = useState<typeof activities>([]);
   const [currentPlayerSelection, setCurrentPlayerSelection] = useState<PlayerSelection>({});
   const [selectedBadge, setSelectedBadge] = useState<typeof badges[0] | null>(null);
-  const [showConsentModal, setShowConsentModal] = useState(false);
-  const [pendingPlayers, setPendingPlayers] = useState<[Player, Player] | null>(null);
   const [showRewardedModal, setShowRewardedModal] = useState(false);
   const [targetLevel, setTargetLevel] = useState<2 | 3>(2);
   const [showInterstitial, setShowInterstitial] = useState(false);
@@ -42,19 +39,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     suggestions: '',
     email: ''
   });
-  const [rewardOpen, setRewardOpen] = useState(false);
-  const [unlocked, setUnlocked] = useState<boolean>(() => localStorage.getItem("l2_unlocked") === "1");
-
-  const requestUnlock = () => {
-    if (!unlocked) setRewardOpen(true);
-  };
-
-  const handleReward = () => {
-    setUnlocked(true);
-    localStorage.setItem("l2_unlocked", "1");
-  };
-
-  const { adState, incrementCompletedDares, shouldShowInterstitial, logEvent, isAdsEnabled, unlockLevel } = useAds();
+  const { adState, incrementCompletedDares, incrementInterstitialCount, resetInterstitialCounter, logEvent, isAdsEnabled, unlockLevel } = useAds();
 
   // Load activities for current level and player count
   useEffect(() => {
@@ -308,82 +293,10 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     setStep('setup');
   };
 
-  const nextActivity = () => {
-    if (availableActivities.length === 0) return;
-    
-    const activity = availableActivities[currentActivityIndex];
-    
-    // Check if consent is needed for heteroflexible matches
-    if (players.length === 2) {
-      const [player1, player2] = players;
-      if (requiresConsent(player1, player2)) {
-        setPendingPlayers([player1, player2]);
-        setShowConsentModal(true);
-        return;
-      }
-    }
-    
-    const selection = selectPlayersForActivity(players, activity);
-    setCurrentPlayerSelection(selection);
-    setCompletedActivities(prev => prev + 1);
-    
-    if (currentActivityIndex < availableActivities.length - 1) {
-      setCurrentActivityIndex(prev => prev + 1);
-    } else {
-      completeLevel();
-    }
-  };
-
-  const completeLevel = () => {
-    if (currentLevel === 3) {
-      const randomBadge = badges[Math.floor(Math.random() * badges.length)];
-      setSelectedBadge(randomBadge);
-      setStep('game-complete');
-    } else {
-      setStep('level-complete');
-    }
-  };
-
   const updatePlayer = (index: number, field: keyof Player, value: string) => {
     const updatedPlayers = [...players];
     updatedPlayers[index] = { ...updatedPlayers[index], [field]: value };
     setPlayers(updatedPlayers);
-  };
-
-  const handleConsentConfirm = () => {
-    setShowConsentModal(false);
-    if (availableActivities.length > 0) {
-      const activity = availableActivities[currentActivityIndex];
-      const selection = selectPlayersForActivity(players, activity);
-      setCurrentPlayerSelection(selection);
-      setCompletedActivities(prev => prev + 1);
-      
-      if (currentActivityIndex < availableActivities.length - 1) {
-        setCurrentActivityIndex(prev => prev + 1);
-      } else {
-        completeLevel();
-      }
-    }
-    setPendingPlayers(null);
-  };
-
-  const handleConsentReject = () => {
-    setShowConsentModal(false);
-    setTimeout(() => {
-      if (availableActivities.length > 0) {
-        const activity = availableActivities[currentActivityIndex];
-        const selection = selectPlayersForActivity(players, activity);
-        setCurrentPlayerSelection(selection);
-        setCompletedActivities(prev => prev + 1);
-        
-        if (currentActivityIndex < availableActivities.length - 1) {
-          setCurrentActivityIndex(prev => prev + 1);
-        } else {
-          completeLevel();
-        }
-      }
-    }, 100);
-    setPendingPlayers(null);
   };
 
   const startLevelSelection = () => {
@@ -428,31 +341,30 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   const handleActivityComplete = () => {
     const newCompleted = completedActivities + 1;
     setCompletedActivities(newCompleted);
-    
-    // Increment completed dares for interstitial tracking (Level 3 only)
-    if (currentLevel === 3) {
+
+    // Interstitial tracking for Level 3 — compute locally to avoid stale state
+    if (currentLevel === 3 && isAdsEnabled()) {
+      const newDareCount = adState.completedDaresSinceInterstitial + 1;
       incrementCompletedDares();
-      
-      // Check if should show interstitial ad
-      if (shouldShowInterstitial()) {
+
+      if (
+        newDareCount >= adState.L3_INTERSTITIAL_EVERY &&
+        adState.interstitialsShownThisSession < adState.L3_INTERSTITIAL_MAX
+      ) {
         setShowInterstitial(true);
-        return; // Don't proceed until interstitial is closed
+        return;
       }
     }
-    
-    // Move to next activity
+
     const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
     setCurrentActivityIndex(nextIndex);
 
-    // Check if level is complete
     if (newCompleted >= 3) {
       if (currentLevel === 3) {
-        // End game
         const randomBadge = badges[Math.floor(Math.random() * badges.length)];
         setSelectedBadge(randomBadge);
         setStep('game-complete');
       } else {
-        // Level complete
         setStep('level-complete');
       }
     }
@@ -460,13 +372,14 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   const handleInterstitialClose = () => {
     setShowInterstitial(false);
-    
-    // Continue with normal flow after interstitial
+    incrementInterstitialCount();
+    resetInterstitialCounter();
+
     const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
     setCurrentActivityIndex(nextIndex);
 
-    const newCompleted = completedActivities + 1;
-    if (newCompleted >= 3) {
+    // completedActivities was already incremented before the interstitial was shown
+    if (completedActivities >= 3) {
       if (currentLevel === 3) {
         const randomBadge = badges[Math.floor(Math.random() * badges.length)];
         setSelectedBadge(randomBadge);
@@ -498,12 +411,12 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const continueCurrentLevel = () => {
+    setCompletedActivities(0);
     setStep('playing');
   };
 
   const submitFeedback = () => {
-    console.log('Feedback submitted:', feedback);
-    setStep('feedback');
+    setStep('complete');
   };
 
   const restartGame = () => {
@@ -781,14 +694,6 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
         )}
       </div>
 
-      {/* ✅ In playing montiamo i modali che servono durante il gioco */}
-      <ConsentModal
-        isOpen={showConsentModal}
-        onConfirm={handleConsentConfirm}
-        onReject={handleConsentReject}
-        language={language}
-      />
-
       <InterstitialAd
         isOpen={showInterstitial}
         onClose={handleInterstitialClose}
@@ -944,44 +849,39 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     );
   }
 
-  // Complete screen
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
-      <div className="container mx-auto px-4 py-8 max-w-md text-center">
-        <div className="animate-scale-in">
-          <div className="text-6xl mb-6">💖</div>
-          <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-            {t.complete.title}
-          </h1>
-          
-          <div className="flex space-x-4">
-            <Button 
-              onClick={restartGame}
-              className="flex-1 btn-romantic"
-            >
-              {t.complete.playAgain}
-            </Button>
-            <Button 
-              onClick={onBack}
-              variant="outline"
-              className="flex-1"
-            >
-              {t.complete.exit}
-            </Button>
+  if (step === 'complete') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
+        <div className="container mx-auto px-4 py-8 max-w-md text-center">
+          <div className="animate-scale-in">
+            <div className="text-6xl mb-6">💖</div>
+            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+              {t.complete.title}
+            </h1>
+
+            <div className="flex space-x-4">
+              <Button onClick={restartGame} className="flex-1 btn-romantic">
+                {t.complete.playAgain}
+              </Button>
+              <Button onClick={onBack} variant="outline" className="flex-1">
+                {t.complete.exit}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>     
-       
-      <DebugPanel
-        currentStep={step}
-        currentLevel={currentLevel}
-        selectedPlayers={players}
-        placeholderResolution={currentPlayerSelection}
-        language={language}
-      />
-      
-    </div>
-  );
+
+        <DebugPanel
+          currentStep={step}
+          currentLevel={currentLevel}
+          selectedPlayers={players}
+          placeholderResolution={currentPlayerSelection}
+          language={language}
+        />
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default KingdomOfPleasure;
