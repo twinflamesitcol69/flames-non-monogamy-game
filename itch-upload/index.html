@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flames — Non-Monogamy Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce7f3, #ede9fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 32px;
+      max-width: 380px;
+      box-shadow: 0 8px 32px rgba(168, 85, 247, 0.15);
+    }
+    .icon { font-size: 56px; margin-bottom: 16px; }
+    h1 { font-size: 28px; font-weight: 700; color: #7c3aed; margin-bottom: 8px; }
+    p { color: #6b7280; margin-bottom: 28px; line-height: 1.5; }
+    a {
+      display: inline-block;
+      background: linear-gradient(135deg, #ec4899, #a855f7);
+      color: white;
+      text-decoration: none;
+      padding: 14px 36px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    a:hover { opacity: 0.85; }
+    .note { font-size: 11px; color: #9ca3af; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🔥</div>
+    <h1>Flames</h1>
+    <p>A free adult intimacy game for couples and polyamorous groups.<br/>3 levels of connection challenges.</p>
+    <a href="https://playflames.fun" target="_blank" rel="noopener">Play on playflames.fun</a>
+    <p class="note">⚠️ Adult content — 18+ only</p>
+  </div>
+  <script>
+    // Auto-open the game after a short delay so users see the landing card first
+    setTimeout(() => window.open('https://playflames.fun', '_blank'), 2000);
+  </script>
+</body>
+</html>
