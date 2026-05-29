@@ -1,0 +1,20 @@
+{
+  "name": "Flames — Non-Monogamy Game",
+  "short_name": "Flames",
+  "description": "A free adult intimacy game for couples and polyamorous groups exploring non-monogamy.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdf2f8",
+  "theme_color": "#a855f7",
+  "lang": "en",
+  "categories": ["games", "entertainment", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
