@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://flames-non-monogamy-game.vercel.app/sitemap.xml
+Sitemap: https://playflames.fun/sitemap.xml
