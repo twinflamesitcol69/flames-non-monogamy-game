@@ -1,71 +1,67 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom design system for the couples game app */
+/* ─────────────────────────────────────────────────────────────
+   Flames — “Candlelight” design system
+   Warm, dark, embracing. The palette of a room lit by candles:
+   deep wine backgrounds, ember and gold accents, cream text.
+   Everything breathes slowly; nothing is clinical or cold.
+   ───────────────────────────────────────────────────────────── */
 
 @layer base {
   :root {
-    --background: 350 20% 98%;
-    --foreground: 350 10% 15%;
+    --background: 345 45% 7%;            /* deep wine-black */
+    --foreground: 30 45% 92%;            /* warm candlelit cream */
 
-    --card: 0 0% 100%;
-    --card-foreground: 350 10% 15%;
+    --card: 344 35% 11%;
+    --card-foreground: 30 45% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 350 10% 15%;
+    --popover: 344 35% 10%;
+    --popover-foreground: 30 45% 92%;
 
-    --primary: 346 77% 60%;
-    --primary-foreground: 355 25% 97%;
+    --primary: 16 88% 58%;               /* ember */
+    --primary-foreground: 20 60% 98%;
 
-    --secondary: 320 20% 96%;
-    --secondary-foreground: 320 10% 20%;
+    --secondary: 345 25% 16%;
+    --secondary-foreground: 30 35% 85%;
 
-    --muted: 320 15% 95%;
-    --muted-foreground: 320 10% 45%;
+    --muted: 345 20% 16%;
+    --muted-foreground: 22 22% 68%;
 
-    --accent: 280 65% 85%;
-    --accent-foreground: 280 30% 25%;
+    --accent: 38 85% 62%;                /* candle gold */
+    --accent-foreground: 30 60% 12%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 320 20% 90%;
-    --input: 320 20% 90%;
-    --ring: 346 77% 60%;
+    --border: 345 25% 20%;
+    --input: 345 25% 20%;
+    --ring: 16 88% 58%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
   }
 
   .dark {
-    --background: 350 15% 8%;
-    --foreground: 350 10% 90%;
-
-    --card: 350 15% 10%;
-    --card-foreground: 350 10% 90%;
-
-    --popover: 350 15% 10%;
-    --popover-foreground: 350 10% 90%;
-
-    --primary: 346 77% 60%;
-    --primary-foreground: 355 25% 97%;
-
-    --secondary: 320 15% 15%;
-    --secondary-foreground: 320 10% 80%;
-
-    --muted: 320 15% 15%;
-    --muted-foreground: 320 10% 60%;
-
-    --accent: 280 30% 25%;
-    --accent-foreground: 280 65% 85%;
-
-    --destructive: 0 62.8% 30.6%;
+    --background: 345 45% 7%;
+    --foreground: 30 45% 92%;
+    --card: 344 35% 11%;
+    --card-foreground: 30 45% 92%;
+    --popover: 344 35% 10%;
+    --popover-foreground: 30 45% 92%;
+    --primary: 16 88% 58%;
+    --primary-foreground: 20 60% 98%;
+    --secondary: 345 25% 16%;
+    --secondary-foreground: 30 35% 85%;
+    --muted: 345 20% 16%;
+    --muted-foreground: 22 22% 68%;
+    --accent: 38 85% 62%;
+    --accent-foreground: 30 60% 12%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 320 15% 20%;
-    --input: 320 15% 20%;
-    --ring: 346 77% 60%;
+    --border: 345 25% 20%;
+    --input: 345 25% 20%;
+    --ring: 16 88% 58%;
   }
 }
 
@@ -80,15 +76,86 @@
 }
 
 @layer components {
+  /* Full-screen backdrop: a room lit from below by embers */
+  .bg-night {
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 110%, hsl(14 70% 18% / 0.9) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 40% at 50% -10%, hsl(280 40% 14% / 0.6) 0%, transparent 60%),
+      linear-gradient(180deg, hsl(345 45% 8%) 0%, hsl(340 40% 6%) 100%);
+  }
+
+  /* Cards feel like warm paper by candlelight */
+  .warm-card {
+    background: linear-gradient(160deg, hsl(344 32% 13%) 0%, hsl(340 30% 10%) 100%);
+    border: 1px solid hsl(20 45% 30% / 0.45);
+    box-shadow:
+      0 18px 45px -18px hsl(345 80% 3% / 0.9),
+      0 0 40px -18px hsl(16 88% 45% / 0.35),
+      inset 0 1px 0 hsl(30 45% 90% / 0.06);
+  }
+
   .romantic-card {
-    @apply bg-gradient-to-br from-rose-50 to-purple-50 border border-rose-200 shadow-lg;
+    @apply warm-card;
   }
-  
+
   .game-card {
-    @apply bg-white rounded-2xl shadow-xl border border-rose-100 hover:shadow-2xl transition-all duration-300 hover:scale-105;
+    @apply warm-card rounded-2xl transition-all duration-500 hover:scale-[1.02];
   }
-  
+  .game-card:hover {
+    box-shadow:
+      0 22px 55px -18px hsl(345 80% 3% / 0.95),
+      0 0 55px -14px hsl(16 88% 50% / 0.5),
+      inset 0 1px 0 hsl(30 45% 90% / 0.08);
+  }
+
+  /* Primary action: ember → rose, with a soft living glow */
   .btn-romantic {
-    @apply bg-gradient-to-r from-rose-400 to-purple-500 text-white font-medium px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+    @apply text-white font-medium px-6 py-3 rounded-full transition-all duration-500 hover:scale-105;
+    background: linear-gradient(135deg, hsl(16 88% 55%) 0%, hsl(346 78% 50%) 100%);
+    box-shadow: 0 8px 28px -8px hsl(16 88% 50% / 0.55);
   }
+  .btn-romantic:hover {
+    box-shadow: 0 10px 36px -8px hsl(16 88% 55% / 0.75);
+  }
+
+  /* Icon medallion */
+  .ember-icon {
+    background: linear-gradient(135deg, hsl(28 92% 58%) 0%, hsl(350 80% 48%) 100%);
+    box-shadow: 0 0 34px -6px hsl(16 88% 55% / 0.65);
+    animation: candle-glow 3.5s ease-in-out infinite;
+  }
+
+  /* The reassurance strip: a quiet, constant hand on the shoulder */
+  .comfort-strip {
+    @apply flex items-center justify-center gap-2 text-xs rounded-full px-4 py-2;
+    color: hsl(30 35% 78%);
+    background: hsl(344 30% 13% / 0.7);
+    border: 1px solid hsl(20 45% 30% / 0.35);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Gradient headline text on dark */
+  .headline-flame {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(90deg, hsl(38 90% 66%), hsl(16 88% 60%), hsl(346 80% 62%));
+  }
+}
+
+@layer utilities {
+  .animate-candle {
+    animation: candle-glow 3.5s ease-in-out infinite;
+  }
+  .animate-breathe {
+    animation: breathe 6s ease-in-out infinite;
+  }
+}
+
+@keyframes candle-glow {
+  0%, 100% { box-shadow: 0 0 30px -8px hsl(16 88% 55% / 0.55); }
+  50%      { box-shadow: 0 0 44px -6px hsl(28 92% 58% / 0.75); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.015); }
 }

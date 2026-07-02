@@ -92,19 +92,19 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-night">
       <div className="container mx-auto px-4 py-8 max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="flex items-center text-gray-600 hover:text-gray-800"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
           </Button>
           <div className="text-center">
-            <h2 className="font-playfair font-semibold text-lg text-gray-800">
+            <h2 className="font-playfair font-semibold text-lg text-foreground">
               {t.title}
             </h2>
           </div>
@@ -119,11 +119,11 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
               <button
                 key={key}
                 onClick={() => setUserQuestion(t.examples[Object.keys(t.topics).indexOf(key)])}
-                className="p-4 bg-white rounded-xl shadow-sm border border-purple-200 hover:shadow-md transition-all duration-300 text-left"
+                className="p-4 warm-card rounded-2xl shadow-sm border border-border hover:shadow-md transition-all duration-300 text-left"
               >
                 <div className="flex items-center space-x-2 mb-2">
-                  <Book className="w-4 h-4 text-purple-500" />
-                  <span className="text-sm font-medium text-gray-800">{topic as string}</span>
+                  <Book className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-medium text-foreground">{topic as string}</span>
                 </div>
               </button>
             ))}
@@ -137,15 +137,15 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
                   key={index}
                   className={`p-4 rounded-xl ${
                     message.role === 'user'
-                      ? 'bg-purple-100 ml-4'
-                      : 'bg-white mr-4 shadow-sm border border-purple-200'
+                      ? 'bg-primary/15 ml-4'
+                      : 'bg-card mr-4 shadow-sm border border-border'
                   }`}
                 >
                   <div className="flex items-start space-x-2">
                     {message.role === 'assistant' && (
-                      <MessageCircle className="w-4 h-4 text-purple-500 mt-1 flex-shrink-0" />
+                      <MessageCircle className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                     )}
-                    <p className="text-sm text-gray-700 leading-relaxed">
+                    <p className="text-sm text-foreground/90 leading-relaxed">
                       {message.content}
                     </p>
                   </div>
@@ -182,8 +182,8 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
           </div>
 
           {/* Example Questions */}
-          <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-purple-200">
-            <p className="text-xs text-gray-600 mb-3 font-medium">
+          <div className="bg-card/70 backdrop-blur-sm rounded-xl p-4 border border-border">
+            <p className="text-xs text-muted-foreground mb-3 font-medium">
               {language === 'pt' ? 'Perguntas exemplo:' : language === 'es' ? 'Preguntas ejemplo:' : 'Example questions:'}
             </p>
             <div className="space-y-2">
@@ -191,7 +191,7 @@ const GainingConfidence = ({ language, onBack }: GainingConfidenceProps) => {
                 <button
                   key={index}
                   onClick={() => setUserQuestion(example)}
-                  className="block text-xs text-gray-600 hover:text-purple-600 transition-colors text-left w-full p-2 hover:bg-purple-50 rounded"
+                  className="block text-xs text-muted-foreground hover:text-accent transition-colors text-left w-full p-2 hover:bg-primary/10 rounded"
                 >
                   • {example}
                 </button>

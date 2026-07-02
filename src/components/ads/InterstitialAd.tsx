@@ -124,12 +124,12 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
 
   return (
     <div className="fixed inset-0 z-[55] bg-black/80 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-4 relative">
+      <div className="w-full max-w-md warm-card rounded-2xl shadow-xl p-4 relative">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-gray-500">{t.title}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{t.title}</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+            className="text-muted-foreground hover:text-muted-foreground text-lg leading-none"
             aria-label="Close"
           >
             ✕
@@ -152,7 +152,7 @@ export function InterstitialAd({ isOpen, onClose, language }: InterstitialAdProp
             <div className="absolute inset-0 flex items-center justify-center">
               <button
                 onClick={start}
-                className="px-6 py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg"
+                className="px-6 py-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg"
               >
                 {t.start}
               </button>

@@ -117,14 +117,14 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
   const guidance = getGuidance();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-rose-50 to-pink-50">
+    <div className="min-h-screen bg-night">
       <div className="container mx-auto px-4 py-8 max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="flex items-center text-gray-600 hover:text-gray-800"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             {t.back}
@@ -132,17 +132,17 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
         </div>
 
         <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl font-playfair font-bold headline-flame mb-4">
             {t.title}
           </h1>
-          <p className="text-gray-600 text-sm leading-relaxed">
+          <p className="text-muted-foreground text-sm leading-relaxed">
             {t.subtitle}
           </p>
         </div>
 
         {/* Step 1: Player Type */}
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t.step1}</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">{t.step1}</h3>
           <div className="space-y-3">
             {Object.entries(t.playerTypes).map(([key, label]) => (
               <button
@@ -150,11 +150,11 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
                 onClick={() => setPlayerType(key)}
                 className={`w-full p-4 rounded-xl border-2 transition-all duration-300 text-left ${
                   playerType === key
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-200 bg-white hover:border-red-300'
+                    ? 'border-primary bg-primary/15'
+                    : 'border-border bg-card hover:border-primary/60'
                 }`}
               >
-              <span className="font-medium text-gray-800">{label as string}</span>
+              <span className="font-medium text-foreground">{label as string}</span>
               </button>
             ))}
           </div>
@@ -163,7 +163,7 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
         {/* Step 2: Vibe Selection */}
         {playerType && (
           <div className="mb-8 animate-fade-in">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t.step2}</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-4">{t.step2}</h3>
             <div className="space-y-3">
               {Object.entries(t.vibes).map(([key, label]) => (
                 <button
@@ -171,11 +171,11 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
                   onClick={() => setSelectedVibe(key)}
                   className={`w-full p-4 rounded-xl border-2 transition-all duration-300 text-left ${
                     selectedVibe === key
-                      ? 'border-rose-500 bg-rose-50'
-                      : 'border-gray-200 bg-white hover:border-rose-300'
+                      ? 'border-primary bg-primary/15'
+                      : 'border-border bg-card hover:border-primary/60'
                   }`}
                 >
-                  <span className="font-medium text-gray-800">{label as string}</span>
+                  <span className="font-medium text-foreground">{label as string}</span>
                 </button>
               ))}
             </div>
@@ -184,12 +184,12 @@ const HookUp = ({ language, onBack }: HookUpProps) => {
 
         {/* Guidance */}
         {guidance && (
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-rose-200 animate-scale-in">
-            <h4 className="font-semibold text-gray-800 mb-3">{guidance.title}</h4>
-            <p className="text-gray-700 mb-4 leading-relaxed">{guidance.content}</p>
-            <div className="bg-rose-50 p-4 rounded-lg border border-rose-200 mb-4">
-              <p className="text-sm text-gray-700 italic">
-                <span className="font-medium text-rose-600">Exemplo:</span> {guidance.example}
+          <div className="warm-card rounded-2xl p-6 shadow-lg border border-border animate-scale-in">
+            <h4 className="font-semibold text-foreground mb-3">{guidance.title}</h4>
+            <p className="text-foreground/90 mb-4 leading-relaxed">{guidance.content}</p>
+            <div className="bg-primary/10 p-4 rounded-lg border border-border mb-4">
+              <p className="text-sm text-foreground/90 italic">
+                <span className="font-medium text-primary">Exemplo:</span> {guidance.example}
               </p>
             </div>
             <Button className="w-full btn-romantic flex items-center justify-center space-x-2">

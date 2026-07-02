@@ -8,6 +8,7 @@ import { Player, GameLevel, GameStep, PlayerSelection } from '@/types/kingdom';
 import { activities } from '@/data/kingdomActivities';
 import { badges } from '@/data/kingdomBadges';
 import { selectPlayersForActivity, formatActivityText } from '@/utils/playerSelection';
+import { generateActivity, resetGeneratorSession } from '@/utils/activityGenerator';
 import { useAds } from '@/contexts/AdContext';
 import RewardedAdModal from '@/components/ads/RewardedAdModal';
 import { InterstitialAd } from '@/components/ads/InterstitialAd';
@@ -48,7 +49,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       activity.minPlayers <= numPlayers && 
       activity.maxPlayers >= numPlayers
     );
-    setAvailableActivities(levelActivities);
+    // Shuffle the curated deck so every session starts differently
+    setAvailableActivities([...levelActivities].sort(() => Math.random() - 0.5));
     setCurrentActivityIndex(0);
     setCompletedActivities(0);
   }, [currentLevel, numPlayers]);
@@ -338,6 +340,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     setStep('playing');
   };
 
+
+  // Advance to the next card. When the curated deck runs out, the generator
+  // creates a brand-new activity — the deck grows forever, never repeats.
+  const advanceActivity = () => {
+    const nextIndex = currentActivityIndex + 1;
+    if (nextIndex >= availableActivities.length) {
+      setAvailableActivities(prev => [...prev, generateActivity(currentLevel, numPlayers)]);
+    }
+    setCurrentActivityIndex(nextIndex);
+  };
+
   const handleActivityComplete = () => {
     const newCompleted = completedActivities + 1;
     setCompletedActivities(newCompleted);
@@ -356,8 +369,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       }
     }
 
-    const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
-    setCurrentActivityIndex(nextIndex);
+    advanceActivity();
 
     if (newCompleted >= 3) {
       if (currentLevel === 3) {
@@ -375,8 +387,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
     incrementInterstitialCount();
     resetInterstitialCounter();
 
-    const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
-    setCurrentActivityIndex(nextIndex);
+    advanceActivity();
 
     // completedActivities was already incremented before the interstitial was shown
     if (completedActivities >= 3) {
@@ -399,8 +410,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 };
 
   const skipActivity = () => {
-    const nextIndex = (currentActivityIndex + 1) % availableActivities.length;
-    setCurrentActivityIndex(nextIndex);
+    advanceActivity();
   };
 
   const nextLevel = () => {
@@ -420,6 +430,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   };
 
   const restartGame = () => {
+    resetGeneratorSession();
     setStep('welcome');
     setCurrentLevel(1);
     setCompletedActivities(0);
@@ -430,13 +441,13 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   if (step === 'welcome') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+      <div className="min-h-screen bg-night">
         <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
               onClick={onBack}
-              className="flex items-center text-gray-600 hover:text-gray-800"
+              className="flex items-center text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
             </Button>
@@ -444,20 +455,31 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
           </div>
 
           <div className="text-center mb-8 animate-fade-in">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-6 animate-float">
+            <div className="w-20 h-20 mx-auto ember-icon rounded-full flex items-center justify-center mb-6 animate-float">
               <Crown className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl font-playfair font-bold headline-flame mb-4">
               {t.title}
             </h1>
-            <p className="text-gray-600 text-sm leading-relaxed mb-8">
+            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
               {t.subtitle}
             </p>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-purple-200 mb-8">
+            <div className="comfort-strip mb-8">
+              <span aria-hidden="true">🤍</span>
+              <span>
+                {language === 'es'
+                  ? 'Aquí mandan ustedes: cada carta se puede saltar, cada límite se respeta.'
+                  : language === 'pt'
+                  ? 'Aqui vocês mandam: cada carta pode ser pulada, cada limite é respeitado.'
+                  : 'You are in charge here: every card can be skipped, every boundary is respected.'}
+              </span>
+            </div>
+
+            <div className="warm-card rounded-2xl p-6 shadow-lg border border-border mb-8">
               <div className="flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-purple-500 mr-2" />
-                <span className="font-medium text-gray-800">{t.setup.numPlayers}</span>
+                <Users className="w-6 h-6 text-primary mr-2" />
+                <span className="font-medium text-foreground">{t.setup.numPlayers}</span>
               </div>
               <div className="flex justify-center space-x-4 mb-6">
                 {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
@@ -466,8 +488,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                     onClick={() => setNumPlayers(num)}
                     className={`w-10 h-10 rounded-full border-2 transition-all duration-300 text-sm ${
                       numPlayers === num
-                        ? 'border-purple-500 bg-purple-50 text-purple-700'
-                        : 'border-gray-300 text-gray-600 hover:border-purple-300'
+                        ? 'border-primary bg-primary/15 text-primary'
+                        : 'border-border text-muted-foreground hover:border-primary/60'
                     }`}
                   >
                     {num}
@@ -486,17 +508,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   if (step === 'setup') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+      <div className="min-h-screen bg-night">
         <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="ghost"
               onClick={() => setStep('welcome')}
-              className="flex items-center text-gray-600 hover:text-gray-800"
+              className="flex items-center text-muted-foreground hover:text-foreground"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
             </Button>
-            <h2 className="font-playfair font-semibold text-lg text-gray-800">
+            <h2 className="font-playfair font-semibold text-lg text-foreground">
               {t.setup.title}
             </h2>
             <div className="w-16"></div>
@@ -504,8 +526,8 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
           <div className="space-y-4">
             {players.map((player, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-purple-200">
-                <h3 className="font-semibold text-gray-800 mb-4">
+              <div key={index} className="warm-card rounded-2xl p-6 shadow-lg border border-border">
+                <h3 className="font-semibold text-foreground mb-4">
                   {t.setup.playerName} {index + 1}
                 </h3>
                 <div className="space-y-4">
@@ -558,37 +580,37 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
       id: 1 as GameLevel,
       name: t.levelSelect.level1.name,
       description: t.levelSelect.level1.description,
-      gradient: 'from-green-400 to-blue-500',
-      bgGradient: 'from-green-50 to-blue-50'
+      gradient: 'from-amber-400 to-orange-500',
+      bgGradient: 'from-amber-500/10 to-orange-500/10'
     },
     {
       id: 2 as GameLevel,
       name: t.levelSelect.level2.name,
       description: t.levelSelect.level2.description,
-      gradient: 'from-orange-400 to-red-500',
-      bgGradient: 'from-orange-50 to-red-50'
+      gradient: 'from-orange-500 to-rose-500',
+      bgGradient: 'from-orange-500/10 to-rose-500/10'
     },
     {
       id: 3 as GameLevel,
       name: t.levelSelect.level3.name,
       description: t.levelSelect.level3.description,
-      gradient: 'from-red-400 to-purple-500',
-      bgGradient: 'from-red-50 to-purple-50'
+      gradient: 'from-rose-500 to-red-700',
+      bgGradient: 'from-rose-500/10 to-red-700/10'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+    <div className="min-h-screen bg-night">
       <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={() => setStep('setup')}
-            className="flex items-center text-gray-600 hover:text-gray-800"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
           </Button>
-          <h2 className="font-playfair font-semibold text-lg text-gray-800">
+          <h2 className="font-playfair font-semibold text-lg text-foreground">
             {t.levelSelect.title}
           </h2>
           <SafeModeBadge />
@@ -607,10 +629,10 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                   <span className="text-white text-xl font-bold">{level.id}</span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-gray-900 transition-colors">
+                  <h3 className="font-semibold text-foreground text-lg mb-1 group-hover:text-accent transition-colors">
                     {level.name}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {level.description}
                   </p>
                 </div>
@@ -649,21 +671,21 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
   const formattedText = currentActivity ? formatActivityText(currentActivity.id, currentPlayerSelection, language) : '';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+    <div className="min-h-screen bg-night">
       <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={() => setStep('level-select')}
-            className="flex items-center text-gray-600 hover:text-gray-800"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
           </Button>
           <div className="text-center">
-            <h2 className="font-playfair font-semibold text-lg text-gray-800">
+            <h2 className="font-playfair font-semibold text-lg text-foreground">
               {language === 'es' ? 'Nivel' : language === 'en' ? 'Level' : 'Nível'} {currentLevel}
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               {completedActivities} {language === 'es' ? 'completadas' : language === 'en' ? 'completed' : 'completadas'}
             </p>
           </div>
@@ -672,13 +694,13 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
         {currentActivity && (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 animate-scale-in">
+            <div className="warm-card rounded-2xl p-8 shadow-xl border border-border animate-scale-in">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4">
+                <div className="w-16 h-16 mx-auto ember-icon rounded-full flex items-center justify-center mb-4">
                   <Play className="w-8 h-8 text-white" />
                 </div>
               </div>
-              <p className="text-lg leading-relaxed text-gray-800 text-center font-medium mb-6">
+              <p className="text-lg leading-relaxed text-foreground text-center font-medium mb-6">
                 {formattedText}
               </p>
               <div className="flex space-x-3">
@@ -689,6 +711,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                   {t.game.skip}
                 </Button>
               </div>
+            </div>
+
+            <div className="comfort-strip animate-fade-in">
+              <span aria-hidden="true">🤍</span>
+              <span>
+                {language === 'es'
+                  ? 'Nada es una obligación: saltar siempre se respeta. Jueguen solo lo que les haga sentir bien.'
+                  : language === 'pt'
+                  ? 'Nada é obrigação: pular é sempre respeitado. Joguem apenas o que fizer bem a todos.'
+                  : 'Nothing is an obligation — skipping is always respected. Play only what feels good to everyone.'}
+              </span>
             </div>
           </div>
         )}
@@ -705,19 +738,19 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   if (step === 'level-complete') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
+      <div className="min-h-screen bg-night flex items-center justify-center">
         <div className="container mx-auto px-4 py-8 max-w-md text-center">
           <div className="animate-scale-in">
             <div className="text-6xl mb-6 animate-float">🎉</div>
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl font-playfair font-bold headline-flame mb-4">
               {t.celebration.title}
             </h1>
-            <p className="text-xl text-gray-700 mb-8 font-medium">
+            <p className="text-xl text-foreground/90 mb-8 font-medium">
               {t.celebration.message}
             </p>
             
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-purple-200 mb-8">
-              <p className="text-lg text-gray-800 mb-4">
+            <div className="warm-card rounded-2xl p-6 shadow-lg border border-border mb-8">
+              <p className="text-lg text-foreground mb-4">
                 {t.game.nextLevel}
               </p>
               <div className="flex space-x-4">
@@ -737,21 +770,21 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   if (step === 'game-complete' && selectedBadge) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
+      <div className="min-h-screen bg-night flex items-center justify-center">
         <div className="container mx-auto px-4 py-8 max-w-md text-center">
           <div className="animate-scale-in">
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8">
+            <h1 className="text-3xl font-playfair font-bold headline-flame mb-8">
               {t.award.title}
             </h1>
             
-            <div className="bg-white rounded-xl p-8 shadow-xl border border-purple-200 mb-8">
+            <div className="warm-card rounded-2xl p-8 shadow-xl border border-border mb-8">
               <div className="text-6xl mb-4 animate-float">
                 {selectedBadge.icon}
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
                 {selectedBadge.name}
               </h2>
-              <p className="text-gray-600 italic">
+              <p className="text-muted-foreground italic">
                 {selectedBadge.description}
               </p>
             </div>
@@ -770,17 +803,17 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   if (step === 'feedback') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
+      <div className="min-h-screen bg-night">
         <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Account for banner */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl font-playfair font-bold headline-flame mb-4">
               {t.feedback.title}
             </h1>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-purple-200 space-y-6">
+          <div className="warm-card rounded-2xl p-6 shadow-lg border border-border space-y-6">
             <div>
-              <label className="block text-gray-700 font-medium mb-3">
+              <label className="block text-foreground/90 font-medium mb-3">
                 {t.feedback.rating}
               </label>
               <div className="flex justify-center space-x-2">
@@ -791,7 +824,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
                     className={`w-10 h-10 rounded-full transition-colors ${
                       star <= feedback.rating
                         ? 'text-yellow-500'
-                        : 'text-gray-300 hover:text-yellow-400'
+                        : 'text-muted-foreground/50 hover:text-yellow-400'
                     }`}
                   >
                     <Star className="w-8 h-8" fill={star <= feedback.rating ? 'currentColor' : 'none'} />
@@ -801,7 +834,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-foreground/90 font-medium mb-2">
                 {t.feedback.favorite}
               </label>
               <Textarea
@@ -813,7 +846,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-foreground/90 font-medium mb-2">
                 {t.feedback.suggestions}
               </label>
               <Textarea
@@ -825,7 +858,7 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-foreground/90 font-medium mb-2">
                 {t.feedback.email}
               </label>
               <Input
@@ -851,11 +884,11 @@ const KingdomOfPleasure = ({ language, onBack }: KingdomOfPleasureProps) => {
 
   if (step === 'complete') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
+      <div className="min-h-screen bg-night flex items-center justify-center">
         <div className="container mx-auto px-4 py-8 max-w-md text-center">
           <div className="animate-scale-in">
             <div className="text-6xl mb-6">💖</div>
-            <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl font-playfair font-bold headline-flame mb-4">
               {t.complete.title}
             </h1>
 

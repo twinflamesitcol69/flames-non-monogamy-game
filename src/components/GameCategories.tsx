@@ -12,40 +12,40 @@ const GameCategories = ({ onSelectCategory }: GameCategoriesProps) => {
       title: 'Deep Talk',
       description: 'Meaningful questions to know each other better',
       icon: MessageCircle,
-      gradient: 'from-blue-400 to-purple-500',
-      bgGradient: 'from-blue-50 to-purple-50'
+      gradient: 'from-amber-400 to-orange-600',
+      bgGradient: 'from-amber-500/10 to-orange-600/10'
     },
     {
       id: 'romantic',
       title: 'Romance',
       description: 'Sweet moments and loving connections',
       icon: Heart,
-      gradient: 'from-rose-400 to-pink-500',
-      bgGradient: 'from-rose-50 to-pink-50'
+      gradient: 'from-rose-500 to-pink-600',
+      bgGradient: 'from-rose-500/10 to-pink-600/10'
     },
     {
       id: 'playful',
       title: 'Playful Fun',
       description: 'Light-hearted games and silly challenges',
       icon: Star,
-      gradient: 'from-yellow-400 to-orange-500',
-      bgGradient: 'from-yellow-50 to-orange-50'
+      gradient: 'from-amber-400 to-orange-500',
+      bgGradient: 'from-amber-500/10 to-orange-500/10'
     },
     {
       id: 'intimate',
       title: 'Intimate',
       description: 'Deeper connection for established couples',
       icon: Flame,
-      gradient: 'from-red-400 to-rose-500',
-      bgGradient: 'from-red-50 to-rose-50'
+      gradient: 'from-red-600 to-rose-500',
+      bgGradient: 'from-red-600/10 to-rose-500/10'
     },
     {
       id: 'adventure',
       title: 'Adventure',
       description: 'Exciting challenges to try together',
       icon: Zap,
-      gradient: 'from-purple-400 to-indigo-500',
-      bgGradient: 'from-purple-50 to-indigo-50'
+      gradient: 'from-rose-600 to-red-800',
+      bgGradient: 'from-rose-600/10 to-red-800/10'
     },
     {
       id: 'couple-goals',
@@ -59,7 +59,7 @@ const GameCategories = ({ onSelectCategory }: GameCategoriesProps) => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-playfair font-semibold text-center text-gray-800 mb-6">
+      <h2 className="text-xl font-playfair font-semibold text-center text-foreground mb-6">
         Choose Your Adventure
       </h2>
       
@@ -78,14 +78,14 @@ const GameCategories = ({ onSelectCategory }: GameCategoriesProps) => {
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-gray-900 transition-colors">
+                  <h3 className="font-semibold text-foreground text-lg mb-1 group-hover:text-accent transition-colors">
                     {category.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {category.description}
                   </p>
                 </div>
-                <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
+                <div className="text-muted-foreground group-hover:text-muted-foreground transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

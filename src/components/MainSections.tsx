@@ -90,8 +90,8 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
       title: t.kingdom.title,
       description: t.kingdom.description,
       icon: Crown,
-      gradient: 'from-purple-400 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50',
+      gradient: 'from-orange-500 to-rose-600',
+      bgGradient: 'from-orange-500/10 to-rose-600/10',
       featured: true // Mark as featured
     },
     {
@@ -99,22 +99,22 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
       title: t.confidence.title,
       description: t.confidence.description,
       icon: Brain,
-      gradient: 'from-blue-400 to-purple-500',
-      bgGradient: 'from-blue-50 to-purple-50',
+      gradient: 'from-amber-400 to-orange-600',
+      bgGradient: 'from-amber-500/10 to-orange-600/10',
       featured: false
     }
     // Hook Up section hidden from published build
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-night">
       <div className="container mx-auto px-4 py-8 max-w-md pb-20 md:pb-28">{/* Increased padding to account for banner */}
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="flex items-center text-gray-600 hover:text-gray-800"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             {t.back}
@@ -123,10 +123,10 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
         </div>
 
         <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-3xl font-playfair font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-playfair font-bold headline-flame mb-2">
             {t.title}
           </h1>
-          <p className="text-gray-600 text-sm leading-relaxed">
+          <p className="text-muted-foreground text-sm leading-relaxed">
             {t.subtitle}
           </p>
         </div>
@@ -142,13 +142,13 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
                 onClick={() => setSelectedSection(section.id)}
                 className={`game-card text-left transition-all duration-300 group animate-fade-in w-full ${
                   isFeatured 
-                    ? 'p-8 bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100 hover:shadow-2xl border-2 border-purple-300 relative overflow-hidden' 
-                    : 'p-6 bg-gradient-to-br ' + section.bgGradient + ' hover:shadow-xl border border-gray-200'
+                    ? 'p-8 bg-gradient-to-br from-orange-500/20 via-rose-500/15 to-red-700/15 hover:shadow-2xl border-2 border-primary/50 relative overflow-hidden' 
+                    : 'p-6 bg-gradient-to-br ' + section.bgGradient + ' hover:shadow-xl border border-border'
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {isFeatured && (
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-semibold animate-pulse">
+                  <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-rose-600 text-white text-xs px-3 py-1 rounded-full font-semibold animate-pulse">
                     ⭐ FEATURED
                   </div>
                 )}
@@ -157,16 +157,16 @@ const MainSections = ({ language, onBack }: MainSectionsProps) => {
                     <Icon className={`${isFeatured ? 'w-8 h-8' : 'w-6 h-6'} text-white`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-semibold text-gray-800 mb-1 group-hover:text-gray-900 transition-colors ${
+                    <h3 className={`font-semibold text-foreground mb-1 group-hover:text-accent transition-colors ${
                       isFeatured ? 'text-xl' : 'text-lg'
                     }`}>
                       {section.title}
                     </h3>
-                    <p className={`text-gray-600 leading-relaxed ${isFeatured ? 'text-base' : 'text-sm'}`}>
+                    <p className={`text-muted-foreground leading-relaxed ${isFeatured ? 'text-base' : 'text-sm'}`}>
                       {section.description}
                     </p>
                   </div>
-                  <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
+                  <div className="text-muted-foreground group-hover:text-muted-foreground transition-colors">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>

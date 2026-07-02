@@ -73,7 +73,7 @@ export const DebugPanel = ({
         <div className="space-y-2">
           {Object.entries(debugInfo).map(([key, value]) => (
             <div key={key} className="flex justify-between items-center text-xs">
-              <span className="text-gray-600">{key}:</span>
+              <span className="text-muted-foreground">{key}:</span>
               <Badge variant="outline" className="text-xs">
                 {String(value)}
               </Badge>
@@ -82,11 +82,11 @@ export const DebugPanel = ({
           
           {selectedPlayers.length > 0 && (
             <div className="mt-3 pt-3 border-t">
-              <div className="text-xs text-gray-600 mb-2">Selected Players:</div>
+              <div className="text-xs text-muted-foreground mb-2">Selected Players:</div>
               {selectedPlayers.map((player, index) => (
                 <div key={index} className="text-xs bg-gray-50 p-2 rounded mb-1">
                   <div><strong>{player.name}</strong></div>
-                  <div className="text-gray-500">
+                  <div className="text-muted-foreground">
                     {player.gender} • {player.orientation}
                   </div>
                 </div>
@@ -96,7 +96,7 @@ export const DebugPanel = ({
 
           {Object.keys(placeholderResolution).length > 0 && (
             <div className="mt-3 pt-3 border-t">
-              <div className="text-xs text-gray-600 mb-2">Placeholder Resolution:</div>
+              <div className="text-xs text-muted-foreground mb-2">Placeholder Resolution:</div>
               {Object.entries(placeholderResolution).map(([placeholder, player]: [string, any]) => (
                 <div key={placeholder} className="text-xs bg-blue-50 p-2 rounded mb-1">
                   <strong>{placeholder}</strong> → {player?.name || 'N/A'}
@@ -107,7 +107,7 @@ export const DebugPanel = ({
 
           {isAdsEnabled() && (
             <div className="mt-3 pt-3 border-t">
-              <div className="text-xs text-gray-600 mb-2">AdSense Status:</div>
+              <div className="text-xs text-muted-foreground mb-2">AdSense Status:</div>
               <div className="text-xs">
                 {typeof window !== 'undefined' && window.adsbygoogle ? 
                   '✅ AdSense loaded' : 

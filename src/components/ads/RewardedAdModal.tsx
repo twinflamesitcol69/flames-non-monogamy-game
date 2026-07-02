@@ -106,18 +106,18 @@ export default function RewardedAdModal({ open, onClose, onReward }: Props) {
 
   return (
     <div className="fixed inset-0 z-[60] bg-black/60 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-4 relative" onClick={(e)=>e.stopPropagation()}>
-        <button aria-label="Close" onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">✕</button>
+      <div className="w-full max-w-md warm-card rounded-2xl shadow-xl p-4 relative" onClick={(e)=>e.stopPropagation()}>
+        <button aria-label="Close" onClick={onClose} className="absolute top-2 right-2 text-muted-foreground hover:text-foreground/90">✕</button>
         <h3 className="text-lg font-semibold mb-3 text-center">Watch Ad to unlock</h3>
         <div ref={containerRef} className="w-full rounded overflow-hidden bg-black relative">
           <video ref={videoRef} className="w-full h-auto" playsInline webkit-playsinline="true" />
           {!started && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <button onClick={start} className="px-4 py-2 rounded bg-purple-600 text-white font-medium">Watch Ad</button>
+              <button onClick={start} className="px-4 py-2 rounded bg-primary text-white font-medium">Watch Ad</button>
             </div>
           )}
         </div>
-        <div className="mt-3 text-center text-sm text-gray-500">
+        <div className="mt-3 text-center text-sm text-muted-foreground">
           {loading ? "Loading..." : "Your level will unlock after the ad."}
         </div>
       </div>

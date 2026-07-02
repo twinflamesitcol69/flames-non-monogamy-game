@@ -27,30 +27,30 @@ const GameCard = ({ category, onBack }: GameCardProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50 p-4">
+    <div className="min-h-screen bg-night p-4">
       <div className="container mx-auto max-w-md">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="flex items-center text-gray-600 hover:text-gray-800"
+            className="flex items-center text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Back
           </Button>
           <div className="text-center">
-            <h2 className="font-playfair font-semibold text-lg text-gray-800">
+            <h2 className="font-playfair font-semibold text-lg text-foreground">
               {categoryData.title}
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               {currentIndex + 1} of {categoryData.questions.length}
             </p>
           </div>
           <Button
             variant="ghost"
             onClick={() => setCurrentIndex(Math.floor(Math.random() * categoryData.questions.length))}
-            className="text-gray-600 hover:text-gray-800"
+            className="text-muted-foreground hover:text-foreground"
           >
             <RotateCcw className="w-5 h-5" />
           </Button>
@@ -59,24 +59,24 @@ const GameCard = ({ category, onBack }: GameCardProps) => {
         {/* Card */}
         <div className="game-card p-8 mb-8 min-h-[400px] flex flex-col justify-center animate-scale-in">
           <div className="text-center mb-6">
-            <div className="w-16 h-16 mx-auto bg-gradient-to-br from-rose-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
+            <div className="w-16 h-16 mx-auto ember-icon rounded-full flex items-center justify-center mb-4">
               <Heart className="w-8 h-8 text-white" fill="currentColor" />
             </div>
-            <div className="text-xs uppercase tracking-wide text-gray-500 mb-2">
+            <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">
               {currentCard.type}
             </div>
           </div>
 
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-lg leading-relaxed text-gray-800 text-center font-medium">
+            <p className="text-lg leading-relaxed text-foreground text-center font-medium">
               {currentCard.text}
             </p>
           </div>
 
           {currentCard.hint && (
-            <div className="mt-6 p-4 bg-rose-50 rounded-lg border border-rose-200">
-              <p className="text-sm text-gray-600 text-center">
-                <span className="font-medium text-rose-600">Hint:</span> {currentCard.hint}
+            <div className="mt-6 p-4 bg-rose-50 rounded-lg border border-border">
+              <p className="text-sm text-muted-foreground text-center">
+                <span className="font-medium text-primary">Hint:</span> {currentCard.hint}
               </p>
             </div>
           )}
@@ -112,8 +112,8 @@ const GameCard = ({ category, onBack }: GameCardProps) => {
         </div>
 
         {/* Tips */}
-        <div className="mt-8 p-4 bg-white/70 backdrop-blur-sm rounded-xl border border-rose-200">
-          <p className="text-xs text-gray-600 text-center">
+        <div className="mt-8 p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border">
+          <p className="text-xs text-muted-foreground text-center">
             💡 Take your time with each question. The goal is connection, not speed!
           </p>
         </div>

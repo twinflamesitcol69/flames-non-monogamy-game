@@ -1,5 +1,6 @@
 
 import { Activity } from '@/types/kingdom';
+import { getGeneratedText } from '@/utils/generatedRegistry';
 
 const translations = {
   es: {
@@ -1325,6 +1326,10 @@ export const activities: Activity[] = [
 ];
 
 export function getActivityText(activityId: string, language: 'es' | 'pt' | 'en'): string {
+  // Generated activities live in the runtime registry
+  const generated = getGeneratedText(activityId, language);
+  if (generated) return generated;
+
   const text = translations[language]?.[activityId];
   if (!text) {
     console.warn(`Missing translation for ${activityId} in ${language}`);

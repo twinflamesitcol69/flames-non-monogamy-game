@@ -34,7 +34,7 @@ export default function BannerAd() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-40 flex justify-center items-center bg-white/90 backdrop-blur-sm border-t border-purple-100"
+      className="fixed bottom-0 left-0 right-0 z-40 flex justify-center items-center bg-card/90 backdrop-blur-sm border-t border-border"
       style={{ minHeight: 60 }}
       aria-label="Advertisement"
     >
